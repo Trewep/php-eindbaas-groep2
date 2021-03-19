@@ -1,0 +1,29 @@
+/*work in progress - ask Bastien*/
+
+/*colors*/
+:root {
+    --bs-blue: #0d6efd;
+    --bs-indigo: #6610f2;
+    --bs-purple: #6f42c1;
+    --bs-pink: #d63384;
+    --bs-red: #CF291D;
+    --bs-orange: #fd7e14;
+    --bs-yellow: #EEC170;
+    --bs-green: #73A580;
+    --bs-teal: #20c997;
+    --bs-cyan: #0dcaf0;
+    --bs-white: #ffffff;
+    --bs-gray: #9A9A9A;
+    --bs-gray-dark: #343a40;
+    --bs-primary: #CF291D;
+    --bs-secondary: #ECECEC;
+    --bs-success: #73A580;
+    --bs-info: #9A9A9A;
+    --bs-warning: #EEC170;
+    --bs-danger: #EEC170;
+    --bs-light: #ffffff;
+    --bs-dark: #1D1D1D;
+    --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+}
