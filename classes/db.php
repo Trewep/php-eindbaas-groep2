@@ -1,19 +1,15 @@
 <?php
-class db
-{
-    private static $conn;
-
-    public static function getConnection()
-    {
-        include_once(__DIR__ . "/../settings/settings.php");
-
-        if (self::$conn === null) {
-
-            self::$conn = new PDO('mysql:host=' . SETTINGS['db']['host'] . '; dbname=' . SETTINGS['db']['dbname'] , SETTINGS['db']['user'], SETTINGS['db']['password']);
-            return self::$conn;
-        } else {
-
-            return self::$conn;
-        }
-    }
+abstract class Db {
+private static $conn;
+public static function getConnection(){
+if(self::$conn != null){
+echo "🚫";
+// connection found, return connection
+return self::$conn;
+} else{
+$config = parse_ini_file("settings/config.ini");
+self::$conn = new PDO('mysql:host='. $config['db_host'] .';dbname=' . $config['db_name'], $config['db_user'], $config['db_password'] );
+return self::$conn;
+}
+}
 }

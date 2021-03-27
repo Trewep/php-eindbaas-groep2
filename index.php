@@ -1,3 +1,23 @@
+<?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+//include_once(__DIR__ . "/classes/User.php");
+
+// $conn = new PDO('mysql:host=bbchaacht.be.mysql.service.one.com;dbname=bbchaacht_bethomasmore_php', 'bbchaacht_bethomasmore_php', '9w7kws81nVZkbBdzrn89');
+$con=mysqli_connect("bbchaacht.be.mysql.service.one.com", "bbchaacht_bethomasmore_php", "9w7kws81nVZkbBdzrn89", "bbchaacht_bethomasmore_php");
+// $conn = new PDO('mysql:host=localhost;dbname=spotify', 'root', 'root');
+
+
+// $user = new User;
+// $user->getAll();
+// var_dump($user);
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
