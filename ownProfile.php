@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,13 +40,12 @@
 
             <div class="col-5 d-flex flex-row ProfileButton justify-content-center">
                 <img src="./assets/icons/blackIcons/type=menu, state=Default.svg" alt="">
-                <p>settings</p>
-
+                <a href="./profileSettings.php">settings</a>
             </div>
 
             <div class="col-5 d-flex flex-row ProfileButton justify-content-center">
                 <img src="./assets/icons/blackIcons/type=person, state=Default.svg" alt="">
-                <p>Admin page</p>
+                <a href="./profileSettings.php">admin page</a>
 
             </div>
 

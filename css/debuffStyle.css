@@ -88,16 +88,17 @@ html,body {
 }
 
 .profileButtons{
-    margin-top: 1em;
+    margin-top: 2em;
 }
 
 .ProfileButton img{
     width: 14%;
 }
 
-.ProfileButton p{
+.ProfileButton a{
     padding-left: 1em;
-    padding-top: 1em;
+    text-decoration: none;
+    color: var(--bs-gray-dark);
 }
 
 
@@ -111,6 +112,7 @@ html,body {
 
 .nav {
 background-color: rgba(0, 0, 0, 0.1);
+margin-top: 1em ;
 
 }
 
