@@ -2,16 +2,22 @@
 
 include_once(__DIR__ . "/../interfaces/iUser.php");
 //include_once(__DIR__ . "/Db.php");
-include_once(__DIR__ . "/../bootstrap/bootstrap.php");
+include_once(__DIR__ . "/Dbnick.php");
+
  
 class User implements iUser {
     
     public function getAllUsers(){
-        $conn = Db::getConnection();
-        $statement = $conn->query("SELECT * FROM Users");
-        $statement-> execute();
+        //$conn = Db::getConnection();
+        $conn = Db::getInstance();
+        /*$statement = $conn->query("SELECT * FROM Users");
+        $statement->execute();
         $result = $statement->fetchAll();
-        return $result;
+        return $result;*/
+        $conn = Db::getInstance();
+        $result = $conn->query("select * from user");
+        return $result->fetchAll();
+
         
         
     }
