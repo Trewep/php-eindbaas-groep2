@@ -49,7 +49,15 @@ class User implements iUser {
         
     }
 
-    public function getUserById(){}
+    public function getUserById(int $id) {
+        // only grab the videos for a certain user
+        $conn = Db::getInstance();
+        $result = $conn->prepare("select * from user where id = :id");
+        $result->bindValue(':id', $id);
+        $result->execute();
+        return $result->fetchAll();
+    }
+
     public function addUser(){}
     public function deleteUser(){}
 

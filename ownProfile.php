@@ -1,4 +1,11 @@
+<?php
 
+include_once(__DIR__ . "/classes/User.php");
+
+$users = User::getUserById(1);
+var_dump($users);
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">

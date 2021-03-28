@@ -3,7 +3,7 @@
 interface iUser
 {
     public function getAllUsers();
-    public function getUserById();
+    public function getUserById(int $id);
     public function addUser();
     public function deleteUser();
 }
