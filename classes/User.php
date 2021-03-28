@@ -6,6 +6,34 @@ include_once(__DIR__ . "/Dbnick.php");
 
  
 class User implements iUser {
+
+    private $avatar;
+
+     /**
+     * Get the value of avatar
+     */ 
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * Set the value of avatar
+     *
+     * @return  self
+     */ 
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+
+
+
+
+
     
     public function getAllUsers(){
         //$conn = Db::getConnection();
@@ -14,7 +42,6 @@ class User implements iUser {
         $statement->execute();
         $result = $statement->fetchAll();
         return $result;*/
-        $conn = Db::getInstance();
         $result = $conn->query("select * from user");
         return $result->fetchAll();
 
@@ -25,4 +52,18 @@ class User implements iUser {
     public function getUserById(){}
     public function addUser(){}
     public function deleteUser(){}
+
+    
+    public function uploadAvatar(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("insert into user (ProfileImage) values (:avatar)");
+        $statement->bindValue(':avatar', $this->avatar);
+        var_dump('test');
+        return $statement->execute();
+
+
+    }
+
+
+   
 }
