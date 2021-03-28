@@ -1,5 +1,4 @@
-/*work in progress - ask Bastien*/
-
+/*work*
 /*colors*/
 :root {
     --bs-blue: #0d6efd;
@@ -27,3 +26,103 @@
     --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
 }
+
+*{
+    box-sizing: border-box;
+}
+
+html,body {
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
+}
+
+
+
+@font-face {
+    font-family: HeadingFont;
+    src: url(../assets/fonts/LiberGrotesqueFamily-Bold.ttf);
+  }
+
+  h1{
+      font-family: HeadingFont;
+  }
+
+.container{
+    padding: 0;
+}
+
+.header{
+    color:  white;
+    background-color: #1D1D1D ;
+    padding: 0.5em;
+}
+
+.header img{
+    width: 45%;
+}
+
+.header .logo{
+    width: 65%;
+}
+
+.profileOptions{
+    margin-top: 2em;
+
+}
+
+.profileOptions div{
+    padding: 0;
+}
+
+.profileOptions img{
+    width: 40%;
+    
+}
+
+.profileOptions h1{
+    padding-top: 0.7em;
+    padding-left: 0.5em;
+    font-size: 1.5em;
+    
+}
+
+.profileButtons{
+    margin-top: 1em;
+}
+
+.ProfileButton img{
+    width: 14%;
+}
+
+.ProfileButton p{
+    padding-left: 1em;
+    padding-top: 1em;
+}
+
+
+
+.imageOverview img{
+    width: 50%;
+    margin: 0.2em;
+
+    
+}
+
+.nav {
+background-color: rgba(0, 0, 0, 0.1);
+
+}
+
+.nav p{
+    padding-top: 1em;
+    padding-left: 0.5em;
+}
+
+
+
+
+
+
+
+
