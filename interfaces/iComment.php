@@ -1,6 +1,6 @@
 <?php
 
-interface iUser
+interface iComment
 {
     public function getAllComments();
     public function getCommentById();
