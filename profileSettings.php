@@ -66,13 +66,20 @@ if ($uploadOk == 0) {
   }
 }
 
-if(!empty($_POST['delete_avatar'])){
+if(!empty($_POST['delete'])){
+  if (array_key_exists('delete_avatar', $_POST)) {
+  $filename = $_POST['delete_avatar'];
+  var_dump($filename);
+  var_dump($target_dir . $filename);
+  $file_dir = $target_dir . $filename;
+  unlink($file_dir);
+  }
   if (array_key_exists('delete_avatar', $_POST)) {
     $user = new User();
     $user->deleteAvatar($_SESSION["UserId"]);
     header("Location: profileSettings.php");
   }
-
+}
 
 
 
@@ -118,8 +125,8 @@ if(!empty($_POST['delete_avatar'])){
 
 <form action="" method="post">
 <label for="deleteAvatar"> Delete profile Picture</label>
-<input type="hidden" name="delete_avatar" value="">
-<button name="delete_avatar" type="submit" value="delete">Delete</button>
+<input type="hidden" name="delete_avatar" value="<?php echo htmlspecialchars($user['ProfileImage'])?>">
+<button name="delete" type="submit" value="delete">Delete</button>
 </form>
 
 </div>
