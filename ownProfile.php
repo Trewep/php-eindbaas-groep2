@@ -2,8 +2,7 @@
 
 include_once(__DIR__ . "/classes/User.php");
 
-$users = User::getUserById(1);
-var_dump($users);
+$user = User::getUserById(1);
 
 ?>
 
@@ -36,7 +35,7 @@ var_dump($users);
         </div>
 
         <div class="row no-gutters profileOptions">
-            <div class="col-3 d-flex justify-content-end"><img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt=""></div>
+            <div class="col-3 d-flex justify-content-end"><img src="./uploads/<?php echo htmlspecialchars($user['ProfileImage'])?>" alt=""></div>
             <div class="col-6 d-flex justify-content-start">
                 <h1>JUSTNICK</h1>
             </div>

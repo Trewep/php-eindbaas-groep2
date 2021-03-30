@@ -42,33 +42,43 @@ class User implements iUser {
         $statement->execute();
         $result = $statement->fetchAll();
         return $result;*/
-        $result = $conn->query("select * from user");
+        $result = $conn->query("select * from users");
         return $result->fetchAll();
 
         
         
     }
 
-    public function getUserById(int $id) {
+    public static function getUserById(int $id) {
         // only grab the videos for a certain user
         $conn = Db::getInstance();
-        $result = $conn->prepare("select * from user where id = :id");
+        $result = $conn->prepare("select * from users where id = :id");
         $result->bindValue(':id', $id);
         $result->execute();
-        return $result->fetchAll();
+        return $result->fetch();
     }
 
     public function addUser(){}
     public function deleteUser(){}
 
     
-    public function uploadAvatar(){
+    public function uploadAvatar($id){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("insert into user (ProfileImage) values (:avatar)");
+        $statement = $conn->prepare("update users set ProfileImage=:avatar where id = :id ");
         $statement->bindValue(':avatar', $this->avatar);
-        var_dump('test');
-        return $statement->execute();
+        $statement->bindValue(':id', $id);
+        $statement->execute();
 
+
+    }
+
+    public function deleteAvatar($id){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare('UPDATE users SET ProfileImage=:defaultAvatar WHERE id = :id');
+        $statement->bindValue(':id', $id);
+        $statement->bindValue(':defaultAvatar', 'defaultAvatar');
+
+        $statement->execute();
 
     }
 
