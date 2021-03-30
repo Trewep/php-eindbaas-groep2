@@ -1,8 +1,11 @@
 <?php
 
+session_start();
+
+
 include_once(__DIR__ . "/classes/User.php");
 
-$user = User::getUserById(2);
+$user = User::getUserById($_SESSION["UserId"]);
 
 
 $target_dir = "uploads/";
@@ -57,7 +60,7 @@ if ($uploadOk == 0) {
     //var_dump( $avatar);
     $user = new User();
     $user->setAvatar($avatar);
-    $user->uploadAvatar(2);
+    $user->uploadAvatar($_SESSION["UserId"]);
     header("Location: profileSettings.php");
   } else {
   }
@@ -66,10 +69,12 @@ if ($uploadOk == 0) {
 if(!empty($_POST['delete_avatar'])){
   if (array_key_exists('delete_avatar', $_POST)) {
     $user = new User();
-    $user->deleteAvatar(2);
+    $user->deleteAvatar($_SESSION["UserId"]);
     header("Location: profileSettings.php");
   }
-}
+
+
+
 
 
 
@@ -113,8 +118,8 @@ if(!empty($_POST['delete_avatar'])){
 
 <form action="" method="post">
 <label for="deleteAvatar"> Delete profile Picture</label>
-<input type="hidden" name="delete_avatar">
-<button name="delete_avatar" type="submit">Delete</button>
+<input type="hidden" name="delete_avatar" value="">
+<button name="delete_avatar" type="submit" value="delete">Delete</button>
 </form>
 
 </div>

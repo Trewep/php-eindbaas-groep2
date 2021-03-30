@@ -1,8 +1,13 @@
 <?php
 
+session_start();
+$_SESSION["UserId"] = 2;
+
+
 include_once(__DIR__ . "/classes/User.php");
 
-$user = User::getUserById(1);
+$user = User::getUserById($_SESSION["UserId"]);
+
 
 ?>
 
@@ -34,8 +39,12 @@ $user = User::getUserById(1);
             <div class="col-3 d-flex justify-content-center"> <img src="./assets/icons/whiteIcons/type=search, state=Default.svg" alt="cameraIcon"></div>
         </div>
 
-        <div class="row no-gutters profileOptions">
+        <div class="row no-gutters profileOptions">     
+<?php if($user['ProfileImage'] === 'defaultAvatar'):?>
+    <div class="col-3 d-flex justify-content-end"><img src="./assets/images/default-profile-picture.jpg" alt=""></div>
+<?php else:?>
             <div class="col-3 d-flex justify-content-end"><img src="./uploads/<?php echo htmlspecialchars($user['ProfileImage'])?>" alt=""></div>
+            <?php endif;?>
             <div class="col-6 d-flex justify-content-start">
                 <h1>JUSTNICK</h1>
             </div>
