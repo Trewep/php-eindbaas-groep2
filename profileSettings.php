@@ -34,18 +34,32 @@ $user = User::getUserById($_SESSION["UserId"]);
 <html>
 <body>
 
+<?php include("header.inc.php")?>
+
+<div class="profileSettingsImage">
+
 <div class="row">
-<div class="col-5">
+
+<div class="col-1"></div>
+
+<div class="col-5 d-flex justify-content-start " >
 <img src="./uploads/<?php echo htmlspecialchars($user['ProfileImage'])?>" alt="">
-<p>Current Avatar</p>
 </div>
-<div class="col-5">
+
+
+<div class="col-5 d-flex justify-content-end ">
 <form action="" method="post" enctype="multipart/form-data">
-  Select image to upload:
-  <input type="file" name="fileToUpload" id="fileToUpload">
-  <input type="submit" value="Upload Image" name="submit">
+<label for="fileToUpload">Change profile picture</label>
+<input type="file" name="fileToUpload" id="fileToUpload">
+<input type="submit" value="Upload Image" name="submit">
 </form>
 </div>
+
+<div class="col-1"></div>
+
+
+<div class="row">
+<div class="col-12  d-flex justify-content-center">
 
 <form action="" method="post">
 <label for="deleteAvatar"> Delete profile Picture</label>
@@ -55,7 +69,23 @@ $user = User::getUserById($_SESSION["UserId"]);
 
 </div>
 
+</div>
 
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<?php include('nav.inc.php')?>
 
 
 

@@ -31,13 +31,7 @@ $user = User::getUserById($_SESSION["UserId"]);
 <body>
     <div class="container">
 
-        <div class="row no-gutters header">
-            <div class="col-3 d-flex justify-content-center"> <img src="./assets/icons/whiteIcons/type=camera, state=Default.svg" alt="cameraIcon"></div>
-            <div class="col-6 d-flex justify-content-center">
-                <img class="logo" src="assets/logo/logoFull/fullWhite.svg" alt="logo">
-            </div>
-            <div class="col-3 d-flex justify-content-center"> <img src="./assets/icons/whiteIcons/type=search, state=Default.svg" alt="cameraIcon"></div>
-        </div>
+    <?php include("header.inc.php")?>
 
         <div class="row no-gutters profileOptions">     
 <?php if($user['ProfileImage'] === 'defaultAvatar'):?>
@@ -66,9 +60,6 @@ $user = User::getUserById($_SESSION["UserId"]);
 
 
         </div>
-
-
-
 
 
         <hr>
@@ -104,19 +95,7 @@ $user = User::getUserById($_SESSION["UserId"]);
 
         </div>
 
-
-
-        <div class="row no-gutters nav">
-            <div class="col-4 d-flex flex-row justify-content-center "> <img src="assets/icons/blackIcons/type=home, state=Default.svg" alt="">
-                <p>feed</p>
-            </div>
-            <div class="col-4 d-flex flex-row justify-content-center "><img src="assets/icons/blackIcons/type=notification, state=Default.svg" alt="">
-                <p>notifications</p>
-            </div>
-            <div class="col-4 d-flex flex-row justify-content-center "><img src="assets/icons/blackIcons/type=person, state=Default.svg" alt="">
-                <p>profile</p>
-            </div>
-        </div>
+    <?php include('nav.inc.php')?>
 
 
 
