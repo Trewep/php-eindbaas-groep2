@@ -1,8 +1,7 @@
 <?php
 
 include_once(__DIR__ . "/../interfaces/iUser.php");
-//include_once(__DIR__ . "/Db.php");
-include_once(__DIR__ . "/Dbnick.php");
+include_once(__DIR__ . "/Db.php");
 
  
 class User implements iUser {
@@ -36,9 +35,9 @@ class User implements iUser {
 
     
     public function getAllUsers(){
-        $conn = Db::getInstance();
+        $conn = Db::getConnection();
 
-        $result = $conn->query("select * from users");
+        $result = $conn->query("select * from Users");
         return $result->fetchAll();
 
         
@@ -47,8 +46,8 @@ class User implements iUser {
 
     public static function getUserById(int $id) {
         // only grab the videos for a certain user
-        $conn = Db::getInstance();
-        $result = $conn->prepare("select * from users where id = :id");
+        $conn = Db::getConnection();
+        $result = $conn->prepare("select * from Users where id = :id");
         $result->bindValue(':id', $id);
         $result->execute();
         return $result->fetch();
@@ -59,8 +58,8 @@ class User implements iUser {
 
     
     public function uploadAvatar($id){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("update users set profileImage=:avatar where id = :id ");
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("update Users set profileImage=:avatar where id = :id ");
         $statement->bindValue(':avatar', $this->avatar);
         $statement->bindValue(':id', $id);
         $statement->execute();
@@ -69,8 +68,8 @@ class User implements iUser {
     }
 
     public function deleteAvatar($id){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare('UPDATE users SET profileImage=:defaultAvatar WHERE id = :id');
+        $conn = Db::getConnection();
+        $statement = $conn->prepare('UPDATE Users SET profileImage=:defaultAvatar WHERE id = :id');
         $statement->bindValue(':id', $id);
         $statement->bindValue(':defaultAvatar', 'defaultAvatar');
 
