@@ -7,10 +7,20 @@ session_start();
 
 
 include_once(__DIR__ . "/classes/Post.php");
+include_once(__DIR__ . "/classes/Follower.php");
+
 
 
 $posts = new Post();
 $posts = $posts->get20LastPosts();
+
+
+$followers = new Follower();
+$followers= $followers->getFollowerByUserId($_SESSION["UserId"]);
+//var_dump($followers);
+
+
+    
 
 
 
@@ -35,12 +45,28 @@ $posts = $posts->get20LastPosts();
 <body>
 <?php include("header.inc.php") ?>
 
-<?php foreach($posts as $post):?>
-<article>
+
+<?php foreach ($followers as $follower) :?>
+   <?php foreach ($posts as $post) :?>
+    <?php if(!isset($follower['followerId'])):?>
+        <article>
     <h1>this is one of the last 20 posts posted</h1>
     <p>post id = <?php echo htmlspecialchars($post['id'])?> </p>
 </article>
+<?php else:?>
+<?php if($follower['userId' === $post['userId']]):?>
+    <article>
+    <h1>this is one of your friends/following posts</h1>
+    <p>post id = <?php echo htmlspecialchars($post['id'])?> </p>
+</article>
+
+<?php endif;?>
+<?php endif;?>
 <?php endforeach;?>
+<?php endforeach;?>
+
+
+
 
 
 <?php include('nav.inc.php') ?>

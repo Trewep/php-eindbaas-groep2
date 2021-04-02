@@ -22,5 +22,11 @@ class Post implements iPost{
         return $result->fetchAll();
 
     }
+
+    public function getPostByFollowerId(){
+        $conn = Db::getInstance();
+        $result = $conn->query("select * from posts wher id=:id");
+        return $result->fetchAll();
+    }
     
 }
