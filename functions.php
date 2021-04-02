@@ -39,16 +39,13 @@ if(!empty($_POST["submit"])) {
   
   // Check if $uploadOk is set to 0 by an error
   if ($uploadOk == 0) {
-   // $error = "Sorry, your file was not uploaded.";
   // if everything is ok, try to upload file
   } else {
   if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
     $avatar=basename( $_FILES["fileToUpload"]["name"]);
-    //var_dump( $avatar);
     $user = new User();
     $user->setAvatar($avatar);
     $user->uploadAvatar($_SESSION["UserId"]);
-    //header("Location: ownProfile.php");
   } else {
   }
   }
@@ -56,7 +53,6 @@ if(!empty($_POST["submit"])) {
   
 
   //Profile image delete
-  
   if(!empty($_POST['delete'])){
     if (array_key_exists('delete_avatar', $_POST)) {
     $filename = $_POST['delete_avatar'];
@@ -68,7 +64,6 @@ if(!empty($_POST["submit"])) {
     if (array_key_exists('delete_avatar', $_POST)) {
       $user = new User();
       $user->deleteAvatar($_SESSION["UserId"]);
-      //header("Location: ownProfile.php");
     }
     else{
       $error = 'sorry your profile image has not been deleted please try again';

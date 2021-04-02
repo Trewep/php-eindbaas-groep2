@@ -31,19 +31,21 @@ $user = User::getUserById($_SESSION["UserId"]);
 <body>
     <div class="container">
 
-    <?php include("header.inc.php")?>
+        <?php include("header.inc.php") ?>
 
-        <div class="row no-gutters profileOptions">     
-<?php if($user['profileImage'] === 'defaultAvatar'):?>
-    <div class="col-3 d-flex justify-content-end"><img src="./assets/images/default-profile-picture.jpg" alt=""></div>
-<?php else:?>
-            <div class="col-3 d-flex justify-content-end"><img src="./uploads/<?php echo htmlspecialchars($user['profileImage'])?>" alt=""></div>
-            <?php endif;?>
+        <div class="row no-gutters profileOptions">
+
+            <?php if ($user['profileImage'] === 'defaultAvatar') : ?>
+                <div class="col-3 d-flex justify-content-end"><img src="./assets/images/default-profile-picture.jpg" alt=""></div>
+            <?php else : ?>
+                <div class="col-3 d-flex justify-content-end"><img src="./uploads/<?php echo htmlspecialchars($user['profileImage']) ?>" alt=""></div>
+            <?php endif; ?>
+
             <div class="col-6 d-flex justify-content-start">
                 <h1>JUSTNICK</h1>
             </div>
-        </div>
 
+        </div>
 
         <div class="row no-gutters profileButtons">
 
@@ -58,21 +60,12 @@ $user = User::getUserById($_SESSION["UserId"]);
 
             </div>
 
-
         </div>
 
 
         <hr>
 
         <div class="imageOverview">
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-10 d-flex flex-row">
-                    <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
-                    <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
-                </div>
-                <div class="col-1"></div>
-            </div>
 
             <div class="row">
                 <div class="col-1"></div>
@@ -92,16 +85,18 @@ $user = User::getUserById($_SESSION["UserId"]);
                 <div class="col-1"></div>
             </div>
 
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10 d-flex flex-row">
+                    <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
+                    <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
+                </div>
+                <div class="col-1"></div>
+            </div>
 
         </div>
 
-    <?php include('nav.inc.php')?>
-
-
-
-
-
-
+        <?php include('nav.inc.php') ?>
 
     </div>
 

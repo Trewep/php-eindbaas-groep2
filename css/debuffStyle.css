@@ -116,9 +116,13 @@ margin-top: 1em ;
 
 }
 
-.nav p{
-    padding-top: 1em;
-    padding-left: 0.5em;
+.nav a{
+  text-decoration: none;
+  color: black;
+}
+
+.noti{
+    margin-left: -1.2em;
 }
 
 .profileSettingsImage{
