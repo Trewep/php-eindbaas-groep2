@@ -95,7 +95,7 @@ $user = User::getUserById($_SESSION["UserId"]);
 
         </div>
 
-        <?php include(__DIR__ .'nav.inc.php') ?>
+        <?php include('nav.inc.php') ?>
 
     </body>
 

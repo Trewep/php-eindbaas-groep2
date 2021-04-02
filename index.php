@@ -3,13 +3,15 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include_once(__DIR__ . "/classes/User.php");
-//include_once(__DIR__ . "./bootstrap/bootstrap.php");
+session_start();
 
 
-$user = new User;
-$users = $user->getAllUsers();
-var_dump($users);
+include_once(__DIR__ . "/classes/Post.php");
+
+
+$posts = new Post();
+$posts = $posts->get20LastPosts();
+
 
 
 ?>
@@ -31,8 +33,20 @@ var_dump($users);
     <!--design pagina: https://www.figma.com/proto/jzjm99ggCTUSNv7ITLuLZl/PHP-project-DEBUFF?node-id=3%3A157&viewport=444%2C-1081%2C0.47289735078811646&scaling=scale-down-->
 </head>
 <body>
-   <ul>
+<?php include("header.inc.php") ?>
 
-</ul> 
+<?php foreach($posts as $post):?>
+<article>
+    <h1>this is one of the last 20 posts posted</h1>
+    <p>post id = <?php echo htmlspecialchars($post['id'])?> </p>
+</article>
+<?php endforeach;?>
+
+
+<?php include('nav.inc.php') ?>
+
+
+
+
 </body>
 </html>
