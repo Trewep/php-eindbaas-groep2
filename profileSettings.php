@@ -36,6 +36,19 @@ $user = User::getUserById($_SESSION["UserId"]);
 
 <?php include("header.inc.php")?>
 
+
+<?php if(isset($error)):?>
+<div class='row'>
+<div class="col-1"></div>
+<div class="col-10 d-flex justify-content-center error">
+<?php echo $error ?>
+</div>
+<div class="col-1"></div>
+</div>
+<?php endif; ?>
+
+
+
 <div class="profileSettingsImage">
 
 <div class="row">
@@ -43,7 +56,12 @@ $user = User::getUserById($_SESSION["UserId"]);
 <div class="col-1"></div>
 
 <div class="col-5 d-flex justify-content-start " >
-<img src="./uploads/<?php echo htmlspecialchars($user['ProfileImage'])?>" alt="">
+<?php if($user['profileImage'] === 'defaultAvatar'):?>
+    <img  src="./assets/images/default-profile-picture.jpg" alt="">
+<?php else:?>
+    <img src="./uploads/<?php echo htmlspecialchars($user['profileImage'])?>" alt="">
+<?php endif;?>
+
 </div>
 
 
@@ -63,7 +81,7 @@ $user = User::getUserById($_SESSION["UserId"]);
 
 <form action="" method="post">
 <label for="deleteAvatar"> Delete profile Picture</label>
-<input type="hidden" name="delete_avatar" value="<?php echo htmlspecialchars($user['ProfileImage'])?>">
+<input type="hidden" name="delete_avatar" value="<?php echo htmlspecialchars($user['profileImage'])?>">
 <button name="delete" type="submit" value="delete">Delete</button>
 </form>
 

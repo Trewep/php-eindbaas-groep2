@@ -34,10 +34,10 @@ $user = User::getUserById($_SESSION["UserId"]);
     <?php include("header.inc.php")?>
 
         <div class="row no-gutters profileOptions">     
-<?php if($user['ProfileImage'] === 'defaultAvatar'):?>
+<?php if($user['profileImage'] === 'defaultAvatar'):?>
     <div class="col-3 d-flex justify-content-end"><img src="./assets/images/default-profile-picture.jpg" alt=""></div>
 <?php else:?>
-            <div class="col-3 d-flex justify-content-end"><img src="./uploads/<?php echo htmlspecialchars($user['ProfileImage'])?>" alt=""></div>
+            <div class="col-3 d-flex justify-content-end"><img src="./uploads/<?php echo htmlspecialchars($user['profileImage'])?>" alt=""></div>
             <?php endif;?>
             <div class="col-6 d-flex justify-content-start">
                 <h1>JUSTNICK</h1>

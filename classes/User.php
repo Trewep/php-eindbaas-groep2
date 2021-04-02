@@ -36,12 +36,8 @@ class User implements iUser {
 
     
     public function getAllUsers(){
-        //$conn = Db::getConnection();
         $conn = Db::getInstance();
-        /*$statement = $conn->query("SELECT * FROM Users");
-        $statement->execute();
-        $result = $statement->fetchAll();
-        return $result;*/
+
         $result = $conn->query("select * from users");
         return $result->fetchAll();
 
@@ -64,7 +60,7 @@ class User implements iUser {
     
     public function uploadAvatar($id){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("update users set ProfileImage=:avatar where id = :id ");
+        $statement = $conn->prepare("update users set profileImage=:avatar where id = :id ");
         $statement->bindValue(':avatar', $this->avatar);
         $statement->bindValue(':id', $id);
         $statement->execute();
@@ -74,7 +70,7 @@ class User implements iUser {
 
     public function deleteAvatar($id){
         $conn = Db::getInstance();
-        $statement = $conn->prepare('UPDATE users SET ProfileImage=:defaultAvatar WHERE id = :id');
+        $statement = $conn->prepare('UPDATE users SET profileImage=:defaultAvatar WHERE id = :id');
         $statement->bindValue(':id', $id);
         $statement->bindValue(':defaultAvatar', 'defaultAvatar');
 
