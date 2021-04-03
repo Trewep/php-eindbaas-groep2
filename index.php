@@ -4,23 +4,31 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-
+$_SESSION["UserId"] = 2;
 
 include_once(__DIR__ . "/classes/Post.php");
 include_once(__DIR__ . "/classes/Follower.php");
 
-
-
 $posts = new Post();
-$posts = $posts->get20LastPosts();
-
 
 $followers = new Follower();
 $followers= $followers->getFollowerByUserId($_SESSION["UserId"]);
-//var_dump($followers);
+
+$array = [];
+foreach ($followers as $follower){
+    $array[] = $follower['followerId'];
+  
+}
+
+if(!empty($followers)){
+    echo 'full';
+    $posts = $posts->get20lastFollowersPosts($array);
+}else{
+    echo 'empty';
+    $posts = $posts->get20LastPosts();
+}
 
 
-    
 
 
 
@@ -45,28 +53,12 @@ $followers= $followers->getFollowerByUserId($_SESSION["UserId"]);
 <body>
 <?php include("header.inc.php") ?>
 
-
-<?php foreach ($followers as $follower) :?>
-   <?php foreach ($posts as $post) :?>
-    <?php if(!isset($follower['followerId'])):?>
-        <article>
-    <h1>this is one of the last 20 posts posted</h1>
-    <p>post id = <?php echo htmlspecialchars($post['id'])?> </p>
-</article>
-<?php else:?>
-<?php if($follower['userId' === $post['userId']]):?>
-    <article>
-    <h1>this is one of your friends/following posts</h1>
-    <p>post id = <?php echo htmlspecialchars($post['id'])?> </p>
-</article>
-
-<?php endif;?>
-<?php endif;?>
-<?php endforeach;?>
-<?php endforeach;?>
-
-
-
+<?php foreach ($posts as $post) :?>
+         <article>
+     <h1>this is a post</h1>
+     <p>friend post id = <?php echo htmlspecialchars($post['id'])?> </p>
+ </article>
+ <?php endforeach;?>
 
 
 <?php include('nav.inc.php') ?>
@@ -76,3 +68,4 @@ $followers= $followers->getFollowerByUserId($_SESSION["UserId"]);
 
 </body>
 </html>
+

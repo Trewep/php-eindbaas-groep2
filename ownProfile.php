@@ -7,7 +7,7 @@ $_SESSION["UserId"] = 2;
 include_once(__DIR__ . "/classes/User.php");
 
 $user = User::getUserById($_SESSION["UserId"]);
-
+var_dump($_SESSION["UserId"]);
 
 ?>
 
