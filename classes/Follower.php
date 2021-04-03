@@ -72,7 +72,20 @@ class Follower implements iFollower {
 
     }
 
-    public function deleteFollower(){}
+    public function deleteFollower(){
+
+        $userId = $this->getUserId();
+        $followerId = $this->getFollowerId();
+
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("delete from followers where userId = :userId and followerId = :followerId");
+        $statement->bindValue(':userId', $userId );
+        $statement->bindValue(':followerId',  $followerId);
+        $result = $statement->execute();
+       return $result;
+
+
+    }
 
 
 

@@ -1,7 +1,9 @@
 document.querySelector('.btn').addEventListener("click", function () {
-    let btn_value = document.querySelector('.btn').innerHTML;
+    let btn = document.querySelector('.btn');
+    let btn_value = btn.innerHTML;
     let userId = this.dataset.userid;
     let followerId = this.dataset.followerid;
+    let clicked = 1;
 
     /*console.log(btn_value);
     console.log(profileId);*/
@@ -36,6 +38,14 @@ document.querySelector('.btn').addEventListener("click", function () {
            console.error('error', error);
 
         });
+
+
+        if(clicked === 1){
+            btn.innerHTML = 'Unfollow'
+            console.log('Unfollow')
+        }else{
+            console.log('follow');
+        }
 
 
 
