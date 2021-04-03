@@ -1,24 +1,20 @@
 <?php
 
 session_start();
-$_SESSION["UserId"] = 2;
+$_SESSION["userId"] = 2;
 
 
 include_once(__DIR__ . "/classes/User.php");
+$profile = 'myProfile';
 
 if(!empty($_GET['id'])){
-    if($_GET['id'] == $_SESSION['UserId']){
-        $profile = 'myProfile';
-    }else{
+    if($_GET['id'] !== $_SESSION['userId']){
         $profile = 'otherProfile';
     }
-}else{
-    echo 'no id';
-    
 }
 
 
-$user = User::getUserById($_SESSION["UserId"]);
+$user = User::getUserById($_GET['id']);
 //var_dump($_SESSION["UserId"]);
 
 ?>

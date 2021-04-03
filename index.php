@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-$_SESSION["UserId"] = 2;
+$_SESSION["userId"] = 2;
 
 include_once(__DIR__ . "/classes/Post.php");
 include_once(__DIR__ . "/classes/Follower.php");
@@ -12,7 +12,7 @@ include_once(__DIR__ . "/classes/Follower.php");
 $posts = new Post();
 
 $followers = new Follower();
-$followers= $followers->getFollowerByUserId($_SESSION["UserId"]);
+$followers= $followers->getFollowerByUserId($_SESSION["userId"]);
 
 $array = [];
 foreach ($followers as $follower){
