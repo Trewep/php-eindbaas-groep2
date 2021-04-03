@@ -118,6 +118,8 @@ $user = User::getUserById($_GET['id']);
 
     </div>
 
+    <script src="./javascript/profile.js"></script>
+
 </body>
 
 </html>
