@@ -12,10 +12,15 @@ $profile = 'myProfile';
 if(!empty($_GET['id'])){
     if($_GET['id'] !== $_SESSION['userId']){
         $profile = 'otherProfile';
+        $user = User::getUserById($_GET['id']);
+
     }
+}else{
+    $user = User::getUserById($_SESSION["userId"]);
+
 }
 
-$user = User::getUserById($_GET['id']);
+
 
 $followers = new Follower();
 $followers= $followers->getFollowerByUserId($_SESSION["userId"]);

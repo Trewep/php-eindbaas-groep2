@@ -1,9 +1,10 @@
+let clicked = 1;
 document.querySelector('.btn').addEventListener("click", function () {
     let btn = document.querySelector('.btn');
     let btn_value = btn.innerHTML;
     let userId = this.dataset.userid;
     let followerId = this.dataset.followerid;
-    let clicked = 1;
+    
 
     /*console.log(btn_value);
     console.log(profileId);*/
@@ -42,11 +43,14 @@ document.querySelector('.btn').addEventListener("click", function () {
 
         if(clicked === 1){
             btn.innerHTML = 'Unfollow'
-            console.log('Unfollow')
+            console.log('Unfollow');
+            clicked = 0;
         }else{
+            btn.innerHTML = 'Follow'
             console.log('follow');
+            clicked = 1;
         }
 
-
+console.log(clicked);
 
 })
