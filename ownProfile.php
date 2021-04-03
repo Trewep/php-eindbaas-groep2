@@ -6,8 +6,20 @@ $_SESSION["UserId"] = 2;
 
 include_once(__DIR__ . "/classes/User.php");
 
+if(!empty($_GET['id'])){
+    if($_GET['id'] == $_SESSION['UserId']){
+        $profile = 'myProfile';
+    }else{
+        $profile = 'otherProfile';
+    }
+}else{
+    echo 'no id';
+    
+}
+
+
 $user = User::getUserById($_SESSION["UserId"]);
-var_dump($_SESSION["UserId"]);
+//var_dump($_SESSION["UserId"]);
 
 ?>
 
@@ -41,11 +53,20 @@ var_dump($_SESSION["UserId"]);
                 <div class="col-3 d-flex justify-content-end"><img src="./uploads/<?php echo htmlspecialchars($user['profileImage']) ?>" alt=""></div>
             <?php endif; ?>
 
-            <div class="col-6 d-flex justify-content-start">
+            <div class="col-3 d-flex justify-content-start">
                 <h1>JUSTNICK</h1>
             </div>
 
+            <?php if($profile === 'otherProfile'):?>
+            <div class='col-3 d-flex justify-content-end'>
+            <button type="button" class="btn btn-danger">Follow</button>
+            </div>
+            <?php endif; ?>
+
         </div>
+
+
+        <?php if($profile === 'myProfile'):?>
 
         <div class="row no-gutters profileButtons">
 
@@ -61,6 +82,7 @@ var_dump($_SESSION["UserId"]);
             </div>
 
         </div>
+        <?php endif; ?>
 
 
         <hr>

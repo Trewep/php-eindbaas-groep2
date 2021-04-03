@@ -21,10 +21,10 @@ foreach ($followers as $follower){
 }
 
 if(!empty($followers)){
-    echo 'full';
+    //echo 'full';
     $posts = $posts->get20lastFollowersPosts($array);
 }else{
-    echo 'empty';
+    //echo 'empty';
     $posts = $posts->get20LastPosts();
 }
 
@@ -56,7 +56,8 @@ if(!empty($followers)){
 <?php foreach ($posts as $post) :?>
          <article>
      <h1>this is a post</h1>
-     <p>friend post id = <?php echo htmlspecialchars($post['id'])?> </p>
+     <a href="ownProfile.php?id=">Nickname</a>
+     <p> post id = <?php echo htmlspecialchars($post['id'])?> </p>
  </article>
  <?php endforeach;?>
 
