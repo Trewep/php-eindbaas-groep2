@@ -55,7 +55,7 @@ $user = User::getUserById($_GET['id']);
 
             <?php if($profile === 'otherProfile'):?>
             <div class='col-3 d-flex justify-content-end'>
-            <button type="button" class="btn btn-danger">Follow</button>
+            <button type="button" data-followerid="<?php echo htmlspecialchars($_GET['id'])?>" data-userid="<?php echo htmlspecialchars($_SESSION['userId'])?>" class="btn btn-danger">Follow</button>
             </div>
             <?php endif; ?>
 
