@@ -8,6 +8,10 @@ $_SESSION["userId"] = 2;
 
 include_once(__DIR__ . "/classes/Post.php");
 include_once(__DIR__ . "/classes/Follower.php");
+include_once(__DIR__ . "/classes/Comment.php");
+include_once(__DIR__ . "/classes/User.php");
+
+
 
 $posts = new Post();
 
@@ -26,6 +30,13 @@ if (!empty($followers)) {
     //echo 'empty';
     $posts = $posts->get20LastPosts();
 }
+
+$comments = new Comment();
+$comments = $comments->getAllComments();
+//var_dump($comments);
+
+$users = new User();
+$users = $users->getAllUsers();
 
 
 
@@ -64,13 +75,21 @@ if (!empty($followers)) {
             <img style="width: 25%;" src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
             <div>hier komen iconen enz</div>
         </article>
+        <?php foreach($comments as $comment):?>
+        <?php if($comment['postId'] === $post['id']):?>
+        <?php foreach($users as $user):?>
+        <?php if($user['id'] === $comment['userId']):?>
         <div>
-        <p>user</p>
-        <p>dit is een comment</p>
+        <p><?php echo htmlspecialchars('@'.$user['username'])?></p>
+        <p><?php echo htmlspecialchars($comment['comment'])?></p>
         </div>
-        <hr>
-
+        <?php endif;?>
+        <?php endforeach;?>
+        <?php endif;?>
+            <?php endforeach;?>
+            <hr>
     <?php endforeach; ?>
+   
 
 
     <?php include('nav.inc.php') ?>
