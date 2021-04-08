@@ -10,6 +10,7 @@ include_once(__DIR__ . "/classes/Post.php");
 include_once(__DIR__ . "/classes/Follower.php");
 include_once(__DIR__ . "/classes/Comment.php");
 include_once(__DIR__ . "/classes/User.php");
+include_once(__DIR__ . "/functions.php");
 
 
 
@@ -39,10 +40,18 @@ $users = new User();
 $users = $users->getAllUsers();
 
 
-
+foreach($comments as $comment){
+    $timePosted = get_timeago($comment['time'] );
+    //echo $timePosted;
+    var_dump($timePosted);
+}
 
 
 ?>
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -82,6 +91,7 @@ $users = $users->getAllUsers();
         <div>
         <p><?php echo htmlspecialchars('@'.$user['username'])?></p>
         <p><?php echo htmlspecialchars($comment['comment'])?></p>
+        <p><?php echo get_timeago($comment['time'])?></p>
         </div>
         <?php endif;?>
         <?php endforeach;?>
