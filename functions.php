@@ -1,10 +1,14 @@
 <?php
 //(profile)Image upload
 
-$target_dir = "uploads/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-$uploadOk = 1;
-$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+if(!empty($_POST)){
+
+  $target_dir = "uploads/";
+  $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+  $uploadOk = 1;
+  $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+}
+
 
 $error='';
 
@@ -45,7 +49,9 @@ if(!empty($_POST["submit"])) {
     $avatar=basename( $_FILES["fileToUpload"]["name"]);
     $user = new User();
     $user->setAvatar($avatar);
-    $user->uploadAvatar($_SESSION["UserId"]);
+    $user->uploadAvatar($_SESSION["userId"]);
+    header("location: profileSettings.php");
+
   } else {
   }
   }
@@ -54,20 +60,26 @@ if(!empty($_POST["submit"])) {
 
   //Profile image delete
   if(!empty($_POST['delete'])){
+
+    if (array_key_exists('delete_avatar', $_POST)) {
+      $user = new User();
+      $user->deleteAvatar($_SESSION["userId"]);
+    }
+    else{
+      $error = 'sorry your profile image has not been deleted please try again';
+
+    }
     if (array_key_exists('delete_avatar', $_POST)) {
     $filename = $_POST['delete_avatar'];
     var_dump($filename);
     var_dump($target_dir . $filename);
     $file_dir = $target_dir . $filename;
     unlink($file_dir);
+    header("location: profileSettings.php");
     }
-    if (array_key_exists('delete_avatar', $_POST)) {
-      $user = new User();
-      $user->deleteAvatar($_SESSION["UserId"]);
-    }
-    else{
-      $error = 'sorry your profile image has not been deleted please try again';
-
-    }
+    
   }
+
+
+
 ?>  

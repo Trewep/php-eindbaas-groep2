@@ -10,15 +10,19 @@ include_once(__DIR__ . "/classes/Follower.php");
 $profile = 'myProfile';
 
 if(!empty($_GET['id'])){
-    if($_GET['id'] !== $_SESSION['userId']){
+    if($_GET['id'] == $_SESSION['userId']){
+
+        $user = User::getUserById($_SESSION["userId"]);
+
+    }else{
         $profile = 'otherProfile';
         $user = User::getUserById($_GET['id']);
-
     }
 }else{
-    $user = User::getUserById($_SESSION["userId"]);
+  
 
 }
+
 
 
 
