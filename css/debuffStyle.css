@@ -101,14 +101,30 @@ html,body {
     color: var(--bs-gray-dark);
 }
 
+.imageOverview{
+    display: flex;
+    align-items: flex-start;
+
+}
+
+
 
 
 .imageOverview img{
-    width: 50%;
-    margin: 0.2em;
-
-    
+    padding: 0.4em;
+    width: 100%;
 }
+
+
+
+.btnDelete {
+    width: 95%;
+    margin:0 0.4em 0 0.4em;
+}
+
+
+
+
 
 .nav {
 background-color: rgba(0, 0, 0, 0.1);

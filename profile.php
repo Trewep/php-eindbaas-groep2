@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 $_SESSION["userId"] = 2;
 
@@ -9,35 +12,65 @@ include_once(__DIR__ . "/classes/Follower.php");
 
 $profile = 'myProfile';
 
-if(!empty($_GET['id'])){
-    if($_GET['id'] == $_SESSION['userId']){
+if (!empty($_GET['id'])) {
+    if ($_GET['id'] == $_SESSION['userId']) {
 
         $user = User::getUserById($_SESSION["userId"]);
-
-    }else{
+    } else {
         $profile = 'otherProfile';
         $user = User::getUserById($_GET['id']);
     }
-}else{
-  
-
+} else {
 }
 
 
 
 
 $followers = new Follower();
-$followers= $followers->getFollowerByUserId($_SESSION["userId"]);
+$followers = $followers->getFollowerByUserId($_SESSION["userId"]);
 
 $btn_state = ' ';
- foreach ($followers as $follower){
-    if($follower['followerId'] === $_GET['id']){
+foreach ($followers as $follower) {
+    if ($follower['followerId'] === $_GET['id']) {
         $btn_state = 'Unfollow';
-    }else{
-        $btn_state ='Follow';
+    } else {
+        $btn_state = 'Follow';
     }
- }
- 
+}
+
+
+if(!empty($_POST)){
+
+    $target_dir = "uploads/";
+    //$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+    //$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+  }
+
+if(!empty($_POST['deletePostBtn'])){
+
+    if (array_key_exists('deletePost', $_POST)) {
+        //var_dump('yes');
+        //verwijder image uit db
+     /* $user = new User();
+      $user->deleteAvatar($_SESSION["userId"]);*/
+    }
+    else{
+     /* $error = 'sorry something went wrong please try again';*/
+
+    }
+    if (array_key_exists('deletePost', $_POST)) {
+    $filename = $_POST['deletePost'];
+    var_dump($filename);
+    var_dump($target_dir . $filename);
+    $file_dir = $target_dir . $filename;
+    unlink($file_dir);
+    //header("location: profileSettings.php");
+    }else{
+        echo 'nope';
+    }
+    
+  }
+
 
 ?>
 
@@ -75,72 +108,67 @@ $btn_state = ' ';
                 <h1>JUSTNICK</h1>
             </div>
 
-            <?php if($profile === 'otherProfile'):?>
-            <div class='col-3 d-flex justify-content-end'>
-            <button type="button" data-followerid="<?php echo htmlspecialchars($_GET['id'])?>" data-userid="<?php echo htmlspecialchars($_SESSION['userId'])?>" class="btn btn-danger"><?php echo htmlspecialchars($btn_state)?></button>
-            </div>
+            <?php if ($profile === 'otherProfile') : ?>
+                <div class='col-3 d-flex justify-content-end'>
+                    <button type="button" data-followerid="<?php echo htmlspecialchars($_GET['id']) ?>" data-userid="<?php echo htmlspecialchars($_SESSION['userId']) ?>" class="btn btn-danger"><?php echo htmlspecialchars($btn_state) ?></button>
+                </div>
             <?php endif; ?>
 
         </div>
 
 
-        <?php if($profile === 'myProfile'):?>
+        <?php if ($profile === 'myProfile') : ?>
 
-        <div class="row no-gutters profileButtons">
+            <div class="row no-gutters profileButtons">
 
-            <div class="col-5 d-flex flex-row ProfileButton justify-content-center">
-                <img src="./assets/icons/blackIcons/type=menu, state=Default.svg" alt="">
-                <a href="./profileSettings.php">settings</a>
+                <div class="col-5 d-flex flex-row ProfileButton justify-content-center">
+                    <img src="./assets/icons/blackIcons/type=menu, state=Default.svg" alt="">
+                    <a href="./profileSettings.php">settings</a>
+                </div>
+
+                <div class="col-5 d-flex flex-row ProfileButton justify-content-center">
+                    <img src="./assets/icons/blackIcons/type=person, state=Default.svg" alt="">
+                    <a href="./profileSettings.php">admin page</a>
+
+                </div>
+
             </div>
-
-            <div class="col-5 d-flex flex-row ProfileButton justify-content-center">
-                <img src="./assets/icons/blackIcons/type=person, state=Default.svg" alt="">
-                <a href="./profileSettings.php">admin page</a>
-
-            </div>
-
-        </div>
         <?php endif; ?>
 
 
         <hr>
 
         <div class="imageOverview">
-
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-10 d-flex flex-row">
-                    <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
-                    <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
+            <div class="col-1"></div>
+            <div class="col-5 d-flex flex-row">
+                <div class="imageContainer">
+                <img src="./uploads/random-dice.jpg" alt="">
+                    <form action="" method="POST">
+                    <input type="hidden" name="deletePost" value="random-dice.jpg">
+                        <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
+                    </form>
                 </div>
-                <div class="col-1"></div>
             </div>
+           
 
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-10 d-flex flex-row">
+            <div class="col-5 d-flex flex-row">
+                <div class="imageContainer">
+                    <form action="" method="POST">
                     <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
-                    <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
+                        <input type="submit" class="btn btn-danger btnDelete" value="delete">
+                    </form>
                 </div>
-                <div class="col-1"></div>
             </div>
+            <div class="col-1"></div>
 
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-10 d-flex flex-row">
-                    <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
-                    <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
-                </div>
-                <div class="col-1"></div>
-            </div>
+
+
 
         </div>
-
         <?php include('nav.inc.php') ?>
 
-    </div>
 
-    <script src="./javascript/profile.js"></script>
+        <script src="./javascript/profile.js"></script>
 
 </body>
 

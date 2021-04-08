@@ -42,8 +42,6 @@ $users = $users->getAllUsers();
 
 foreach($comments as $comment){
     $timePosted = get_timeago($comment['time'] );
-    //echo $timePosted;
-    var_dump($timePosted);
 }
 
 
