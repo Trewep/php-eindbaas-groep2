@@ -26,23 +26,11 @@ class Post implements iPost{
 
     public function get20lastFollowersPosts($id){
         
-       // wtf waren wij eigenlijk aant doen? followerId ophqlen door te kijken naar followerId die we meegeven? 
-       // dus gewoon de dingen die we erin stoppen ophalen?
-
-
-       /* $ids = join(', ', $id);
-        $conn = Db::getInstance();
-        $result = $conn->prepare("select followerId from followers where followerId IN ($ids)");
-        $result->execute();
-        $followers = $result->fetchAll();*/
-
-
-        // ALLES HIERBOVEN MAG DUS WEG
+     
        
-        // change array to mysql compatable version; (x,x,x)
         $ids = join(', ', $id);
         $conn = Db::getInstance();
-        // get all posts from followers in $ids array in descending order qnd limited by 20 most recent
+        // get all posts from followers in $ids array in descending order and limited by 20 most recent
         $result = $conn->prepare("select * from posts where userId in ($ids) order by id desc limit 20 ");
         $result->execute();
         // save posts 
