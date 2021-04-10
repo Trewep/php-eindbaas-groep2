@@ -24,7 +24,16 @@ class Post implements iPost{
 
 
     public function addPost(){}
-    public function deletePost(){}
+
+
+    public function deletePost($image){
+
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("delete from posts where image = :image");
+        $statement->bindValue(':image', $image );
+        $result = $statement->execute();
+       return $result;
+    }
 
     public function get20LastPosts(){
         $conn = Db::getInstance();

@@ -48,17 +48,20 @@ if (!empty($_POST)) {
     //$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 }
 
+
+$posts = new Post();
+$postsId = $posts->getPostById($_SESSION["userId"]);
+
 if (!empty($_POST['deletePostBtn'])) {
 
     if (array_key_exists('deletePost', $_POST)) {
-        //var_dump('yes');
-        //verwijder image uit db
-        /* $user = new User();
-      $user->deleteAvatar($_SESSION["userId"]);*/
+        var_dump($_POST['deletePost']);
+        $posts->deletePost($_POST['deletePost']);
+
     } else {
         /* $error = 'sorry something went wrong please try again';*/
     }
-    if (array_key_exists('deletePost', $_POST)) {
+   /* if (array_key_exists('deletePost', $_POST)) {
         $filename = $_POST['deletePost'];
         //var_dump($filename);
         //var_dump($target_dir . $filename);
@@ -67,11 +70,9 @@ if (!empty($_POST['deletePostBtn'])) {
         //header("location: profileSettings.php");
     } else {
         echo 'nope';
-    }
+    }*/
 }
 
-$posts = new Post();
-$posts = $posts->getPostById($_SESSION["userId"]);
 
 
 
@@ -145,13 +146,13 @@ $posts = $posts->getPostById($_SESSION["userId"]);
         <hr>
 
         <div class="imageOverview">
-            <?php foreach ($posts as $post) : ?>
+            <?php foreach ($postsId as $post) : ?>
                 <div class="row">
                     <div class="col-5 d-flex flex">
                         <div class="imageContainer">
                             <img src="./uploads/<?php echo htmlspecialchars($post['image'])?>" alt="">
                             <form action="" method="POST">
-                                <input type="hidden" name="deletePost" value="random-dice.jpg">
+                                <input type="hidden" name="deletePost" value="<?php echo htmlspecialchars($post['image'])?>">
                                 <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
                             </form>
                         </div>
