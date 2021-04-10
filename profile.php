@@ -57,6 +57,7 @@ if (!empty($_POST['deletePostBtn'])) {
     if (array_key_exists('deletePost', $_POST)) {
         var_dump($_POST['deletePost']);
         $posts->deletePost($_POST['deletePost']);
+        header("location: ./profile.php?id=".$_GET['id']);
 
     } else {
         /* $error = 'sorry something went wrong please try again';*/
