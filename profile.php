@@ -50,7 +50,7 @@ if (!empty($_POST)) {
 
 
 $posts = new Post();
-$postsId = $posts->getPostById($_SESSION["userId"]);
+$postsId = $posts->getPostById($_GET['id']);
 
 if (!empty($_POST['deletePostBtn'])) {
 
@@ -151,10 +151,13 @@ if (!empty($_POST['deletePostBtn'])) {
                     <div class="col-5 d-flex flex">
                         <div class="imageContainer">
                             <img src="./uploads/<?php echo htmlspecialchars($post['image'])?>" alt="">
+                            <?php if ($profile === 'myProfile') : ?>
                             <form action="" method="POST">
                                 <input type="hidden" name="deletePost" value="<?php echo htmlspecialchars($post['image'])?>">
                                 <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
                             </form>
+                            <?php endif; ?>
+
                         </div>
                     </div>
                 </div>
