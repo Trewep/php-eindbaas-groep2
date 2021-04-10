@@ -13,7 +13,16 @@ class Post implements iPost{
         return $result->fetchAll();
     }
 
-    public function getPostById(){}
+    public function getPostById($id){
+        $conn = Db::getInstance();
+        $result = $conn->prepare("select * from posts where userId = :id");
+        $result->bindValue(':id', $id);
+        $result->execute();
+        return $result->fetchAll();
+    }
+
+
+
     public function addPost(){}
     public function deletePost(){}
 

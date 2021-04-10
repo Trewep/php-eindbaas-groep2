@@ -103,16 +103,15 @@ html,body {
 
 .imageOverview{
     display: flex;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
 
 }
 
 
-
-
 .imageOverview img{
     padding: 0.4em;
-    width: 100%;
+    width: 15em;
 }
 
 
