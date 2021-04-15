@@ -7,6 +7,7 @@ include_once(__DIR__ . "/Db.php");
 class User implements iUser {
 
     private $avatar;
+    private $editEmail;
 
      /**
      * Get the value of avatar
@@ -27,12 +28,27 @@ class User implements iUser {
 
         return $this;
     }
+    
+         /**
+     * Get the value of email
+     */ 
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
+    /**
+     * Set the value of avatar
+     *
+     * @return  self
+     */ 
+    public function setEmail($editEmail)
+    {
+        $this->email = $editEmail;
 
-
-
-
-
+        return $this;
+    }
+    
     
     public function getAllUsers(){
         $conn = Db::getConnection();
@@ -74,6 +90,16 @@ class User implements iUser {
         $statement->bindValue(':defaultAvatar', 'defaultAvatar');
 
         $statement->execute();
+
+    }
+    
+        public function updateEmail($id, $editEmail){
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("update Users set email=:email where id = :id ");
+        $statement->bindValue(':email', $editEmail);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+
 
     }
 

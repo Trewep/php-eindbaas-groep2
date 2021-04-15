@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-$_SESSION["userId"] = 2;
+$id =$_SESSION["userId"] = 2;
 
 
 include_once(__DIR__ . "/classes/User.php");
@@ -12,8 +12,12 @@ include_once(__DIR__ . "/functions.php");
 
 $user = User::getUserById($_SESSION["userId"]);
 
+if(!empty($_POST ["editEmail"])){
+$editEmail = $_POST['editEmail'];
 
-
+$u = new User;
+$u->updateEmail($id, $editEmail);
+}
 ?>
 
 
@@ -98,6 +102,29 @@ $user = User::getUserById($_SESSION["userId"]);
             </div>
 
         </div>
+                <div class="profileSettingsEmail">
+
+            <div class="row">
+
+                <div class="col-1"></div>
+
+              
+
+                <div class="col-5 d-flex justify-content-end ">
+                    <form action="" method="post" >
+                        <label for="editEmail">Change e-mail</label>
+                        <input type="email" name="editEmail" id="email"placeholder="<?php echo htmlspecialchars($user['email']) ?>">
+                        <input type="submit" value="Update Email" name="submitEmail">
+                    </form>
+                </div>
+
+                <div class="col-1"></div>
+
+
+            </div>
+
+        </div>
+
 
         <?php include('./nav.inc.php') ?>
 
