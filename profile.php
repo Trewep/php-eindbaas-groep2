@@ -5,10 +5,14 @@ ini_set('display_errors', 1);
 
 session_start();
 $_SESSION["userId"];
+var_dump($_SESSION["userId"]);
+
 
 
 include_once(__DIR__ . "/classes/User.php");
 include_once(__DIR__ . "/classes/Follower.php");
+include_once(__DIR__ . "/classes/Post.php");
+
 
 $profile = 'myProfile';
 
@@ -39,37 +43,43 @@ foreach ($followers as $follower) {
 }
 
 
-if(!empty($_POST)){
+if (!empty($_POST)) {
 
     $target_dir = "uploads/";
     //$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
     //$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-  }
+}
 
-if(!empty($_POST['deletePostBtn'])){
+
+$posts = new Post();
+$postsId = $posts->getPostById($_GET['id']);
+var_dump($postsId);
+
+if (!empty($_POST['deletePostBtn'])) {
 
     if (array_key_exists('deletePost', $_POST)) {
-        //var_dump('yes');
-        //verwijder image uit db
-     /* $user = new User();
-      $user->deleteAvatar($_SESSION["userId"]);*/
-    }
-    else{
-     /* $error = 'sorry something went wrong please try again';*/
+        var_dump($_POST['deletePost']);
+        $posts->deletePost($_POST['deletePost']);
+        header("location: ./profile.php?id=".$_GET['id']);
 
+    } else {
+        /* $error = 'sorry something went wrong please try again';*/
     }
-    if (array_key_exists('deletePost', $_POST)) {
-    $filename = $_POST['deletePost'];
-    var_dump($filename);
-    var_dump($target_dir . $filename);
-    $file_dir = $target_dir . $filename;
-    unlink($file_dir);
-    //header("location: profileSettings.php");
-    }else{
-        echo 'nope';
+   if (array_key_exists('deletePost', $_POST)) {
+        $filename = $_POST['deletePost'];
+        //var_dump($filename);
+        //var_dump($target_dir . $filename);
+        $file_dir = $target_dir . $filename;
+        unlink($file_dir);
+        header("location: ./profile.php?id=".$_GET['id']);
+    } else {
     }
-    
-  }
+}
+
+
+
+
+
 
 
 ?>
@@ -81,7 +91,6 @@ if(!empty($_POST['deletePostBtn'])){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/svg"  href="assets/logo/logoIcon/iconDarkRed.svg">
     <title>Own profile</title>
     <!--bootstrap css-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
@@ -95,7 +104,7 @@ if(!empty($_POST['deletePostBtn'])){
 <body>
     <div class="container">
 
-    <?php include("./header.inc.php") ?>
+        <?php include("header.inc.php") ?>
 
         <div class="row no-gutters profileOptions">
 
@@ -106,7 +115,7 @@ if(!empty($_POST['deletePostBtn'])){
             <?php endif; ?>
 
             <div class="col-3 d-flex justify-content-start">
-            <h1><?php echo htmlspecialchars($user['username']) ?></h1>
+                <h1><?php echo htmlspecialchars($user['username']) ?></h1>
             </div>
 
             <?php if ($profile === 'otherProfile') : ?>
@@ -138,10 +147,11 @@ if(!empty($_POST['deletePostBtn'])){
 
 
         <hr>
-
+        
         <div class="imageOverview">
             <?php foreach ($postsId as $post) : ?>
                 <?php if($post['userId'] == $_SESSION["userId"]):?>
+                                    <?php var_dump($post['userId'])?>
                 <div class="row">
                     <div class="col-5 d-flex flex">
                         <div class="imageContainer">
@@ -161,7 +171,8 @@ if(!empty($_POST['deletePostBtn'])){
             <?php endforeach; ?>
 
         </div>
-        <?php include('./nav.inc.php') ?>
+
+        <?php include('nav.inc.php') ?>
 
 
         <script src="./javascript/profile.js"></script>
