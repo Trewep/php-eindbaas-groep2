@@ -106,7 +106,7 @@ if(!empty($_POST['deletePostBtn'])){
             <?php endif; ?>
 
             <div class="col-3 d-flex justify-content-start">
-                <h1>JUSTNICK</h1>
+            <h1><?php echo htmlspecialchars($user['username']) ?></h1>
             </div>
 
             <?php if ($profile === 'otherProfile') : ?>
@@ -140,30 +140,25 @@ if(!empty($_POST['deletePostBtn'])){
         <hr>
 
         <div class="imageOverview">
-            <div class="col-1"></div>
-            <div class="col-5 d-flex flex-row">
-                <div class="imageContainer">
-                <img src="./uploads/random-dice.jpg" alt="">
-                    <form action="" method="POST">
-                    <input type="hidden" name="deletePost" value="random-dice.jpg">
-                        <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
-                    </form>
+            <?php foreach ($postsId as $post) : ?>
+                <?php if($post['userId'] == $_SESSION["userId"]):?>
+                <div class="row">
+                    <div class="col-5 d-flex flex">
+                        <div class="imageContainer">
+                            <img src="./uploads/<?php echo htmlspecialchars($post['image'])?>" alt="">
+                            <?php if ($profile === 'myProfile') : ?>
+                            <form action="" method="POST">
+                                <input type="hidden" name="deletePost" value="<?php echo htmlspecialchars($post['image'])?>">
+                                <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
+                            </form>
+                            <?php endif; ?>
+                            <?php endif; ?>
+
+
+                        </div>
+                    </div>
                 </div>
-            </div>
-           
-
-            <div class="col-5 d-flex flex-row">
-                <div class="imageContainer">
-                    <form action="" method="POST">
-                    <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
-                        <input type="submit" class="btn btn-danger btnDelete" value="delete">
-                    </form>
-                </div>
-            </div>
-            <div class="col-1"></div>
-
-
-
+            <?php endforeach; ?>
 
         </div>
         <?php include('./nav.inc.php') ?>
