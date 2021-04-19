@@ -122,7 +122,7 @@ public function register($username, $email, $firstName, $lastName, $password){
 
     }
 
-public function getUserByUsername($username, $password){
+    public function getUserByUsername($username, $password){
         $conn = Db::getConnection();
         $stm = $conn->prepare("select * from Users where username = :username");
         $stm->bindValue(':username', $username);
@@ -142,7 +142,12 @@ public function getUserByUsername($username, $password){
         }
         $hash = $user["password"];
         if (password_verify($password,$hash)){
+            $userId = $user['id'];
+            $_SESSION["username"] = $username;
+            $_SESSION["userId"] = $userId;
             header("Location: ./index.php");
+            
+            //var_dump($user);
             return true;
         }else{
            throw new Exception ("the password is wrong");
@@ -150,5 +155,6 @@ public function getUserByUsername($username, $password){
         }
         
     }
+   
    
 }

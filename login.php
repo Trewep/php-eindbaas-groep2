@@ -7,11 +7,13 @@ if(!empty($_POST ["username"])&&!empty($_POST ["password"])){
     
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $userId = $user['id'];
+    
     try{
         User::getUserByUsername($username, $password);
-        $_SESSION["username"] = $username;
-        $_SESSION["userId"] = $userId;
-        //user id toevoegen?? vragen aan Nick
+        //$_SESSION["username"] = $username;
+        //$_SESSION["id"] = $userId;
+        //var_dump($user);
     } catch(\Throwable $th){
          $error= $th->getMessage();
     }
