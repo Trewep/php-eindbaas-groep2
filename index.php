@@ -73,32 +73,70 @@ foreach($comments as $comment){
     <?php include("./header.inc.php") ?>
 
     <?php foreach ($posts as $post) : ?>
-        <article>
-            <!-- hier moeten echte gegevns nog gelust worden door persoon die de feature om post te maken heeft-->
-            <img style="width: 8%;" src="./assets/images/default-profile-picture.jpg" alt="">
-            <h1> <a href="profile.php?id=<?php echo htmlspecialchars($_SESSION["userId"]) ?>">Nickname</a></h1>
-            <p> post id = <?php echo htmlspecialchars($post['id']) ?> </p>
-            <p>hier komt description</p>
-            <p>hier komen tags</p>
-            <img style="width: 25%;" src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
-            <div>hier komen iconen enz</div>
-        </article>
-        <?php foreach($comments as $comment):?>
-        <?php if($comment['postId'] === $post['id']):?>
-        <?php foreach($users as $user):?>
-        <?php if($user['id'] === $comment['userId']):?>
+
+
+<article>
+    <!-- hier moeten echte gegevns nog gelust worden door persoon die de feature om post te maken heeft-->
+    <div class="feedProfileInfo">
+        <?php foreach ($users as $user) : ?>
+            <?php if ($post['userId'] === $user['id']) : ?>
+                <?php if ($user['profileImage'] === 'defaultAvatar') : ?>
+                    <div><img class="feedProfile" src="./assets/images/default-profile-picture.jpg" alt=""></div>
+                <?php else : ?>
+                    <div><img class="feedProfile" src="./uploads/<?php echo htmlspecialchars($user['profileImage']) ?>" alt=""></div>
+                <?php endif; ?>
+                <div>
+                    <h1> <a class="feedLink" href="profile.php?id=<?php echo htmlspecialchars($post["userId"]) ?>"><?php echo htmlspecialchars($user['username']) ?> </a></h1>
+                    <p>location</p>
+                </div>
+
+                <p>...</p>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+
+    <div>
+        <p>hier komt description</p>
+        <p>hier komen tags</p>
+    </div>
+
+    <img class="feedImage" src="./assets/images/<?php echo htmlspecialchars($post['image']) ?>" alt="">
+
+    <div class="feedInteractions">
         <div>
-        <p><?php echo htmlspecialchars('@'.$user['username'])?></p>
-        <p><?php echo htmlspecialchars($comment['comment'])?></p>
-        <p><?php echo get_timeago($comment['time'])?></p>
+            <img src="./assets/icons/blackIcons/type=heart, state=Default.svg" alt="">
+            <img src="./assets/icons/blackIcons/type=message, state=Default.svg" alt="">
         </div>
-        <?php endif;?>
-        <?php endforeach;?>
-        <?php endif;?>
-            <?php endforeach;?>
-            <hr>
+
+        <div>
+            <p>x likes</p>
+        </div>
+
+        <div>
+            <p>x days ago</p>
+        </div>
+
+    </div>
+
+    <?php foreach ($comments as $comment) : ?>
+        <?php if ($comment['postId'] === $post['id']) : ?>
+            <?php foreach ($users as $user) : ?>
+                <?php if ($user['id'] === $comment['userId']) : ?>
+                    <div>
+                        <p><?php echo htmlspecialchars('@' . $user['username']) ?></p>
+                        <p><?php echo htmlspecialchars($comment['comment']) ?></p>
+                        <p><?php echo get_timeago($comment['time']) ?></p>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
     <?php endforeach; ?>
-   
+    <hr>
+</article>
+
+<?php endforeach; ?>
+
+
 
 
     <?php include('./nav.inc.php') ?>

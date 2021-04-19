@@ -167,6 +167,42 @@ width: 50%;
 }
 
 
+/* index*/
+
+article{
+    width: 22em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    padding: 1em;
+}
+
+.feedProfile{
+    width: 3em;
+}
+
+.feedLink{
+    text-decoration: none;
+    color: black;
+}
+
+.feedImage{
+    width: 20em;
+}
+
+.feedProfileInfo{
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+}
+
+.feedInteractions{
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+}
+
+
 /*Login Screen*/
 .loginPage{
     background-color: var(--bs-dark);
