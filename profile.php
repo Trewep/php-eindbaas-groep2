@@ -62,16 +62,15 @@ if (!empty($_POST['deletePostBtn'])) {
     } else {
         /* $error = 'sorry something went wrong please try again';*/
     }
-   /* if (array_key_exists('deletePost', $_POST)) {
+   if (array_key_exists('deletePost', $_POST)) {
         $filename = $_POST['deletePost'];
         //var_dump($filename);
         //var_dump($target_dir . $filename);
         $file_dir = $target_dir . $filename;
         unlink($file_dir);
-        //header("location: profileSettings.php");
+        header("location: ./profile.php?id=".$_GET['id']);
     } else {
-        echo 'nope';
-    }*/
+    }
 }
 
 
