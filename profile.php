@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-$_SESSION["userId"] = 2;
+$_SESSION["userId"];
 
 
 include_once(__DIR__ . "/classes/User.php");
@@ -112,7 +112,7 @@ if (!empty($_POST['deletePostBtn'])) {
             <?php endif; ?>
 
             <div class="col-3 d-flex justify-content-start">
-                <h1>JUSTNICK</h1>
+                <h1><?php echo htmlspecialchars($user['username']) ?></h1>
             </div>
 
             <?php if ($profile === 'otherProfile') : ?>
@@ -144,9 +144,10 @@ if (!empty($_POST['deletePostBtn'])) {
 
 
         <hr>
-
+        
         <div class="imageOverview">
             <?php foreach ($postsId as $post) : ?>
+                <?php if($post['userId'] == $_SESSION["userId"]):?>
                 <div class="row">
                     <div class="col-5 d-flex flex">
                         <div class="imageContainer">
@@ -157,6 +158,8 @@ if (!empty($_POST['deletePostBtn'])) {
                                 <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
                             </form>
                             <?php endif; ?>
+                            <?php endif; ?>
+
 
                         </div>
                     </div>
