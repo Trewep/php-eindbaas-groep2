@@ -13,10 +13,24 @@ class Post implements iPost{
         return $result->fetchAll();
     }
 
-    public function getPostById(){}
+    public function getPostById($id){
+        $conn = Db::getConnection();
+        $result = $conn->prepare("select * from Posts where userId = :id");
+        $result->bindValue(':id', $id);
+        $result->execute();
+        return $result->fetchAll();
+        var_dump($result);
+    }
+    
     public function addPost(){}
-    public function deletePost(){}
+    public function deletePost($image){
 
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("delete from Posts where image = :image");
+        $statement->bindValue(':image', $image );
+        $result = $statement->execute();
+       return $result;
+    }
     public function get20LastPosts(){
         $conn = Db::getConnection();
         $result = $conn->query("select * from Posts order by id desc limit 20");

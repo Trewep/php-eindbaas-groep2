@@ -1,9 +1,9 @@
 <?php
 //(profile)Image upload
-
-if(!empty($_POST)){
-
   $target_dir = "uploads/";
+
+if(!empty($_POST["submit"])){
+
   $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
   $uploadOk = 1;
   $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -50,7 +50,6 @@ if(!empty($_POST["submit"])) {
     $user = new User();
     $user->setAvatar($avatar);
     $user->uploadAvatar($_SESSION["userId"]);
-    header("location: profileSettings.php");
 
   } else {
   }
@@ -75,7 +74,6 @@ if(!empty($_POST["submit"])) {
     var_dump($target_dir . $filename);
     $file_dir = $target_dir . $filename;
     unlink($file_dir);
-    header("location: profileSettings.php");
     }
     
   }

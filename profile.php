@@ -4,11 +4,20 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-$_SESSION["userId"] = 2;
+
+ if (!isset($_SESSION['userId'])){
+     header("location: login.php");
+ };
+
+$_SESSION["userId"];
+//var_dump($_SESSION["userId"]);
+
 
 
 include_once(__DIR__ . "/classes/User.php");
 include_once(__DIR__ . "/classes/Follower.php");
+include_once(__DIR__ . "/classes/Post.php");
+
 
 $profile = 'myProfile';
 
@@ -39,37 +48,43 @@ foreach ($followers as $follower) {
 }
 
 
-if(!empty($_POST)){
+if (!empty($_POST)) {
 
     $target_dir = "uploads/";
     //$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
     //$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-  }
+}
 
-if(!empty($_POST['deletePostBtn'])){
+
+$posts = new Post();
+$postsId = $posts->getPostById($_GET['id']);
+//var_dump($postsId);
+
+if (!empty($_POST['deletePostBtn'])) {
 
     if (array_key_exists('deletePost', $_POST)) {
-        //var_dump('yes');
-        //verwijder image uit db
-     /* $user = new User();
-      $user->deleteAvatar($_SESSION["userId"]);*/
-    }
-    else{
-     /* $error = 'sorry something went wrong please try again';*/
+        //var_dump($_POST['deletePost']);
+        $posts->deletePost($_POST['deletePost']);
+        header("location: ./profile.php?id=".$_GET['id']);
 
+    } else {
+        /* $error = 'sorry something went wrong please try again';*/
     }
-    if (array_key_exists('deletePost', $_POST)) {
-    $filename = $_POST['deletePost'];
-    var_dump($filename);
-    var_dump($target_dir . $filename);
-    $file_dir = $target_dir . $filename;
-    unlink($file_dir);
-    //header("location: profileSettings.php");
-    }else{
-        echo 'nope';
+   if (array_key_exists('deletePost', $_POST)) {
+        $filename = $_POST['deletePost'];
+        //var_dump($filename);
+        //var_dump($target_dir . $filename);
+        $file_dir = $target_dir . $filename;
+        unlink($file_dir);
+        header("location: ./profile.php?id=".$_GET['id']);
+    } else {
     }
-    
-  }
+}
+
+
+
+
+
 
 
 ?>
@@ -94,7 +109,7 @@ if(!empty($_POST['deletePostBtn'])){
 <body>
     <div class="container">
 
-    <?php include("./header.inc.php") ?>
+        <?php include("header.inc.php") ?>
 
         <div class="row no-gutters profileOptions">
 
@@ -105,7 +120,7 @@ if(!empty($_POST['deletePostBtn'])){
             <?php endif; ?>
 
             <div class="col-3 d-flex justify-content-start">
-                <h1>JUSTNICK</h1>
+                <h1><?php echo htmlspecialchars($user['username']) ?></h1>
             </div>
 
             <?php if ($profile === 'otherProfile') : ?>
@@ -137,35 +152,32 @@ if(!empty($_POST['deletePostBtn'])){
 
 
         <hr>
-
+        
         <div class="imageOverview">
-            <div class="col-1"></div>
-            <div class="col-5 d-flex flex-row">
-                <div class="imageContainer">
-                <img src="./uploads/random-dice.jpg" alt="">
-                    <form action="" method="POST">
-                    <input type="hidden" name="deletePost" value="random-dice.jpg">
-                        <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
-                    </form>
+            <?php foreach ($postsId as $post) : ?>
+                <?php if($post['userId'] == $_SESSION["userId"]):?>
+                                    <?php //var_dump($post['userId'])?>
+                <div class="row">
+                    <div class="col-5 d-flex flex">
+                        <div class="imageContainer">
+                            <img src="./uploads/<?php echo htmlspecialchars($post['image'])?>" alt="">
+                            <?php if ($profile === 'myProfile') : ?>
+                            <form action="" method="POST">
+                                <input type="hidden" name="deletePost" value="<?php echo htmlspecialchars($post['image'])?>">
+                                <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
+                            </form>
+                            <?php endif; ?>
+                            <?php endif; ?>
+
+
+                        </div>
+                    </div>
                 </div>
-            </div>
-           
-
-            <div class="col-5 d-flex flex-row">
-                <div class="imageContainer">
-                    <form action="" method="POST">
-                    <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg" alt="">
-                        <input type="submit" class="btn btn-danger btnDelete" value="delete">
-                    </form>
-                </div>
-            </div>
-            <div class="col-1"></div>
-
-
-
+            <?php endforeach; ?>
 
         </div>
-        <?php include('./nav.inc.php') ?>
+
+        <?php include('nav.inc.php') ?>
 
 
         <script src="./javascript/profile.js"></script>
