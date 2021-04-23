@@ -110,7 +110,7 @@ foreach($comments as $comment){
         <p>hier komen tags</p>
     </div>
 
-    <img class="feedImage" src="./assets/images/<?php echo htmlspecialchars($post['image']) ?>" alt="">
+    <img class="feedImage" src="./postImages/<?php echo htmlspecialchars($post['image']) ?>" alt="">
 
     <div class="feedInteractions">
         <div>
