@@ -1,13 +1,9 @@
-let clicked = 1;
+
 document.querySelector('.btn').addEventListener("click", function () {
     let btn = document.querySelector('.btn');
     let btn_value = btn.innerHTML;
     let userId = this.dataset.userid;
     let followerId = this.dataset.followerid;
-    
-
-    /*console.log(btn_value);
-    console.log(profileId);*/
 
 
 
@@ -28,29 +24,27 @@ document.querySelector('.btn').addEventListener("click", function () {
         .then(response => response.json())
         .then(result => {
 
-           /* let newComment = document.createElement('li');
-            newComment.innerHTML = result.body;
-            document.querySelector('.post__comments__list')
-                .appendChild(newComment);*/
-                console.log("succes", result);
+          
 
         })
         .catch(error => {
            console.error('error', error);
 
         });
+        
+        
+      
 
-
-        if(clicked === 1){
+        if(btn_value === 'follow'){
             btn.innerHTML = 'Unfollow'
             console.log('Unfollow');
-            clicked = 0;
         }else{
-            btn.innerHTML = 'Follow'
+           btn.innerHTML = 'follow'
             console.log('follow');
-            clicked = 1;
         }
 
 console.log(clicked);
 
 })
+
+console.log(clicked);

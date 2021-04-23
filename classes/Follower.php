@@ -1,7 +1,7 @@
 <?php
 
 include_once(__DIR__ . "/../interfaces/iFollower.php");
-include_once(__DIR__ . "/Db.php");
+include_once(__DIR__ . "/Dbnick.php");
 
 class Follower implements iFollower {
 
@@ -64,7 +64,7 @@ class Follower implements iFollower {
 
 
         $conn = Db::getConnection();
-    $statement = $conn->prepare("insert into Followers (userId, followerId) values (:userId, :followerId)");
+    $statement = $conn->prepare("insert into followers (userId, followerId) values (:userId, :followerId)");
     $statement->bindValue(':userId', $userId );
     $statement->bindValue(':followerId',  $followerId);
     $result = $statement->execute();
@@ -78,7 +78,7 @@ class Follower implements iFollower {
         $followerId = $this->getFollowerId();
 
         $conn = Db::getConnection();
-        $statement = $conn->prepare("delete from Followers where userId = :userId and followerId = :followerId");
+        $statement = $conn->prepare("delete from followers where userId = :userId and followerId = :followerId");
         $statement->bindValue(':userId', $userId );
         $statement->bindValue(':followerId',  $followerId);
         $result = $statement->execute();
@@ -89,9 +89,24 @@ class Follower implements iFollower {
 
 
 
-public function getFollowerByUserId($id){
+public function getFollowerByUserId(){
+        $userId = $this->getUserId();
+        $followerId = $this->getFollowerId();
+        
     $conn = Db::getConnection();
-    $result = $conn->prepare("select * from Followers where userId = :id");
+     $statement = $conn->prepare("select * from followers where userId = :userId and followerId = :followerId");
+         $statement->bindValue(':userId', $userId );
+         $statement->bindValue(':followerId',  $followerId);
+         $statement->execute();
+         $test = $statement->fetch();
+                 var_dump($test);
+        return $test;
+
+}
+
+public function getFollowerByUserId2($id){
+    $conn = Db::getConnection();
+    $result = $conn->prepare("select * from followers where userId = :id");
     $result->bindValue(':id', $id);
     $result->execute();
     return $result->fetchAll();
@@ -99,9 +114,6 @@ public function getFollowerByUserId($id){
 
 
 }
-
-
-
 
 
 }
