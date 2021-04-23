@@ -27,3 +27,95 @@
     --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.test {
+    width: 100%;
+    height: 50px;
+    background-color: var(--bs-gray);
+}
+
+#uploadForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    margin-top: 40px;
+}
+
+#uploadPhoto {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 300px;
+    background-color: var(--bs-gray);
+    margin-top: 20px;
+}
+
+#uploadIcon {
+    width: 30px;
+}
+
+#uploadFilter {
+    margin-top: 20px;
+}
+
+.uploadText {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#uploadSubmit {
+    margin-top: 20px;
+}
+
+.error {
+    color: var(--bs-primary);
+    font-weight: bold;
+}
+
+#posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+    width: 80%;
+    border-bottom: 1px solid var(--bs-gray);
+}
+
+#postImage {
+    width: 100%;
+}
+
+#postDescription {
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+#postLocation {
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0;
+}
+
+#postTags {
+    font-weight: lighter;
+    font-size: 14px;
+    color: var(--bs-gray);
+    margin: 0;
+}
