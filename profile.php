@@ -57,7 +57,7 @@ if($follower['followerId'] === $_GET['id'] ){
 
 if (!empty($_POST)) {
 
-    $target_dir = "uploads/";
+    $target_dir = "postImages/";
     //$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
     //$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 }
@@ -167,7 +167,7 @@ if (!empty($_POST['deletePostBtn'])) {
                 <div class="row">
                     <div class="col-5 d-flex flex">
                         <div class="imageContainer">
-                            <img src="./uploads/<?php echo htmlspecialchars($post['image'])?>" alt="">
+                            <img src="./postImages/<?php echo htmlspecialchars($post['image'])?>" alt="">
                             <?php if ($profile === 'myProfile') : ?>
                             <form action="" method="POST">
                                 <input type="hidden" name="deletePost" value="<?php echo htmlspecialchars($post['image'])?>">
