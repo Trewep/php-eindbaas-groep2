@@ -7,7 +7,7 @@ if(!empty($_POST)){
     $f->setUserId($_POST['userId']);
     $f->setFollowerId($_POST['followerId']);
 
-    if($_POST['btn_value'] === 'Follow'){
+    if($_POST['btn_value'] === 'follow'){
         $f->addFollower();
     }else{
         $f->deleteFollower();

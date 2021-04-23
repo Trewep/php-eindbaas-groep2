@@ -3,7 +3,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-$id =$_SESSION["userId"] = 2;
+
+ if (!isset($_SESSION['username'])){
+     header("location: login.php");
+ };
+
+$id =$_SESSION["userId"];
 
 
 include_once(__DIR__ . "/classes/User.php");
