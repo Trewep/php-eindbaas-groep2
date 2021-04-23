@@ -1,24 +1,19 @@
 <?php
 
+//add user class 
 include_once(__DIR__ . "/classes/User.php");
 
-session_start();
-
+//if form is submitted
 if (!empty($_POST)) {
-
-    //formulier verzonden
     $username = $_POST['username'];
     $email = $_POST['email'];
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
     $password = $_POST['password'];
-
-    $_SESSION["username"] = $username;
-    $_SESSION["userId"] = $userId;
-
+    
     User::register($username, $email, $firstName, $lastName, $password);
-
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +33,7 @@ if (!empty($_POST)) {
 
 <body class="loginPage">
     <header>
-        <a href="index.php"><img src="assets/logo/logoFull/fullDarkRed.svg" alt="Logo Debuff" class="loginLogo"></a>
+        <img src="assets/logo/logoFull/fullDarkRed.svg" alt="Logo Debuff" class="loginLogo">
     </header>
     <section class="loginScreen">
         <h1 class="loginHeading">REGISTER</h1>
@@ -48,19 +43,19 @@ if (!empty($_POST)) {
                 <input type="text" class="loginInput" id="username" name="username" placeholder="debuffer">
                 
                 <label for="email">e-mail</label>
-                <input type="text" class="loginInput" id="email" name="email" placeholder="hello@debuff.com">
+                <input type="email" class="loginInput" id="email" name="email" placeholder="hello@debuff.com">
                 
                 <label for="firstName">first name</label>
-                <input type="text" class="loginInput" id="firstName" name="firstName" placeholder="Jean-Claude">
+                <input type="text" class="loginInput" id="firstName" name="firstName" placeholder="John">
                 
                 <label for="lastName">last name</label>
-                <input type="text" class="loginInput" id="lastName" name="lastName" placeholder="Balzac">
+                <input type="text" class="loginInput" id="lastName" name="lastName" placeholder="Doe">
 
                 <label for="password">password</label>
                 <input type="password" name="password" id="password" class="loginInput" placeholder="********">
                 <!--nog toevoegen forgot password?-->
                 <label for="login"></label>
-                <input type="submit" value="Register" name="login" id="login" class="loginBtn">
+                <input type="submit" value="Register" name="login" id="login" class="btn1">
             </form>
         </div>
 
@@ -72,6 +67,7 @@ if (!empty($_POST)) {
                 </div>
             </div>
         <?php endif; ?>
+        
             <div class="loginToRegister">
                 <p class="AlreadyAccount">Don't have an account yet?</p>
                 <button class="btnAlreadyAccount"> <a href="register.php">Login page</a></button>
