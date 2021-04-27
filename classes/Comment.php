@@ -19,5 +19,14 @@ class Comment implements iComment{
     public function getCommentById(){}
     public function addComment(){}
     public function deleteComment(){}
+
+    public  function getCommentStats($id){
+        $conn = Db::getConnection();
+        $result = $conn->prepare("select COUNT(*) from comments where userId = :id");
+        $result->bindValue(':id', $id);
+        $result->execute();
+         $commentStats = $result->fetch();
+         return  $commentStats;
+    }
     
 }

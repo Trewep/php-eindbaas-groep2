@@ -11,13 +11,16 @@ session_start();
  };
 
 $_SESSION["userId"];
-//var_dump($_SESSION["userId"]);
 
 
 
 include_once(__DIR__ . "/classes/User.php");
 include_once(__DIR__ . "/classes/Follower.php");
 include_once(__DIR__ . "/classes/Post.php");
+include_once(__DIR__ . "/classes/Comment.php");
+include_once(__DIR__ . "/classes/Like.php");
+
+
 
 $profile = 'myProfile';
 
@@ -33,6 +36,31 @@ if (!empty($_GET['id'])) {
 } else {
 }
 
+$commentStats = new Comment;
+$commentStat = $commentStats->getCommentStats($_GET['id']);
+
+var_dump($commentStat["COUNT(*)"]);
+
+$followerStats = new Follower;
+$followerStat = $followerStats->getFollowerStats($_GET['id']);
+
+var_dump($followerStat["COUNT(*)"]);
+
+$likesStats = new Like;
+$likesStat = $likesStats->getlikeStats($_GET['id']);
+
+var_dump($likesStat["COUNT(*)"]);
+
+$dateStats = new User;
+$dateStat = $dateStats->getdateStats($_GET['id']);
+
+var_dump($dateStat['created']);
+
+
+
+
+
+
 
 
 
@@ -40,7 +68,6 @@ $follower = new Follower();
 $follower->setFollowerId($_GET['id']);
 $follower->setUserId($_SESSION["userId"]);
 $follower = $follower->getFollowerByUserId();
-var_dump($follower);
 
 if($follower != null){
 if($follower['followerId'] === $_GET['id'] ){
@@ -159,6 +186,14 @@ if (!empty($_POST['deletePostBtn'])) {
 
 
         <hr>
+
+            <div class="profileStats">
+            <p>COMMENTS GIVEN: <?php echo htmlspecialchars($commentStat["COUNT(*)"])?></p>
+            <p>PEOPLE FOLLOWED: <?php echo htmlspecialchars($followerStat["COUNT(*)"])?></p>
+            <p>LIKES GIVEN: <?php echo htmlspecialchars($likesStat["COUNT(*)"])?></p>
+            <p>ACCOUNT CREATED: <?php echo htmlspecialchars($dateStat['created'])?></p>
+            </div>
+
         
         <div class="imageOverview">
             <?php foreach ($postsId as $post) : ?>

@@ -70,7 +70,7 @@ class User implements iUser {
     }
     
     
-    public function register($username, $email, $firstName, $lastName, $password){
+    public function register($username, $email, $firstName, $lastName, $password, $date){
         session_start();
         $_SESSION["username"] = $username;
         $_SESSION["userId"] = $userId;
@@ -84,12 +84,13 @@ class User implements iUser {
         $conn = Db::getConnection();
         
         //insert new user in DB
-        $stm = $conn->prepare("INSERT INTO Users (firstname, lastname, username, email, password) VALUES (:firstName, :lastName, :username, :email, :password)");
+        $stm = $conn->prepare("INSERT INTO Users (firstname, lastname, username, email, password, date) VALUES (:firstName, :lastName, :username, :email, :password , :date)");
         $stm->bindValue(':username', $username);
         $stm->bindValue(':email', $email);
         $stm->bindValue(':firstName', $firstName);
         $stm->bindValue(':lastName', $lastName);
         $stm->bindValue(':password', $password);
+        $stm->bindValue(':date', $date);
         $stm->execute();
 
         //if form filled in correctly
@@ -171,6 +172,15 @@ public function getUserByUsername($username, $password){
             return false;
         }
         
+    }
+
+    public  function getdateStats($id){
+        $conn = Db::getConnection();
+        $result = $conn->prepare("select created from users where id = :id");
+        $result->bindValue(':id', $id);
+        $result->execute();
+         $stats = $result->fetch();
+         return  $stats;
     }
    
 }

@@ -10,8 +10,9 @@ if (!empty($_POST)) {
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
     $password = $_POST['password'];
+    $date = date("Y/m/d");
     
-    User::register($username, $email, $firstName, $lastName, $password);
+    User::register($username, $email, $firstName, $lastName, $password,$date);
 }
 
 ?>

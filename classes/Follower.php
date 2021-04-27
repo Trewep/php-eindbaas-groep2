@@ -99,7 +99,6 @@ public function getFollowerByUserId(){
          $statement->bindValue(':followerId',  $followerId);
          $statement->execute();
          $test = $statement->fetch();
-                 var_dump($test);
         return $test;
 
 }
@@ -113,6 +112,15 @@ public function getFollowerByUserId2($id){
 
 
 
+}
+
+public  function getFollowerStats($id){
+    $conn = Db::getConnection();
+    $result = $conn->prepare("select COUNT(*) from followers where userId = :id");
+    $result->bindValue(':id', $id);
+    $result->execute();
+     $commentStats = $result->fetch();
+     return  $commentStats;
 }
 
 
