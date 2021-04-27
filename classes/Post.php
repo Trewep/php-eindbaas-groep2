@@ -52,5 +52,11 @@ class Post implements iPost{
         return $followersPosts;
 
     }
+
+    public function getFilter(){
+        $conn = Db::getConnection();
+        $result = $conn->query("select * from posts");
+        return $result->fetchAll();
+    }
     
 }

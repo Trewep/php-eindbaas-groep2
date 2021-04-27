@@ -84,7 +84,7 @@ class User implements iUser {
         $conn = Db::getConnection();
         
         //insert new user in DB
-        $stm = $conn->prepare("INSERT INTO Users (firstname, lastname, username, email, password, date) VALUES (:firstName, :lastName, :username, :email, :password , :date)");
+        $stm = $conn->prepare("INSERT INTO users (firstname, lastname, username, email, password, date) VALUES (:firstName, :lastName, :username, :email, :password , :date)");
         $stm->bindValue(':username', $username);
         $stm->bindValue(':email', $email);
         $stm->bindValue(':firstName', $firstName);

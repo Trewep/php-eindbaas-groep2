@@ -13,7 +13,7 @@ if(isset($_POST["submit"])) {
     //het type bestand uitlezen zodat we later non-images kunnen tegenhouden
     $imageFileType = strtolower(pathinfo($target,PATHINFO_EXTENSION));
     //connectie naar db
-    $conn = new PDO('mysql:host=localhost;dbname=debuff', 'root', 'root');
+    $conn = new PDO('mysql:host=127.0.0.1;dbname=bbchaacht_bethomasmore_php', 'root', 'root');
     //alle data ophalen uit het ingestuurde formulier
     $filter = $_POST['filters'];
 
@@ -40,16 +40,21 @@ if(isset($_POST["submit"])) {
     $location = $_POST['location'];
     $tags = $_POST['tags'];
     $postTime = time();
+    $filter = $_POST['filters'];
+    var_dump($filter);
 
     //opgehaalde data opslagen in databank
-    $statement = $conn->prepare("INSERT INTO posts (image, imageFileType, description, location, tags, postTime) VALUES (:image, :imageFileType, :description, :location, :tags, :postTime)");
+    $statement = $conn->prepare("INSERT INTO posts (image, imageFileType, description, location, tags, postTime, filter) VALUES (:image, :imageFileType, :description, :location, :tags, :postTime, :filter)");
     $statement->bindValue(":image", $image);
     $statement->bindValue(":imageFileType", $imageFileType);
     $statement->bindValue(":description", $description);
     $statement->bindValue(":location", $location);
     $statement->bindValue(":tags", $tags);
     $statement->bindValue(":postTime", $postTime);
+    $statement->bindValue(":filter", $filter);
     $statement->execute();
+    $result = $statement->execute();
+    var_dump($result);
     //geuploade afbeelding in de images folder zetten
     if(move_uploaded_file($_FILES['uploadFile']['tmp_name'], $target)) {
         $message = "Image uploaded succesfully. The image was a " . $imageFileType;
@@ -58,7 +63,7 @@ if(isset($_POST["submit"])) {
     }
 }
 
-$filters = ['1977','Aden','Brannan','Brooklyn','Clarendon','Earlybird','Gingham','Hudson','Inkwell','Kelvin','Lark','Lo-Fi','Maven','Mayfair','Moon',
+$filters = ['#nofilter','1977','Aden','Brannan','Brooklyn','Clarendon','Earlybird','Gingham','Hudson','Inkwell','Kelvin','Lark','Lo-Fi','Maven','Mayfair','Moon',
 'Nashville','Perpetua','Reyes','Rise','Slumber','Stinson','Toaster','Valencia','Walden','Willow','X-pro II'];
 
 ?>

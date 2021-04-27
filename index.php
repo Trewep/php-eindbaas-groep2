@@ -75,6 +75,8 @@ foreach($comments as $comment){
 
     <!--overriding DEBUFF css-->
     <link rel="stylesheet" href="css/debuffStyle.css">
+    <link rel="stylesheet" href="./css/cssGram.css">
+
 
     <!--design pagina: https://www.figma.com/proto/jzjm99ggCTUSNv7ITLuLZl/PHP-project-DEBUFF?node-id=3%3A157&viewport=444%2C-1081%2C0.47289735078811646&scaling=scale-down-->
 </head>
@@ -110,7 +112,9 @@ foreach($comments as $comment){
         <p>hier komen tags</p>
     </div>
 
+    <figure class="<?php echo htmlspecialchars($post['filter'])?>">
     <img class="feedImage" src="./postImages/<?php echo htmlspecialchars($post['image']) ?>" alt="">
+    </figure>
 
     <div class="feedInteractions">
         <div>
