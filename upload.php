@@ -58,6 +58,9 @@ if(isset($_POST["submit"])) {
     }
 }
 
+$filters = ['1977','Aden','Brannan','Brooklyn','Clarendon','Earlybird','Gingham','Hudson','Inkwell','Kelvin','Lark','Lo-Fi','Maven','Mayfair','Moon',
+'Nashville','Perpetua','Reyes','Rise','Slumber','Stinson','Toaster','Valencia','Walden','Willow','X-pro II'];
+
 ?>
 
 <!DOCTYPE html>
@@ -98,8 +101,9 @@ if(isset($_POST["submit"])) {
         <div id="uploadFilter">
             <label for="filters">Choose a filter:</label>
             <select id="filters" name="filters">
-              <option value="IMG_FILTER_NEGATE">Negative</option>
-              <option value="IMG_FILTER_GRAYSCALE">Grayscale</option>
+            <?php foreach($filters as $value):?>
+              <option value="<?php echo htmlspecialchars($value)?>"><?php echo htmlspecialchars($value)?></option>
+              <?php endforeach;?>
             </select>
         </div>
         <div id="uploadDescription" class="uploadText">
