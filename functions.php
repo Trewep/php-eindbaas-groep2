@@ -1,5 +1,5 @@
 <?php
-//(profile)Image upload
+/*//(profile)Image upload
   $target_dir = "uploads/";
 
 if(!empty($_POST["submit"])){
@@ -77,11 +77,11 @@ if(!empty($_POST["submit"])) {
     }
     
   }
-
+*/
   
 //get time and format it
 
-  function get_timeago( $ptime )
+function get_timeago( $ptime )
 {
     $estimate_time = time() - $ptime;
 
