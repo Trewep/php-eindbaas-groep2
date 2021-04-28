@@ -4,10 +4,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-
- if (!isset($_SESSION['userId'])){
-     header("location: login.php");
- };
+include_once(__DIR__ . "/classes/Security.php");
+Security::mustBeLoggedIn();
 
 $_SESSION["userId"];
 //var_dump($_SESSION["userId"]);

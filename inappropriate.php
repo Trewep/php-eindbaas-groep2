@@ -1,8 +1,7 @@
 <?php 
 session_start();
- if (!isset($_SESSION['userId'])){
-     header("location: login.php");
- };
+include_once(__DIR__ . "/classes/Security.php");
+Security::mustBeLoggedIn();
 ?>
 <!DOCTYPE html>
 <html lang="en">
