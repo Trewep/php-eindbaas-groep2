@@ -108,7 +108,7 @@ foreach($comments as $comment){
     </div>
 
     <div>
-        <p>hier komt description</p>
+        <p><?php echo htmlspecialchars($post['description'])?></p>
         <p>hier komen tags</p>
     </div>
 

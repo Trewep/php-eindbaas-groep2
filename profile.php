@@ -138,6 +138,8 @@ if (!empty($_POST['deletePostBtn'])) {
 
     <!--overriding DEBUFF css-->
     <link rel="stylesheet" href="css/debuffStyle.css">
+    <link rel="stylesheet" href="./css/cssGram.css">
+
 
     <!--design pagina: https://www.figma.com/proto/jzjm99ggCTUSNv7ITLuLZl/PHP-project-DEBUFF?node-id=3%3A173&viewport=444%2C-1081%2C0.47289735078811646&scaling=scale-down-->
 </head>
@@ -204,7 +206,9 @@ if (!empty($_POST['deletePostBtn'])) {
                 <div class="row">
                     <div class="col-5 d-flex flex">
                         <div class="imageContainer">
+                        <figure class="<?php echo htmlspecialchars($post['filter'])?>">
                             <img src="./postImages/<?php echo htmlspecialchars($post['image'])?>" alt="">
+                        </figure>
                             <?php if ($profile === 'myProfile') : ?>
                             <form action="" method="POST">
                                 <input type="hidden" name="deletePost" value="<?php echo htmlspecialchars($post['image'])?>">
