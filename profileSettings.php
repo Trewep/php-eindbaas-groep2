@@ -65,7 +65,8 @@ if (!empty($_POST["submit"])) {
             $avatar = basename($_FILES["fileToUpload"]["name"]);
             $user = new User();
             $user->setAvatar($avatar);
-            $user->uploadAvatar($_SESSION["userId"]);
+            $user->setUserId($_SESSION["userId"]);
+            $user->uploadAvatar();
         }
     }
 }
@@ -76,14 +77,13 @@ if (!empty($_POST['delete'])) {
 
     if (array_key_exists('delete_avatar', $_POST)) {
         $user = new User();
-        $user->deleteAvatar($_SESSION["userId"]);
+        $user = $user->setUserId($_SESSION["userId"]);
+        $user->deleteAvatar();
     } else {
         $error = 'sorry your profile image has not been deleted please try again';
     }
     if (array_key_exists('delete_avatar', $_POST)) {
         $filename = $_POST['delete_avatar'];
-        var_dump($filename);
-        var_dump($target_dir . $filename);
         $file_dir = $target_dir . $filename;
         unlink($file_dir);
     }

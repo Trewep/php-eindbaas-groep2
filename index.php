@@ -13,7 +13,6 @@ include_once(__DIR__ . "/classes/Post.php");
 include_once(__DIR__ . "/classes/Follower.php");
 include_once(__DIR__ . "/classes/Comment.php");
 include_once(__DIR__ . "/classes/User.php");
-include_once(__DIR__ . "/functions.php");
 
 
 $posts = new Post();

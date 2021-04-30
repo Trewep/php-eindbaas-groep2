@@ -3,14 +3,15 @@
 include_once(__DIR__ . "/../interfaces/iFollower.php");
 include_once(__DIR__ . "/Dbnick.php");
 
-class Follower implements iFollower {
+class Follower implements iFollower
+{
 
     private $userId;
     private $followerId;
 
-        /**
+    /**
      * Get the value of userId
-     */ 
+     */
     public function getUserId()
     {
         return $this->userId;
@@ -20,7 +21,7 @@ class Follower implements iFollower {
      * Set the value of userId
      *
      * @return  self
-     */ 
+     */
     public function setUserId($userId)
     {
         $this->userId = $userId;
@@ -30,7 +31,7 @@ class Follower implements iFollower {
 
     /**
      * Get the value of followerId
-     */ 
+     */
     public function getFollowerId()
     {
         return $this->followerId;
@@ -40,7 +41,7 @@ class Follower implements iFollower {
      * Set the value of followerId
      *
      * @return  self
-     */ 
+     */
     public function setFollowerId($followerId)
     {
         $this->followerId = $followerId;
@@ -48,89 +49,85 @@ class Follower implements iFollower {
         return $this;
     }
 
-
-
-
-
-
-
-    public function getAllFollowers(){
- 
+    public function getAllFollowers()
+    {
     }
 
 
-    public static function getFollowerbyId(){}
-
-
-    public function addFollower(){
-
-    $userId = $this->getUserId();
-    $followerId = $this->getFollowerId();
-
-    $conn = Db::getConnection();
-    $statement = $conn->prepare("insert into followers (userId, followerId) values (:userId, :followerId)");
-    $statement->bindValue(':userId', $userId );
-    $statement->bindValue(':followerId',  $followerId);
-    $result = $statement->execute();
-   return $result;
-    }
-
-    public function deleteFollower(){
-
-    $userId = $this->getUserId();
-    $followerId = $this->getFollowerId();
-
-    $conn = Db::getConnection();
-    $statement = $conn->prepare("delete from followers where userId = :userId and followerId = :followerId");
-    $statement->bindValue(':userId', $userId );
-    $statement->bindValue(':followerId',  $followerId);
-    $result = $statement->execute();
-    return $result;
+    public static function getFollowerbyId()
+    {
     }
 
 
+    //voeg een follow toe aan de db
+    public function addFollower()
+    {
 
-    public function getFollowerByUserId(){
+        $userId = $this->getUserId();
+        $followerId = $this->getFollowerId();
 
-    $userId = $this->getUserId();
-    $followerId = $this->getFollowerId();
-        
-    $conn = Db::getConnection();
-    $statement = $conn->prepare("select * from followers where userId = :userId and followerId = :followerId");
-    $statement->bindValue(':userId', $userId );
-    $statement->bindValue(':followerId',  $followerId);
-    $statement->execute();
-    $test = $statement->fetch();
-    return $test;
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("insert into followers (userId, followerId) values (:userId, :followerId)");
+        $statement->bindValue(':userId', $userId);
+        $statement->bindValue(':followerId',  $followerId);
+        $result = $statement->execute();
+        return $result;
+    }
+
+    //verwijder een follow uit de db
+    public function deleteFollower()
+    {
+
+        $userId = $this->getUserId();
+        $followerId = $this->getFollowerId();
+
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("delete from followers where userId = :userId and followerId = :followerId");
+        $statement->bindValue(':userId', $userId);
+        $statement->bindValue(':followerId',  $followerId);
+        $result = $statement->execute();
+        return $result;
+    }
+
+    //haal de gegevens op van mensen die door de user gevold worden ( de profielpagina die je bezoekt)
+    public function getFollowerByUserId()
+    {
+
+        $userId = $this->getUserId();
+        $followerId = $this->getFollowerId();
+
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("select * from followers where userId = :userId and followerId = :followerId");
+        $statement->bindValue(':userId', $userId);
+        $statement->bindValue(':followerId',  $followerId);
+        $statement->execute();
+        $test = $statement->fetch();
+        return $test;
     }
 
     //get al the information (userID, FollowerID) off the people that the user is following 
-    public function getFollowerByUserIdIndex(){
-    $userId = $this->getUserId();
+    public function getFollowerByUserIdIndex()
+    {
+        $userId = $this->getUserId();
 
-    $conn = Db::getConnection();
-    $result = $conn->prepare("select * from followers where userId = :userId");
-    $result->bindValue(':userId', $userId );
-    $result->execute();
-    return $result->fetchAll();
+        $conn = Db::getConnection();
+        $result = $conn->prepare("select * from followers where userId = :userId");
+        $result->bindValue(':userId', $userId);
+        $result->execute();
+        return $result->fetchAll();
+    }
 
+    // haal het aantal rijen op waar de userId gelijk is aan de meegegeven id
+    public  function getFollowerStats()
+    {
 
+        $userId = $this->getUserId();
 
-}
-
-
-// haal het aantal rijen op waar de userId gelijk is aan de meegegeven id
-public  function getFollowerStats(){
-
-    $userId = $this->getUserId();
-
-    $conn = Db::getConnection();
-    $result = $conn->prepare("select COUNT(*) from followers where userId = :id");
-    $result->bindValue(':id', $userId);
-    $result->execute();
-     $commentStats = $result->fetch();
-     return  $commentStats;
-}
-
-
+        $conn = Db::getConnection();
+        $result = $conn->prepare("select COUNT(*) from followers where userId = :id");
+        $result->bindValue(':id', $userId);
+        $result->execute();
+        $commentStats = $result->fetch();
+        return  $commentStats;
+    }
 }

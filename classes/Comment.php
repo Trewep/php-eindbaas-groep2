@@ -30,6 +30,7 @@ class Comment implements iComment{
         return $this;
     }
 
+//haal de gegevens op van alle comments
     public function getAllComments(){
         $conn = Db::getConnection();
         $result = $conn->query("select * from comments");

@@ -5,14 +5,15 @@ include_once(__DIR__ . "/Dbnick.php");
 
 
 
-class Post implements iPost{
+class Post implements iPost
+{
 
     private $followersArray;
     private $userId;
 
     /**
      * Get the value of followersArray
-     */ 
+     */
     public function getFollowersArray()
     {
         return $this->followersArray;
@@ -22,7 +23,7 @@ class Post implements iPost{
      * Set the value of followersArray
      *
      * @return  self
-     */ 
+     */
     public function setFollowersArray($followersArray)
     {
         $this->followersArray = $followersArray;
@@ -30,9 +31,9 @@ class Post implements iPost{
         return $this;
     }
 
-        /**
+    /**
      * Get the value of userId
-     */ 
+     */
     public function getUserId()
     {
         return $this->userId;
@@ -42,24 +43,29 @@ class Post implements iPost{
      * Set the value of userId
      *
      * @return  self
-     */ 
+     */
     public function setUserId($userId)
     {
         $this->userId = $userId;
 
         return $this;
     }
- 
-    public function getAllPosts(){
+
+    //haal alle info op van de posts
+    public function getAllPosts()
+    {
         $conn = Db::getConnection();
         $result = $conn->query("select * from posts");
         return $result->fetchAll();
     }
-    public function getPostById(){}
+    public function getPostById()
+    {
+    }
 
-    
-//haal de gegevens op van posts waar de userId gelijk is aan de meegegevn id
-    public function getPostByuserId(){
+
+    //haal de gegevens op van posts waar de userId gelijk is aan de meegegevn id
+    public function getPostByuserId()
+    {
 
         $userId = $this->getUserId();
 
@@ -70,27 +76,35 @@ class Post implements iPost{
         return $result->fetchAll();
         var_dump($result);
     }
-    
-    public function addPost(){}
-    public function deletePost($image){
+
+    public function addPost()
+    {
+    }
+
+    //verwijder een post uit de db
+    public function deletePost($image)
+    {
 
         $conn = Db::getConnection();
         $statement = $conn->prepare("delete from posts where image = :image");
-        $statement->bindValue(':image', $image );
+        $statement->bindValue(':image', $image);
         $result = $statement->execute();
-       return $result;
+        return $result;
     }
-    public function get20LastPosts(){
+
+    //haal de 20 laatste post op die geuploaded zijn
+    public function get20LastPosts()
+    {
         $conn = Db::getConnection();
         $result = $conn->query("select * from posts order by id desc limit 20");
         return $result->fetchAll();
-
     }
 
 
 
     //use array with id's from people user is following to get 20 last followers post
-    public function get20lastFollowersPosts(){
+    public function get20lastFollowersPosts()
+    {
 
         $followersArray = $this->getFollowersArray();
 
@@ -108,22 +122,13 @@ class Post implements iPost{
         return $followersPosts;
     }
 
-    public function getFilter(){
-        $conn = Db::getConnection();
-        $result = $conn->query("select * from posts");
-        return $result->fetchAll();
-    }
-
-    public function removeFilter($image, $id){
+    //verwijder filter voor een bepaalde image bij een bepaalde user
+    public function removeFilter($image, $id)
+    {
         $conn = Db::getConnection();
         $statement = $conn->prepare("UPDATE posts SET filter = '#nofilter' where image = :image AND userId = :userId ");
-        $statement->bindValue(':image', $image );
-        $statement->bindValue(':userId', $id );
+        $statement->bindValue(':image', $image);
+        $statement->bindValue(':userId', $id);
         $statement->execute();
     }
-    
-
-
-
-
 }
