@@ -81,7 +81,7 @@ if(!empty($_POST["submit"])) {
   
 //get time and format it
 
-function get_timeago( $ptime )
+/*function get_timeago( $ptime )
 {
     $estimate_time = time() - $ptime;
 
@@ -109,7 +109,7 @@ function get_timeago( $ptime )
             return  $r . ' ' . $str . ( $r > 1 ? 's' : '' ) . ' ago';
         }
     }
-}
+}*/
 
 
 

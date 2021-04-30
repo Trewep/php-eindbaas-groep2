@@ -22,12 +22,8 @@ $profile;
 if (!empty($_GET['id'])) {
     if ($_GET['id'] == $_SESSION['userId']) {
         $profile = 'myProfile';
-        //$user = User::getUserById($_SESSION["userId"]);
-        // $user = User::getUserById($_GET['id']);
-
     } else {
         $profile = 'otherProfile';
-        // $user = User::getUserById($_GET['id']);
     }
 } else {
 }
