@@ -118,10 +118,15 @@ class Follower implements iFollower {
 
 }
 
-public  function getFollowerStats($id){
+
+// haal het aantal rijen op waar de userId gelijk is aan de meegegeven id
+public  function getFollowerStats(){
+
+    $userId = $this->getUserId();
+
     $conn = Db::getConnection();
     $result = $conn->prepare("select COUNT(*) from followers where userId = :id");
-    $result->bindValue(':id', $id);
+    $result->bindValue(':id', $userId);
     $result->execute();
      $commentStats = $result->fetch();
      return  $commentStats;

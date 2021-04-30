@@ -8,6 +8,7 @@ include_once(__DIR__ . "/Dbnick.php");
 class Post implements iPost{
 
     private $followersArray;
+    private $userId;
 
     /**
      * Get the value of followersArray
@@ -28,17 +29,43 @@ class Post implements iPost{
 
         return $this;
     }
+
+        /**
+     * Get the value of userId
+     */ 
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set the value of userId
+     *
+     * @return  self
+     */ 
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
  
     public function getAllPosts(){
         $conn = Db::getConnection();
         $result = $conn->query("select * from posts");
         return $result->fetchAll();
     }
+    public function getPostById(){}
 
-    public function getPostById($id){
+    
+//haal de gegevens op van posts waar de userId gelijk is aan de meegegevn id
+    public function getPostByuserId(){
+
+        $userId = $this->getUserId();
+
         $conn = Db::getConnection();
         $result = $conn->prepare("select * from posts where userId = :id");
-        $result->bindValue(':id', $id);
+        $result->bindValue(':id', $userId);
         $result->execute();
         return $result->fetchAll();
         var_dump($result);
@@ -95,6 +122,8 @@ class Post implements iPost{
         $statement->execute();
     }
     
+
+
 
 
 }

@@ -7,6 +7,7 @@ include_once(__DIR__ . "/Dbnick.php");
  
 class User implements iUser {
 
+    private $userId;
     private $avatar;
     private $editEmail;
 
@@ -50,6 +51,26 @@ class User implements iUser {
 
         return $this;
     }
+
+        /**
+     * Get the value of userId
+     */ 
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set the value of userId
+     *
+     * @return  self
+     */ 
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
     
     
     public function getAllUsers(){
@@ -59,12 +80,14 @@ class User implements iUser {
         return $result->fetchAll();
     }
 
+    //haal alle gegevens op van gebruikers waarvan de gegeven id gelijk is aan die van in de databank
+    public  function getUserById() {
 
-    public static function getUserById(int $id) {
-        // only grab the videos for a certain user
+        $userId = $this->getUserId();
+
         $conn = Db::getConnection();
         $result = $conn->prepare("select * from users where id = :id");
-        $result->bindValue(':id', $id);
+        $result->bindValue(':id',  $userId);
         $result->execute();
         return $result->fetch();
     }
@@ -174,13 +197,19 @@ public function getUserByUsername($username, $password){
         
     }
 
-    public  function getdateStats($id){
+    //haal de aanmaakdatum op waar de id gelijk is aan de meegeven id
+    public  function getdateStats(){
+
+        $userId = $this->getUserId();
+
         $conn = Db::getConnection();
         $result = $conn->prepare("select created from users where id = :id");
-        $result->bindValue(':id', $id);
+        $result->bindValue(':id', $userId);
         $result->execute();
          $stats = $result->fetch();
          return  $stats;
     }
    
+
+
 }
