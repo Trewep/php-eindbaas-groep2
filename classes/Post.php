@@ -58,5 +58,13 @@ class Post implements iPost{
         $result = $conn->query("select * from posts");
         return $result->fetchAll();
     }
+
+    public function removeFilter($image, $id){
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("UPDATE posts SET filter = '#nofilter' where image = :image AND userId = :userId ");
+        $statement->bindValue(':image', $image );
+        $statement->bindValue(':userId', $id );
+        $statement->execute();
+    }
     
 }

@@ -41,22 +41,22 @@ if (!empty($_GET['id'])) {
 $commentStats = new Comment;
 $commentStat = $commentStats->getCommentStats($_GET['id']);
 
-var_dump($commentStat["COUNT(*)"]);
+//var_dump($commentStat["COUNT(*)"]);
 
 $followerStats = new Follower;
 $followerStat = $followerStats->getFollowerStats($_GET['id']);
 
-var_dump($followerStat["COUNT(*)"]);
+//var_dump($followerStat["COUNT(*)"]);
 
 $likesStats = new Like;
 $likesStat = $likesStats->getlikeStats($_GET['id']);
 
-var_dump($likesStat["COUNT(*)"]);
+//var_dump($likesStat["COUNT(*)"]);
 
 $dateStats = new User;
 $dateStat = $dateStats->getdateStats($_GET['id']);
 
-var_dump($dateStat['created']);
+//var_dump($dateStat['created']);
 
 
 
@@ -116,6 +116,18 @@ if (!empty($_POST['deletePostBtn'])) {
     } else {
     }
 }
+
+if (!empty($_POST['deleteFilterBtn'])) {
+
+    if (array_key_exists('deleteFilter', $_POST)) {
+        var_dump($_POST['deleteFilter']);
+        //var_dump($postsId);
+       $posts->removeFilter($_POST['deleteFilter'], $_GET['id'] );
+       header("location: ./profile.php?id=".$_GET['id']);
+
+    } 
+}
+
 
 
 
@@ -213,6 +225,11 @@ if (!empty($_POST['deletePostBtn'])) {
                             <form action="" method="POST">
                                 <input type="hidden" name="deletePost" value="<?php echo htmlspecialchars($post['image'])?>">
                                 <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
+                            </form>
+                            <br>
+                            <form action="" method="POST">
+                                <input type="hidden" name="deleteFilter" value="<?php echo htmlspecialchars($post['image'])?>">
+                                <input type="submit" class="btn btn-danger btnDelete" value="remove filter" name="deleteFilterBtn">
                             </form>
                             <?php endif; ?>
                             <?php endif; ?>
