@@ -129,9 +129,8 @@ html,body {
 
 .nav {
 background-color: #ececec;
-margin-top: 1em ;
+margin-top: em ;
 bottom: 0;
-position:fixed;
 width:100%;
 margin-left:0;
 margin-right:0;

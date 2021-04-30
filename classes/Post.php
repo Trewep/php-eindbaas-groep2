@@ -6,6 +6,28 @@ include_once(__DIR__ . "/Dbnick.php");
 
 
 class Post implements iPost{
+
+    private $followersArray;
+
+    /**
+     * Get the value of followersArray
+     */ 
+    public function getFollowersArray()
+    {
+        return $this->followersArray;
+    }
+
+    /**
+     * Set the value of followersArray
+     *
+     * @return  self
+     */ 
+    public function setFollowersArray($followersArray)
+    {
+        $this->followersArray = $followersArray;
+
+        return $this;
+    }
  
     public function getAllPosts(){
         $conn = Db::getConnection();
@@ -38,19 +60,25 @@ class Post implements iPost{
 
     }
 
-    public function get20lastFollowersPosts($id){
-        
-    
-       
-        $ids = join(', ', $id);
+
+
+    //use array with id's from people user is following to get 20 last followers post
+    public function get20lastFollowersPosts(){
+
+        $followersArray = $this->getFollowersArray();
+
+        //make a single line from array
+        $ids = join(', ', $followersArray);
         $conn = Db::getConnection();
         // get all posts from followers in $ids array in descending order and limited by 20 most recent
+        // $ids is safe becquse the values come from database/ no input from front-end
+        // deze manier navragen joris https://stackoverflow.com/questions/920353/can-i-bind-an-array-to-an-in-condition
         $result = $conn->prepare("select * from posts where userId in ($ids) order by id desc limit 20 ");
+        //$result->bindValue(':ids',  $ids );
         $result->execute();
         // save posts 
         $followersPosts = $result->fetchAll();
         return $followersPosts;
-
     }
 
     public function getFilter(){
@@ -67,4 +95,6 @@ class Post implements iPost{
         $statement->execute();
     }
     
+
+
 }

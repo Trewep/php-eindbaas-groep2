@@ -242,7 +242,7 @@ if (!empty($_POST['deleteFilterBtn'])) {
 
         </div>
 
-        <?php include('nav.inc.php') ?>
+<?php include('nav.inc.php') ?>
 
 
         <script src="./javascript/profile.js"></script>
