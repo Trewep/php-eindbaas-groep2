@@ -5,32 +5,42 @@ ini_set('display_errors', 1);
 
 session_start();
 include_once(__DIR__ . "/classes/Security.php");
-Security::mustBeLoggedIn();
+Security::mustBeLoggedIn(); //not logged in no entry
 $_SESSION["userId"];
 
 include_once(__DIR__ . "/classes/Post.php");
 include_once(__DIR__ . "/classes/Follower.php");
 include_once(__DIR__ . "/classes/Comment.php");
 include_once(__DIR__ . "/classes/User.php");
+include_once(__DIR__ . "/classes/Like.php");
 include_once(__DIR__ . "/functions.php");
 
+$likes = new Like();
+$likes = $likes->getLikesByUserId($_SESSION["userId"]);
 
 
+//var_dump($likes);
 $posts = new Post();
 
 $followers = new Follower();
 $followers = $followers->getFollowerByUserId($_SESSION["userId"]);
+
+$posts = new Post();
+
+$followers = new Follower();
+$followers = $followers->getFollowerByUserId2($_SESSION["userId"]);
 
 $array = [];
 foreach ($followers as $follower) {
     $array[] = $follower['followerId'];
 }
 
+
 if (!empty($followers)) {
-    //echo 'full';
+    echo 'full';
     $posts = $posts->get20lastFollowersPosts($array);
 } else {
-    //echo 'empty';
+    echo 'empty';
     $posts = $posts->get20LastPosts();
 }
 
@@ -46,13 +56,7 @@ foreach($comments as $comment){
     $timePosted = get_timeago($comment['time'] );
 }
 
-
 ?>
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -106,12 +110,12 @@ foreach($comments as $comment){
 
     <div class="feedInteractions">
         <div>
-            <img src="./assets/icons/blackIcons/type=heart, state=Default.svg" alt="">
-            <img src="./assets/icons/blackIcons/type=message, state=Default.svg" alt="">
+        <img src="./assets/icons/blackIcons/type=heart, state=Default.svg" alt="" data-postid="<?php echo $post['id'] ?>" data-userid="<?php echo $_SESSION['userId']?>" class="like">
+  
         </div>
 
         <div>
-            <p>x likes</p>
+            <p><?php echo htmlspecialchars(count($likes)) ?> likes</p>
         </div>
 
         <div>
@@ -125,7 +129,7 @@ foreach($comments as $comment){
             <?php foreach ($users as $user) : ?>
                 <?php if ($user['id'] === $comment['userId']) : ?>
                     <div>
-                    <p><a class="feedLink" href="profile.php?id=<?php echo htmlspecialchars($comment["userId"]) ?>">"@<?php echo htmlspecialchars($user['username']) ?> </a></p>
+                        <p><a class="feedLink" href="profile.php?id=<?php echo htmlspecialchars($comment["userId"]) ?>">@<?php echo htmlspecialchars($user['username']) ?> </a></p>
                         <p><?php echo htmlspecialchars($comment['comment']) ?></p>
                         <p><?php echo get_timeago($comment['time']) ?></p>
                     </div>
@@ -144,7 +148,7 @@ foreach($comments as $comment){
     <?php include('./nav.inc.php') ?>
 
 
-
+    <script src="./javascript/like.js"></script>
 
 </body>
 

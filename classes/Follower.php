@@ -89,7 +89,22 @@ class Follower implements iFollower {
 
 
 
-public function getFollowerByUserId($id){
+public function getFollowerByUserId(){
+        $userId = $this->getUserId();
+        $followerId = $this->getFollowerId();
+        
+    $conn = Db::getConnection();
+     $statement = $conn->prepare("select * from Followers where userId = :userId and followerId = :followerId");
+         $statement->bindValue(':userId', $userId );
+         $statement->bindValue(':followerId',  $followerId);
+         $statement->execute();
+         $test = $statement->fetch();
+                 var_dump($test);
+        return $test;
+
+}
+
+public function getFollowerByUserId2($id){
     $conn = Db::getConnection();
     $result = $conn->prepare("select * from Followers where userId = :id");
     $result->bindValue(':id', $id);
@@ -99,9 +114,6 @@ public function getFollowerByUserId($id){
 
 
 }
-
-
-
 
 
 }

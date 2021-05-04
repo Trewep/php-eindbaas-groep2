@@ -1,5 +1,6 @@
 <?php
 
+//include iUser & DB
 include_once(__DIR__ . "/../interfaces/iUser.php");
 include_once(__DIR__ . "/Db.php");
 
@@ -17,6 +18,7 @@ class User implements iUser {
         return $this->avatar;
     }
 
+
     /**
      * Set the value of avatar
      *
@@ -33,18 +35,17 @@ class User implements iUser {
          /**
      * Get the value of email
      */ 
-    public function getEmail()
-    {
+    public function getEmail(){
         return $this->email;
     }
+
 
     /**
      * Set the value of avatar
      *
      * @return  self
      */ 
-    public function setEmail($editEmail)
-    {
+    public function setEmail($editEmail){
         $this->email = $editEmail;
 
         return $this;
@@ -56,10 +57,8 @@ class User implements iUser {
 
         $result = $conn->query("select * from Users");
         return $result->fetchAll();
-
-        
-        
     }
+
 
     public static function getUserById(int $id) {
         // only grab the videos for a certain user
@@ -70,22 +69,78 @@ class User implements iUser {
         return $result->fetch();
     }
     
-
-public function register($username, $email, $firstName, $lastName, $password){
-        $option = [
-            'cost' => 12,
-        ];
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $option);
     
-        $conn = Db::getConnection();
-        $stm = $conn->prepare("INSERT INTO Users (firstname, lastname, username, email, password) VALUES (:firstName, :lastName, :username, :email, :password)");
-        $stm->bindValue(':username', $username);
-        $stm->bindValue(':email', $email);
-        $stm->bindValue(':firstName', $firstName);
-        $stm->bindValue(':lastName', $lastName);
-        $stm->bindValue(':password', $password);
-        $stm->execute();
-        //var_dump($password);
+    public function register($username, $email, $firstName, $lastName, $password, $passwordVerify){
+
+        //if form filled in correctly
+        if (!empty($username) && !empty($email) && !empty($firstName) && !empty($lastName) && !empty($password) && !empty($passwordVerify)){
+            
+            //check if username already exist in DB
+            $conn = Db::getConnection();
+            $stm = $conn->prepare("SELECT * FROM Users WHERE username = :username");
+            $stm->bindValue(':username', $username);
+            $stm->execute();
+            $result = $stm->fetchAll();
+            
+            //check of 
+            if(count($result) === 0){
+            
+                //password should be complex
+                $includesNumber = preg_match("#[0-9]+#", $password);
+                $includesLetter = preg_match("#[a-zA-Z]+#", $password);
+                
+                if(!$includesNumber || !$includesLetter || strlen($password) < 8) {
+                    echo 'Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.';
+                    //throw new Exception ("Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.");
+                }
+                
+                else{
+                    
+                    //check if passowrd verify is the same as password
+                    if($passwordVerify === $password){
+                    
+                    $_SESSION["username"] = $username;
+                    $_SESSION["userId"] = $userId;
+                    
+                    
+                    //password cost & hash
+                    $option = [
+                        'cost' => 12,
+                    ];
+                    $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $option);
+                    
+                    
+                    //insert new user in DB
+                    $conn = Db::getConnection();
+                    $stm = $conn->prepare("INSERT INTO Users (firstname, lastname, username, email, password) VALUES (:firstName, :lastName, :username, :email, :password)");
+                    $stm->bindValue(':username', $username);
+                    $stm->bindValue(':email', $email);
+                    $stm->bindValue(':firstName', $firstName);
+                    $stm->bindValue(':lastName', $lastName);
+                    $stm->bindValue(':password', $password);
+                    $stm->execute();
+                       
+                    header('Location: login.php');
+                    
+                    } else{
+                        //passwordverify error
+                        echo "eror: passwords not the same";
+                        //throw new Exception ("error: passwords not the same");
+                        
+                    }
+                
+                }
+            }
+            else{
+                echo "error: username already exists";
+                //throw new Exception ("error: username already exists");
+            }
+            
+            
+        } else{
+            echo "error: form not filled in correctly";
+            //throw new Exception ("error: form not filled in correctly");
+        }
 }
 
     public function addUser(){}
@@ -145,7 +200,7 @@ public function getUserByUsername($username, $password){
             $userId = $user['id'];
             $_SESSION["username"] = $username;
             $_SESSION["userId"] = $userId;
-            header("Location: ./index.php");
+            header("Location: index.php");
             
             //var_dump($user);
             return true;

@@ -19,7 +19,7 @@ class Post implements iPost{
         $result->bindValue(':id', $id);
         $result->execute();
         return $result->fetchAll();
-        var_dump($result);
+        //var_dump($result);
     }
     
     public function addPost(){}
@@ -40,7 +40,7 @@ class Post implements iPost{
 
     public function get20lastFollowersPosts($id){
         
-     
+    
        
         $ids = join(', ', $id);
         $conn = Db::getConnection();

@@ -2,7 +2,8 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
+ 
+ 
 session_start();
 include_once(__DIR__ . "/classes/Security.php");
 Security::mustBeLoggedIn();
@@ -16,8 +17,8 @@ include_once(__DIR__ . "/classes/User.php");
 include_once(__DIR__ . "/classes/Follower.php");
 include_once(__DIR__ . "/classes/Post.php");
 
-
 $profile = 'myProfile';
+
 
 if (!empty($_GET['id'])) {
     if ($_GET['id'] == $_SESSION['userId']) {
@@ -33,17 +34,38 @@ if (!empty($_GET['id'])) {
 
 
 
-$followers = new Follower();
-$followers = $followers->getFollowerByUserId($_SESSION["userId"]);
+$follower = new Follower();
+$follower->setFollowerId($_GET['id']);
+$follower->setUserId($_SESSION["userId"]);
+$follower = $follower->getFollowerByUserId();
+var_dump($follower);
 
-$btn_state = ' ';
-foreach ($followers as $follower) {
-    if ($follower['followerId'] === $_GET['id']) {
-        $btn_state = 'Unfollow';
-    } else {
-        $btn_state = 'Follow';
-    }
+if($follower != null){
+if($follower['followerId'] === $_GET['id'] ){
+    $followerButton = 'unfollow';
+}else{
+        $followerButton = 'follow';
+
 }
+}else{
+            $followerButton = 'follow';
+
+}
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
 
 
 if (!empty($_POST)) {
@@ -123,7 +145,7 @@ if (!empty($_POST['deletePostBtn'])) {
 
             <?php if ($profile === 'otherProfile') : ?>
                 <div class='col-3 d-flex justify-content-end'>
-                    <button type="button" data-followerid="<?php echo htmlspecialchars($_GET['id']) ?>" data-userid="<?php echo htmlspecialchars($_SESSION['userId']) ?>" class="btn btn-danger"><?php echo htmlspecialchars($btn_state) ?></button>
+                    <button type="button" data-followerid="<?php echo $_GET['id'] ?>" data-userid="<?php echo $_SESSION['userId'] ?>" class="btn btn-danger"><?php echo $followerButton ?></button>
                 </div>
             <?php endif; ?>
 
@@ -153,7 +175,7 @@ if (!empty($_POST['deletePostBtn'])) {
         
         <div class="imageOverview">
             <?php foreach ($postsId as $post) : ?>
-                <?php if($post['userId'] == $_SESSION["userId"]):?>
+                <?php if($post['userId'] == $_GET['id']):?>
                                     <?php //var_dump($post['userId'])?>
                 <div class="row">
                     <div class="col-5 d-flex flex">
