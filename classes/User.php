@@ -98,7 +98,7 @@ class User implements iUser
     }
 
 
-    public  function register($username, $email, $firstName, $lastName, $password,$date)
+    public static  function register($username, $email, $firstName, $lastName, $password,$date)
     {
        /* session_start();
         $_SESSION["username"] = $username;
@@ -113,7 +113,7 @@ class User implements iUser
         $conn = Db::getConnection();
 
         //insert new user in DB
-        $stm = $conn->prepare("INSERT INTO users (firstname, lastname, username, email, password, date) VALUES (:firstName, :lastName, :username, :email, :password , :date)");
+        $stm = $conn->prepare("INSERT INTO users (firstname, lastname, username, email, password, created) VALUES (:firstName, :lastName, :username, :email, :password , :date)");
         $stm->bindValue(':username', $username);
         $stm->bindValue(':email', $email);
         $stm->bindValue(':firstName', $firstName);

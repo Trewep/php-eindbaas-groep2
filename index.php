@@ -106,6 +106,8 @@ foreach ($comments as $comment) {
 
 <body>
     <?php include("./header.inc.php") ?>
+    <?php include("./desktopnav.inc.php")?>
+
 
     <!-- loop door alle gevraagde posts en print de layout hiervoor -->
     <?php foreach ($posts as $post) : ?>
@@ -183,7 +185,7 @@ foreach ($comments as $comment) {
 
 
 
-
+    <?php include('./desktopfooter.inc.php') ?>
     <?php include('./nav.inc.php') ?>
 
 

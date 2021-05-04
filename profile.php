@@ -129,9 +129,10 @@ if (!empty($_POST['deleteFilterBtn'])) {
 </head>
 
 <body>
-    <div class="container-fluid">
 
         <?php include("header.inc.php") ?>
+        <?php include("./desktopnav.inc.php")?>
+
 
         <div class="row no-gutters profileOptions">
 
@@ -214,10 +215,9 @@ if (!empty($_POST['deleteFilterBtn'])) {
 
 
       
-    </div>
 
 
-
+    <?php include('./desktopfooter.inc.php') ?>
     <?php include('nav.inc.php') ?>
 
 

@@ -87,6 +87,10 @@ $filters = ['#nofilter','1977','Aden','Brannan','Brooklyn','Clarendon','Earlybir
     <!--design pagina: https://www.figma.com/proto/jzjm99ggCTUSNv7ITLuLZl/PHP-project-DEBUFF?node-id=3%3A154&viewport=444%2C-1081%2C0.47289735078811646&scaling=scale-down-->
 </head>
 <body>
+
+<?php include("./header.inc.php") ?>
+<?php include("./desktopnav.inc.php")?>
+
     <header class="test"></header>
 
     <figure class="kelvin">
@@ -148,5 +152,8 @@ $filters = ['#nofilter','1977','Aden','Brannan','Brooklyn','Clarendon','Earlybir
         <?php endforeach; ?>
     </div>
     <nav class="test"></nav>
+
+    <?php include('./desktopfooter.inc.php') ?>
+    <?php include('./nav.inc.php') ?>
 </body>
 </html>

@@ -271,6 +271,12 @@ article {
 .commentName{
     color: crimson;
 }
+nav{
+   display: none;
+}
+footer{
+    display: none;
+}
 
 
 @media(min-width:580px){
@@ -290,6 +296,43 @@ article {
      width: 95%;
     }
 }
+
+@media(min-width:760px){
+
+    .header{
+        display: none;
+    }
+
+    .nav{
+        display: none;
+    }
+
+    nav{
+        background-color: #1D1D1D;
+        padding: 1em;
+        display: block;
+    }
+
+    nav a{
+        color: white;
+        text-decoration: none;
+        margin-left: 1em;
+       
+    }
+
+    .navLogo{
+        width: 10em;
+    }
+
+    footer{
+        display: block;
+        background-color:#1D1D1D ;
+        color: white;
+        padding: 1em;
+        margin-top: 1em;
+    }
+}
+
 
 
 

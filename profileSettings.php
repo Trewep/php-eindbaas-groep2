@@ -129,6 +129,8 @@ if (!empty($_POST["editEmail"])) {
     <body>
 
         <?php include("./header.inc.php") ?>
+        <?php include("./desktopnav.inc.php")?>
+
 
         <!-- als er eem error is bij het uploaden van de avatar toon deze -->
         <?php if (isset($error)) : ?>
@@ -186,6 +188,8 @@ if (!empty($_POST["editEmail"])) {
         </div>
 
         <?php include('./nav.inc.php') ?>
+        <?php include('./desktopfooter.inc.php') ?>
+
 
     </body>
 
