@@ -96,7 +96,7 @@ foreach ($comments as $comment) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
     <!--overriding DEBUFF css-->
-     <link rel="stylesheet" href="css/debuffStyle.css">
+    <link rel="stylesheet" href="css/debuffStyle.css">
 
     <!--cssGram css-->
     <link rel="stylesheet" href="./css/cssGram.css">
@@ -107,75 +107,77 @@ foreach ($comments as $comment) {
 <body>
     <?php include("./header.inc.php") ?>
 
-<!-- loop door alle gevraagde posts en print de layout hiervoor -->
+    <!-- loop door alle gevraagde posts en print de layout hiervoor -->
     <?php foreach ($posts as $post) : ?>
-<div class="row">
-<div class="col">
-<article>
-            <div class="feedProfileInfo">
-<!-- loopt door alle users -->
-                <?php foreach ($users as $user) : ?>
-<!-- als de userId bij een post gelijk is aan een id van een users print dan profile image en gebruikersnaam -->
-                    <?php if ($post['userId'] === $user['id']) : ?>
-                        <?php if ($user['profileImage'] === 'defaultAvatar') : ?>
-                            <div><img class="feedProfile" src="./assets/images/default-profile-picture.jpg" alt=""></div>
-                        <?php else : ?>
-                            <div><img class="feedProfile" src="./uploads/<?php echo htmlspecialchars($user['profileImage']) ?>" alt=""></div>
-                        <?php endif; ?>
-                        <div>
-                            <h1> <a class="feedLink" href="profile.php?id=<?php echo htmlspecialchars($post["userId"]) ?>"><?php echo htmlspecialchars($user['username']) ?> </a></h1>
-                            <p><?php echo htmlspecialchars($post['location']) ?></p>
+        <div class="row">
+            <div class="col">
+                <article>
+                    <div class="articleBorder">
+                        <div class="feedProfileInfo">
+                            <!-- loopt door alle users -->
+                            <?php foreach ($users as $user) : ?>
+                                <!-- als de userId bij een post gelijk is aan een id van een users print dan profile image en gebruikersnaam -->
+                                <?php if ($post['userId'] === $user['id']) : ?>
+                                    <?php if ($user['profileImage'] === 'defaultAvatar') : ?>
+                                        <div><img class="feedProfile" src="./assets/images/default-profile-picture.jpg" alt=""></div>
+                                    <?php else : ?>
+                                        <div><img class="feedProfile" src="./uploads/<?php echo htmlspecialchars($user['profileImage']) ?>" alt=""></div>
+                                    <?php endif; ?>
+                                    <div>
+                                        <h1> <a class="feedLink" href="profile.php?id=<?php echo htmlspecialchars($post["userId"]) ?>"><?php echo htmlspecialchars($user['username']) ?> </a></h1>
+                                        <p><?php echo htmlspecialchars($post['location']) ?></p>
+                                    </div>
+                                    <p>...</p>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         </div>
-                        <p>...</p>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </div>
-<!-- print de post description -->
-            <div>
-                <p><?php echo htmlspecialchars($post['description']) ?></p>
-                <p>hier komen tags</p>
-            </div>
-<!-- print de post image met bijhorende filter -->
-            <figure class="<?php echo htmlspecialchars($post['filter']) ?>">
-                <img class="feedImage" src="./postImages/<?php echo htmlspecialchars($post['image']) ?>" alt="">
-            </figure>
-<!-- persoon die likes moet likes en time moet doen moet de feed interactions nog aanvullen -->
-            <div class="feedInteractions">
-                <div>
-                    <img src="./assets/icons/blackIcons/type=heart, state=Default.svg" alt="">
-                    <img src="./assets/icons/blackIcons/type=message, state=Default.svg" alt="">
-                </div>
-
-                <div>
-                    <p>x likes</p>
-                </div>
-
-                <div>
-                    <p>x days ago</p>
-                </div>
-
-            </div>
-<!-- loop door alle comments en toon al de comments en de moment waarop ze gepost zijn -->
-            <?php foreach ($comments as $comment) : ?>
-                <?php if ($comment['postId'] === $post['id']) : ?>
-<!-- als de userId bij een post gelijk is aan de userIdd van een comment print dan de gebruikersnaam -->
-                    <?php foreach ($users as $user) : ?>
-                        <?php if ($user['id'] === $comment['userId']) : ?>
+                        <!-- print de post description -->
+                        <div>
+                            <p><?php echo htmlspecialchars($post['description']) ?></p>
+                            <p>hier komen tags</p>
+                        </div>
+                        <!-- print de post image met bijhorende filter -->
+                        <figure class="<?php echo htmlspecialchars($post['filter']) ?>">
+                            <img class="feedImage" src="./postImages/<?php echo htmlspecialchars($post['image']) ?>" alt="">
+                        </figure>
+                        <!-- persoon die likes moet likes en time moet doen moet de feed interactions nog aanvullen -->
+                        <div class="feedInteractions">
                             <div>
-                                <p><a class="feedLink" href="profile.php?id=<?php echo htmlspecialchars($comment["userId"]) ?>">@<?php echo htmlspecialchars($user['username']) ?> </a></p>
-                                <p><?php echo htmlspecialchars($comment['comment']) ?></p>
-                                <p><?php echo get_timeago($comment['time']) ?></p>
+                                <img src="./assets/icons/blackIcons/type=heart, state=Default.svg" alt="">
+                                <img src="./assets/icons/blackIcons/type=message, state=Default.svg" alt="">
                             </div>
+
+                            <div>
+                                <p>x likes</p>
+                            </div>
+
+                            <div>
+                                <p>x days ago</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- loop door alle comments en toon al de comments en de moment waarop ze gepost zijn -->
+                    <?php foreach ($comments as $comment) : ?>
+                        <?php if ($comment['postId'] === $post['id']) : ?>
+                            <!-- als de userId bij een post gelijk is aan de userIdd van een comment print dan de gebruikersnaam -->
+                            <?php foreach ($users as $user) : ?>
+                                <?php if ($user['id'] === $comment['userId']) : ?>
+                                    <div class="comment">
+                                        <p><a class="feedLink commentName" href="profile.php?id=<?php echo htmlspecialchars($comment["userId"]) ?>">@<?php echo htmlspecialchars($user['username']) ?> </a></p>
+                                        <p><?php echo htmlspecialchars($comment['comment']) ?></p>
+                                        <p class="time"><?php echo get_timeago($comment['time']) ?></p>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         <?php endif; ?>
                     <?php endforeach; ?>
-                <?php endif; ?>
-            <?php endforeach; ?>
-            <hr>
-        </article>
-</div>
+                    <hr>
+                </article>
+            </div>
 
-</div>
- 
+        </div>
+
 
     <?php endforeach; ?>
 

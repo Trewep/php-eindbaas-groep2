@@ -12,7 +12,7 @@ if (!empty($_POST)) {
     $password = $_POST['password'];
     $date = date("Y/m/d");
     
-    User::register($username, $email, $firstName, $lastName, $password,$date);
+User::register($username, $email, $firstName, $lastName, $password,$date);
 }
 
 ?>

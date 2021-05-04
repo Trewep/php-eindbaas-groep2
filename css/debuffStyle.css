@@ -231,6 +231,8 @@ article {
     margin-right: auto;
     margin-top: 1em;
     padding: 1em;
+    border:0.5px solid black ;
+    border-radius: 5px;
 }
 
 .feedProfile {
@@ -257,6 +259,19 @@ article {
     flex-direction: row;
     gap: 2em;
 }
+
+.comment{
+    border-bottom: 0.2px solid gray;
+}
+
+.time{
+    font-weight: bolder;
+}
+
+.commentName{
+    color: crimson;
+}
+
 
 @media(min-width:580px){
 

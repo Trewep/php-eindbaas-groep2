@@ -98,11 +98,11 @@ class User implements iUser
     }
 
 
-    public function register($username, $email, $firstName, $lastName, $password, $date)
+    public  function register($username, $email, $firstName, $lastName, $password,$date)
     {
-        session_start();
+       /* session_start();
         $_SESSION["username"] = $username;
-        $_SESSION["userId"] = $userId;
+        $_SESSION["userId"] = $userId;*/
 
         //password cost & hash
         $option = [
@@ -119,15 +119,16 @@ class User implements iUser
         $stm->bindValue(':firstName', $firstName);
         $stm->bindValue(':lastName', $lastName);
         $stm->bindValue(':password', $password);
-        $stm->bindValue(':date', $date);
+     $stm->bindValue(':date', $date);
         $stm->execute();
+        var_dump( $stm);
 
         //if form filled in correctly
         if (!empty($username) && !empty($email) && !empty($firstName) && !empty($lastName) && !empty($password)) {
             //check of die mail/username al bestaaan
 
 
-            header('Location: index.php');
+            //header('Location: index.php');
         } else {
             echo "error: form not filled in correctly";
         }
