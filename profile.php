@@ -129,7 +129,7 @@ if (!empty($_POST['deleteFilterBtn'])) {
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
 
         <?php include("header.inc.php") ?>
 
@@ -171,48 +171,57 @@ if (!empty($_POST['deleteFilterBtn'])) {
 
         <hr>
 
-        <!-- toon de profiel statistieken -->
-        <div class="profileStats">
-            <p>COMMENTS GIVEN: <?php echo htmlspecialchars($commentStat["COUNT(*)"]) ?></p>
-            <p>PEOPLE FOLLOWED: <?php echo htmlspecialchars($followerStat["COUNT(*)"]) ?></p>
-            <p>LIKES GIVEN: <?php echo htmlspecialchars($likesStat["COUNT(*)"]) ?></p>
-            <p>ACCOUNT CREATED: <?php echo htmlspecialchars($dateStat['created']) ?></p>
+        <div class=" row profileStats">
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><p>COMMENTS GIVEN: <br> <span><?php echo htmlspecialchars($commentStat["COUNT(*)"]) ?></span> </p></div>
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><p>PEOPLE FOLLOWED: <br> <span><?php echo htmlspecialchars($followerStat["COUNT(*)"]) ?></span> </p></div>
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><p>LIKES GIVEN: <br> <span><?php echo htmlspecialchars($likesStat["COUNT(*)"]) ?></span> </p></div>
+        <div class="col-sm-6 col-md-4 col-lg-3 item"><p>ACCOUNT CREATED: <br> <span><?php echo htmlspecialchars($dateStat['created']) ?></span> </p></div>
+
         </div>
 
-        <div class="imageOverview">
-            <!-- loop over alle posts en als het userId van de post gelijk is aan de id in de url toon dan de image van deze post -->
-            <?php foreach ($postsId as $post) : ?>
-                <?php if ($post['userId'] == $_GET['id']) : ?>
-                    <div class="row">
-                        <div class="col-5 d-flex flex">
-                            <div class="imageContainer">
-                                <figure class="<?php echo htmlspecialchars($post['filter']) ?>">
-                                    <img src="./postImages/<?php echo htmlspecialchars($post['image']) ?>" alt="">
+        <div class="container">
+            <div class="row photos">
+
+                <?php foreach ($postsId as $post) : ?>
+                    <?php if ($post['userId'] == $_GET['id']) : ?>
+                        <div class="col-sm-6 col-md-4 col-lg-3 item">
+                                <figure class="<?php echo htmlspecialchars($post['filter']) ?> ">
+                                    <img class="test2" src="./postImages/<?php echo htmlspecialchars($post['image']) ?>" alt="">
                                 </figure>
-                                <!-- als het bezochte profiel het eigen profiel is toon dan de delete foto en remove filter button - als het een ander profiel is niet -->
-                                <?php if ($profile === 'myProfile') : ?>
-                                    <form action="" method="POST">
-                                        <input type="hidden" name="deletePost" value="<?php echo htmlspecialchars($post['image']) ?>">
-                                        <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
-                                    </form>
-                                    <br>
-                                    <form action="" method="POST">
-                                        <input type="hidden" name="deleteFilter" value="<?php echo htmlspecialchars($post['image']) ?>">
-                                        <input type="submit" class="btn btn-danger btnDelete" value="remove filter" name="deleteFilterBtn">
-                                    </form>
+                            <!-- als het bezochte profiel het eigen profiel is toon dan de delete foto en remove filter button - als het een ander profiel is niet -->
+                            <?php if ($profile === 'myProfile') : ?>
+                                <form action="" method="POST">
+                                    <input type="hidden" name="deletePost" value="<?php echo htmlspecialchars($post['image']) ?>">
+                                    <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
+                                </form>
+                                <br>
+                                <form action="" method="POST">
+                                    <input type="hidden" name="deleteFilter" value="<?php echo htmlspecialchars($post['image']) ?>">
+                                    <input type="submit" class="btn btn-danger btnDelete" value="remove filter" name="deleteFilterBtn">
+                                </form>
                                 <?php endif; ?>
-                            <?php endif; ?>
-                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endif; ?>
+            <?php endforeach; ?>
+
+
+            </div>
 
         </div>
 
-        <?php include('nav.inc.php') ?>
+        <!-- toon de profiel statistieken -->
 
 
-        <script src="./javascript/profile.js"></script>
+
+      
+    </div>
+
+
+
+    <?php include('nav.inc.php') ?>
+
+
+    <script src="./javascript/profile.js"></script>
 
 </body>
 

@@ -96,7 +96,7 @@ foreach ($comments as $comment) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
     <!--overriding DEBUFF css-->
-    <link rel="stylesheet" href="css/debuffStyle.css">
+     <link rel="stylesheet" href="css/debuffStyle.css">
 
     <!--cssGram css-->
     <link rel="stylesheet" href="./css/cssGram.css">
@@ -109,8 +109,9 @@ foreach ($comments as $comment) {
 
 <!-- loop door alle gevraagde posts en print de layout hiervoor -->
     <?php foreach ($posts as $post) : ?>
-
-        <article>
+<div class="row">
+<div class="col">
+<article>
             <div class="feedProfileInfo">
 <!-- loopt door alle users -->
                 <?php foreach ($users as $user) : ?>
@@ -171,6 +172,10 @@ foreach ($comments as $comment) {
             <?php endforeach; ?>
             <hr>
         </article>
+</div>
+
+</div>
+ 
 
     <?php endforeach; ?>
 
