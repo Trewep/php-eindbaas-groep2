@@ -18,13 +18,13 @@ if(!empty($_POST)){
         $f->deleteLike();
     }
 
-    //$response= [
-    //    'status'=> 'success',
-   //     'btn_state' => $_POST['btn_value'],
-   //     'message' => 'Like added'
-  //  ];
+$response= [
+       'status'=> 'success',
+       'btn_state' => $_POST['btn_value'],
+        'message' => 'Like added'
+   ];
 
-  $response= $_POST;
+  //$response= $_POST;
     header('Content-Type: application/json');
     echo json_encode($response);
 

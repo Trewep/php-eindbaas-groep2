@@ -1,3 +1,4 @@
+let numberOfLikes = document.querySelectorAll('.countLikes');
 let allLikeButtons = document.querySelectorAll('.like');
 
 for (i = 0; i < allLikeButtons.length; i++) {
@@ -8,12 +9,10 @@ function setLike(e) {
     let btn_value = e.target.src;
     let userId = this.dataset.userid;
     let postId = this.dataset.postid;
-   // let numberOfLikes = document.querySelector('.countLikes').innerHTML;
-    //console_log(numberOfLikes)
+    let counter = e.path[0].attributes[2].nodeValue;
+    let currentSpan = numberOfLikes[counter];
+   // console.log(counter);
     let formData = new FormData();
-
-    formData.append('userId', userId);
-    formData.append('postId', postId);
 
     if (e.target.src == "http://localhost/php-project/php-eindbaas-groep2/assets/icons/redIcons/type=heart,%20state=selected.svg") {
         e.target.src = "./assets/icons/blackIcons/type=heart, state=Default.svg";
@@ -25,8 +24,10 @@ function setLike(e) {
         btn_value = "like";
         //numberOfLikes++;
     }
+    formData.append('userId', userId);
+    formData.append('postId', postId);
     formData.append('btn_value', btn_value);
-
+    
     fetch('ajax/like.php', {
             method: "POST",
             body: formData
@@ -34,7 +35,13 @@ function setLike(e) {
 
         .then(response => response.json())
         .then(result => {
-
+            let countLike = currentSpan.innerText;
+            if (result["btn_state"] == "like") {
+                countLike++;
+            } else {
+                countLike--;
+            }
+            currentSpan.innerHTML = countLike;
         })
         .catch(error => {
             console.error('error', error);

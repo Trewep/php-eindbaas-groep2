@@ -72,11 +72,10 @@ foreach($comments as $comment){
 
 <body>
     <?php include("./header.inc.php") ?>
-
+    <?php $counter =0; ?>
     <?php foreach ($posts as $post) : ?>
         <?php $like = Post::isLiked($post['id'],$_SESSION["userId"]);
             //var_dump($_SESSION["userId"]);
-            
         ?>
 
 <article>
@@ -96,6 +95,7 @@ foreach($comments as $comment){
 
                 <p>...</p>
             <?php endif; ?>
+           
         <?php endforeach; ?>
     </div>
 
@@ -109,14 +109,14 @@ foreach($comments as $comment){
     <div class="feedInteractions">
         <div>
         <?php if ($like == NULL):?>
-        <img src="./assets/icons/blackIcons/type=heart, state=Default.svg" alt="" data-postid="<?php echo $post['id'] ?>" data-userid="<?php echo $_SESSION['userId']?>" class="like">
+        <img src="./assets/icons/blackIcons/type=heart, state=Default.svg" alt="" data-counter=" <?php echo $counter ?>"data-postid="<?php echo $post['id'] ?>" data-userid="<?php echo $_SESSION['userId']?>" class="like">
         <?php else:?>
-            <img src="./assets/icons/redIcons/type=heart, state=selected.svg" alt="" data-postid="<?php echo $post['id'] ?>" data-userid="<?php echo $_SESSION['userId']?>" class="like">
+            <img src="./assets/icons/redIcons/type=heart, state=selected.svg" alt="" data-counter= "<?php echo $counter ?>"data-postid="<?php echo $post['id'] ?>" data-userid="<?php echo $_SESSION['userId']?>" class="like">
         <?php endif;?>
         </div>
 
         <div>
-            <p><?php  echo (Like::getLikesByPostId($post['id'])) ?> likes</p>
+            <p><span class="countLikes" ><?php  echo (Like::getLikesByPostId($post['id'])) ?></span> likes</p>
         </div>
 
         <div>
@@ -140,7 +140,7 @@ foreach($comments as $comment){
     <?php endforeach; ?>
     <hr>
 </article>
-
+<?php $counter++; ?>
 <?php endforeach; ?>
 
 
