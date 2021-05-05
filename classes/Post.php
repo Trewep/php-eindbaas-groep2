@@ -52,5 +52,14 @@ class Post implements iPost{
         return $followersPosts;
 
     }
-    
+    public static function isLiked($postId, $userId){
+        $conn = Db::getConnection();
+    $statement = $conn->prepare("select * from Likes where postId = :postId AND userId =:userId");
+    $statement->bindValue(':postId',  $postId);
+    $statement->bindValue(':userId',  $userId);
+    $statement->execute();
+    $test = $statement->fetchAll();
+    //var_dump($test);
+    return $test;
+    }
 }

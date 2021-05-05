@@ -1,7 +1,7 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 
 session_start();
 include_once(__DIR__ . "/classes/Security.php");
@@ -14,13 +14,8 @@ include_once(__DIR__ . "/classes/Comment.php");
 include_once(__DIR__ . "/classes/User.php");
 include_once(__DIR__ . "/classes/Like.php");
 include_once(__DIR__ . "/functions.php");
-
-$likes = new Like();
-$likes = $likes->getLikesByUserId($_SESSION["userId"]);
-
-
-//var_dump($likes);
 $posts = new Post();
+$likes = new Like();
 
 $followers = new Follower();
 $followers = $followers->getFollowerByUserId($_SESSION["userId"]);
@@ -37,10 +32,10 @@ foreach ($followers as $follower) {
 
 
 if (!empty($followers)) {
-    echo 'full';
+    //echo 'full';
     $posts = $posts->get20lastFollowersPosts($array);
 } else {
-    echo 'empty';
+  //  echo 'empty';
     $posts = $posts->get20LastPosts();
 }
 
@@ -79,7 +74,10 @@ foreach($comments as $comment){
     <?php include("./header.inc.php") ?>
 
     <?php foreach ($posts as $post) : ?>
-
+        <?php $like = Post::isLiked($post['id'],$_SESSION["userId"]);
+            //var_dump($_SESSION["userId"]);
+            
+        ?>
 
 <article>
     <!-- hier moeten echte gegevns nog gelust worden door persoon die de feature om post te maken heeft-->
@@ -110,12 +108,15 @@ foreach($comments as $comment){
 
     <div class="feedInteractions">
         <div>
+        <?php if ($like == NULL):?>
         <img src="./assets/icons/blackIcons/type=heart, state=Default.svg" alt="" data-postid="<?php echo $post['id'] ?>" data-userid="<?php echo $_SESSION['userId']?>" class="like">
-  
+        <?php else:?>
+            <img src="./assets/icons/redIcons/type=heart, state=selected.svg" alt="" data-postid="<?php echo $post['id'] ?>" data-userid="<?php echo $_SESSION['userId']?>" class="like">
+        <?php endif;?>
         </div>
 
         <div>
-            <p><?php echo htmlspecialchars(count($likes)) ?> likes</p>
+            <p><?php  echo (Like::getLikesByPostId($post['id'])) ?> likes</p>
         </div>
 
         <div>

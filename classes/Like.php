@@ -92,26 +92,15 @@ public function getLikesByUserId($userId){
         return $test;
 
 }
-public  function getLikesByPostId(){
-    $postId = $this->getPostId();
+public static  function getLikesByPostId($postId){
+    //$postId = $this->getPostId();
     $conn = Db::getConnection();
-    $statement = $conn->prepare("select * from Likes where postId = :postId");
+    $statement = $conn->prepare("SELECT COUNT(id) FROM Likes WHERE postId = :postId");
     $statement->bindValue(':postId',  $postId);
     $statement->execute();
-    $test = $statement->fetchAll();
+    $testA = $statement->fetch();
+    $test = $testA["COUNT(id)"];
     //var_dump($test);
     return $test;
-
-}
-
-public function getLikesByUserId2($id){
-        $conn = Db::getConnection();
-        $result = $conn->prepare("select * from Likes where userId = :id");
-        $result->bindValue(':id', $id);
-        $result->execute();
-        return $result->fetchAll();
-
-
-
 }
 }
