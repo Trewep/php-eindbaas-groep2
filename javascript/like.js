@@ -10,7 +10,7 @@ function setLike(e) {
     let userId = this.dataset.userid;
     let postId = this.dataset.postid;
     let counter = e.path[0].attributes[2].nodeValue;
-    let currentSpan = numberOfLikes[counter];
+    let currentSpan = numberOfLikes[parseInt(counter)];
    // console.log(counter);
     let formData = new FormData();
 
@@ -48,4 +48,4 @@ function setLike(e) {
 
         });
 
-};
+}
