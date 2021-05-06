@@ -1,7 +1,21 @@
-<?php 
-session_start();
-include_once(__DIR__ . "/classes/Security.php");
-Security::mustBeLoggedIn();
+<?php
+ //includes
+    include_once(__DIR__ . "/classes/Post.php");
+    include_once(__DIR__ . "/classes/Security.php");
+    include_once(__DIR__ . "/classes/User.php");
+ //session
+    session_start();
+    $_SESSION["userId"];
+//acces control
+    Security::mustBeAdmin();
+//show inappropriate posts
+    $posts = new Post();
+    $posts = $posts->getInappropriatePosts();
+//show user info
+$users = new User();
+$users = $users->getAllUsers();
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +35,43 @@ Security::mustBeLoggedIn();
     <!--design pagina: https://www.figma.com/proto/jzjm99ggCTUSNv7ITLuLZl/PHP-project-DEBUFF?node-id=3%3A187&viewport=444%2C-1081%2C0.47289735078811646&scaling=scale-down-->
 </head>
 <body>
-    
+    <?php include("./header.inc.php") ?>
+    <?php foreach ($posts as $post) : ?>
+        <?php $like = Post::isLiked($post['id'],$_SESSION["userId"]);
+            //var_dump($_SESSION["userId"]);
+        ?>
+
+<article>
+    <!-- hier moeten echte gegevns nog gelust worden door persoon die de feature om post te maken heeft-->
+    <div class="feedProfileInfo">
+        <?php foreach ($users as $user) : ?>
+            <?php if ($post['userId'] === $user['id']) : ?>
+                <?php if ($user['profileImage'] === 'defaultAvatar') : ?>
+                    <div><img class="feedProfile" src="./assets/images/default-profile-picture.jpg" alt=""></div>
+                <?php else : ?>
+                    <div><img class="feedProfile" src="./uploads/<?php echo htmlspecialchars($user['profileImage']) ?>" alt=""></div>
+                <?php endif; ?>
+                <div>
+                    <h1> <a class="feedLink" href="profile.php?id=<?php echo htmlspecialchars($post["userId"]) ?>"><?php echo htmlspecialchars($user['username']) ?> </a></h1>
+                    <p>location</p>
+                </div>
+
+                <p>...</p>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+
+    <div>
+        <p>hier komt description</p>
+        <p>hier komen tags</p>
+    </div>
+
+    <img class="feedImage" src="./assets/images/<?php echo htmlspecialchars($post['image']) ?>" alt="">
+
+    <hr>
+</article>
+<?php endforeach; ?>
+
+        <?php include('nav.inc.php') ?>
 </body>
 </html>

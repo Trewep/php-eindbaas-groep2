@@ -57,7 +57,7 @@ class Like implements iLike{
         $userId = $this->getUserId();
         $postId = $this->getPostId();
         $conn = Db::getConnection();
-        $statement = $conn->prepare("insert into Likes (userId, postId) values (:userId, :postId)");
+        $statement = $conn->prepare("INSERT INTO Likes (userId, postId) VALUES(:userId, :postId)");
         $statement->bindValue(':userId', $userId );
         $statement->bindValue(':postId',  $postId);
         $result = $statement->execute();
@@ -70,7 +70,7 @@ class Like implements iLike{
         $postId = $this->getPostId();
 
         $conn = Db::getConnection();
-        $statement = $conn->prepare("delete from Likes where userId = :userId and postId = :postId");
+        $statement = $conn->prepare("DELETE FROM Likes WHERE userId = :userId AND postId = :postId");
         $statement->bindValue(':userId', $userId );
         $statement->bindValue(':postId',  $postId);
         $result = $statement->execute();
@@ -83,7 +83,7 @@ public function getLikesByUserId($userId){
        $postId = $this->getPostId();
         
         $conn = Db::getConnection();
-        $statement = $conn->prepare("select * from Likes where userId = :userId");
+        $statement = $conn->prepare("SELECT *FROM Likes WHERE userId = :userId");
         $statement->bindValue(':userId', $userId );
         //$statement->bindValue(':postId',  $postId);
         $statement->execute();

@@ -99,7 +99,7 @@ public function getFollowerByUserId(){
          $statement->bindValue(':followerId',  $followerId);
          $statement->execute();
          $test = $statement->fetch();
-                 var_dump($test);
+                // var_dump($test);
         return $test;
 
 }

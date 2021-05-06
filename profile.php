@@ -11,8 +11,6 @@ Security::mustBeLoggedIn();
 $_SESSION["userId"];
 //var_dump($_SESSION["userId"]);
 
-
-
 include_once(__DIR__ . "/classes/User.php");
 include_once(__DIR__ . "/classes/Follower.php");
 include_once(__DIR__ . "/classes/Post.php");
@@ -31,14 +29,11 @@ if (!empty($_GET['id'])) {
 } else {
 }
 
-
-
-
 $follower = new Follower();
 $follower->setFollowerId($_GET['id']);
 $follower->setUserId($_SESSION["userId"]);
 $follower = $follower->getFollowerByUserId();
-var_dump($follower);
+//var_dump($follower);
 
 if($follower != null){
 if($follower['followerId'] === $_GET['id'] ){
@@ -51,22 +46,6 @@ if($follower['followerId'] === $_GET['id'] ){
             $followerButton = 'follow';
 
 }
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
 
 if (!empty($_POST)) {
 

@@ -39,9 +39,6 @@ class Post implements iPost{
     }
 
     public function get20lastFollowersPosts($id){
-        
-    
-       
         $ids = join(', ', $id);
         $conn = Db::getConnection();
         // get all posts from followers in $ids array in descending order and limited by 20 most recent
@@ -50,10 +47,9 @@ class Post implements iPost{
         // save posts 
         $followersPosts = $result->fetchAll();
         return $followersPosts;
-
     }
     public static function isLiked($postId, $userId){
-        $conn = Db::getConnection();
+    $conn = Db::getConnection();
     $statement = $conn->prepare("select * from Likes where postId = :postId AND userId =:userId");
     $statement->bindValue(':postId',  $postId);
     $statement->bindValue(':userId',  $userId);
@@ -61,5 +57,15 @@ class Post implements iPost{
     $test = $statement->fetchAll();
     //var_dump($test);
     return $test;
+    }
+
+    public function getInappropriatePosts(){
+        $conn = Db::getConnection();
+        // get all inappropriatePosts
+        $result = $conn->prepare("SELECT * FROM Posts WHERE inappropriate = 1");
+        $result->execute();
+        // save posts 
+        $inappropriatePosts = $result->fetchAll();
+        return $inappropriatePosts;
     }
 }
