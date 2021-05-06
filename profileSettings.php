@@ -17,9 +17,13 @@ $user = User::getUserById($_SESSION["userId"]);
 
 if(!empty($_POST ["editEmail"])){
 $editEmail = $_POST['editEmail'];
-
 $u = new User;
 $u->updateEmail($id, $editEmail);
+}
+if(!empty($_POST ["privatecheck"])){
+    $privatecheck = $_POST['privatecheck'];
+    $u = new User;
+    $u->privateAccount($id, $privatecheck);
 }
 ?>
 
@@ -112,14 +116,29 @@ $u->updateEmail($id, $editEmail);
 
                 <div class="col-1"></div>
 
-              
-
                 <div class="col-5 d-flex justify-content-end ">
                     <form action="" method="post" >
                         <label for="editEmail">Change e-mail</label>
                         <input type="email" name="editEmail" id="email"placeholder="<?php echo htmlspecialchars($user['email']) ?>">
                         <input type="submit" value="Update Email" name="submitEmail">
                     </form>
+                </div>
+                <div class="col-5 d-flex justify-content-end ">
+                <?php var_dump($user['private'])?>
+                <?php if($user['private'] ==1): ?>
+                    <form action="" method="post" >
+                        <label for="privatecheck">Private account?</label>
+                        <input type="checkbox" name="privatecheck" id="privatecheck"checked>
+                        <input type="submit" value="Confirm private" name="confirmPrivate">
+                    </form>
+                    <?php endif ?>
+                    <?php if($user['private'] ==0): ?>
+                    <form action="" method="post" >
+                        <label for="privatecheck">Private account?</label>
+                        <input type="checkbox" name="privatecheck" id="privatecheck">
+                        <input type="submit" value="Confirm private" name="confirmPrivate">
+                    </form>
+                    <?php endif ?>
                 </div>
 
                 <div class="col-1"></div>

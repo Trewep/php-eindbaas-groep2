@@ -16,7 +16,9 @@ include_once(__DIR__ . "/classes/Follower.php");
 include_once(__DIR__ . "/classes/Post.php");
 
 $profile = 'myProfile';
-
+//$user = new User;
+//$user= getAllUsers();
+//var_dump($user['private']);
 
 if (!empty($_GET['id'])) {
     if ($_GET['id'] == $_SESSION['userId']) {
@@ -79,12 +81,6 @@ if (!empty($_POST['deletePostBtn'])) {
     } else {
     }
 }
-
-
-
-
-
-
 
 ?>
 
@@ -151,8 +147,8 @@ if (!empty($_POST['deletePostBtn'])) {
 
 
         <hr>
-        
-        <div class="imageOverview">
+        <?php if($user['private'] ==1  && $followerButton = 'unfollow'):?>
+                <div class="imageOverview">
             <?php foreach ($postsId as $post) : ?>
                 <?php if($post['userId'] == $_GET['id']):?>
                                     <?php //var_dump($post['userId'])?>
@@ -175,7 +171,34 @@ if (!empty($_POST['deletePostBtn'])) {
             <?php endforeach; ?>
 
         </div>
+            <?php endif; ?>
 
+            <?php if($user['private'] ==0):?>
+                <div class="imageOverview">
+            <?php foreach ($postsId as $post) : ?>
+                <?php if($post['userId'] == $_GET['id']):?>
+                                    <?php //var_dump($post['userId'])?>
+                <div class="row">
+                    <div class="col-5 d-flex flex">
+                        <div class="imageContainer">
+                            <img src="./uploads/<?php echo htmlspecialchars($post['image'])?>" alt="">
+                            <?php if ($profile === 'myProfile') : ?>
+                            <form action="" method="POST">
+                                <input type="hidden" name="deletePost" value="<?php echo htmlspecialchars($post['image'])?>">
+                                <input type="submit" class="btn btn-danger btnDelete" value="delete" name="deletePostBtn">
+                            </form>
+                            <?php endif; ?>
+                            <?php endif; ?>
+
+
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+
+        </div>
+            <?php endif; ?>
+            
         <?php include('nav.inc.php') ?>
 
 

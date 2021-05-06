@@ -41,7 +41,7 @@ class User implements iUser {
 
 
     /**
-     * Set the value of avatar
+     * Set the value of email
      *
      * @return  self
      */ 
@@ -50,7 +50,24 @@ class User implements iUser {
 
         return $this;
     }
-    
+             /**
+     * Get private account
+     */ 
+    public function getPrivateAccount(){
+        return $this->privateAccount;
+    }
+
+
+    /**
+     * Set the value of avatar
+     *
+     * @return  self
+     */ 
+    public function setPrivateAccount($privatecheck){
+        $this->privateAccount = $privatecheck;
+
+        return $this;
+    }
     
     public function getAllUsers(){
         $conn = Db::getConnection();
@@ -209,6 +226,21 @@ public function getUserByUsername($username, $password){
             return false;
         }
         
+    }
+    public function privateAccount($id, $privatecheck){
+        $conn = Db::getConnection();
+        //var_dump($privatecheck);
+        if($privatecheck == "on"){
+            $statement = $conn->prepare("update Users set private=:private where id = :id ");
+            $statement->bindValue(':private', 1);
+            $statement->bindValue(':id', $id);
+            $statement->execute();
+        }else{
+            $statement = $conn->prepare("update Users set private=:private where id = :id ");
+            $statement->bindValue(':private', 0);
+            $statement->bindValue(':id', $id);
+            $statement->execute();
+        }
     }
    
 }
