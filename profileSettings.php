@@ -20,14 +20,21 @@ $editEmail = $_POST['editEmail'];
 $u = new User;
 $u->updateEmail($id, $editEmail);
 }
-if(!empty($_POST ["privatecheck"])){
-    $privatecheck = $_POST['privatecheck'];
+/*if(!empty($_POST ["privatecheck"])){
+   
     $u = new User;
+    $u->privateAccount($id, $privatecheck);
+} */
+    $u = new User;
+    
+if(!isset($_POST ["privatecheck"])){
+    $privatecheck = 0;
+    $u->privateAccount($id, $privatecheck);
+} else {
+    $privatecheck = $_POST['privatecheck'];
     $u->privateAccount($id, $privatecheck);
 }
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -131,8 +138,8 @@ if(!empty($_POST ["privatecheck"])){
                         <input type="checkbox" name="privatecheck" id="privatecheck"checked>
                         <input type="submit" value="Confirm private" name="confirmPrivate">
                     </form>
-                    <?php endif ?>
-                    <?php if($user['private'] ==0): ?>
+                    
+                    <?php elseif($user['private'] ==0): ?>
                     <form action="" method="post" >
                         <label for="privatecheck">Private account?</label>
                         <input type="checkbox" name="privatecheck" id="privatecheck">

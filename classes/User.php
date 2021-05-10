@@ -229,7 +229,7 @@ public function getUserByUsername($username, $password){
     }
     public function privateAccount($id, $privatecheck){
         $conn = Db::getConnection();
-        //var_dump($privatecheck);
+        var_dump($privatecheck);
         if($privatecheck == "on"){
             $statement = $conn->prepare("update Users set private=:private where id = :id ");
             $statement->bindValue(':private', 1);
