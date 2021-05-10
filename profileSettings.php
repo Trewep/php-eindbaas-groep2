@@ -14,10 +14,9 @@ include_once(__DIR__ . "/functions.php");
 
 
 $user = User::getUserById($_SESSION["userId"]);
-
+$u = new User;
 if(!empty($_POST ["editEmail"])){
 $editEmail = $_POST['editEmail'];
-$u = new User;
 $u->updateEmail($id, $editEmail);
 }
 /*if(!empty($_POST ["privatecheck"])){
@@ -25,13 +24,12 @@ $u->updateEmail($id, $editEmail);
     $u = new User;
     $u->privateAccount($id, $privatecheck);
 } */
-    $u = new User;
     
-if(!isset($_POST ["privatecheck"])){
-    $privatecheck = 0;
+if(!empty($_POST["privatecheck"])){
+    $privatecheck = 1;
     $u->privateAccount($id, $privatecheck);
 } else {
-    $privatecheck = $_POST['privatecheck'];
+    $privatecheck = 0;
     $u->privateAccount($id, $privatecheck);
 }
 ?>
@@ -131,15 +129,15 @@ if(!isset($_POST ["privatecheck"])){
                     </form>
                 </div>
                 <div class="col-5 d-flex justify-content-end ">
-                <?php var_dump($user['private'])?>
-                <?php if($user['private'] ==1): ?>
+                <?php var_dump($user['privateAccount'])?>
+                <?php if($user['privateAccount'] ==1): ?>
                     <form action="" method="post" >
                         <label for="privatecheck">Private account?</label>
                         <input type="checkbox" name="privatecheck" id="privatecheck"checked>
                         <input type="submit" value="Confirm private" name="confirmPrivate">
                     </form>
                     
-                    <?php elseif($user['private'] ==0): ?>
+                    <?php elseif($user['privateAccount'] ==0): ?>
                     <form action="" method="post" >
                         <label for="privatecheck">Private account?</label>
                         <input type="checkbox" name="privatecheck" id="privatecheck">

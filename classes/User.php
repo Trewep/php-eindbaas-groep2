@@ -117,7 +117,7 @@ class User implements iUser {
                     if($passwordVerify === $password){
                     
                     $_SESSION["username"] = $username;
-                    $_SESSION["userId"] = $userId;
+                  
                     
                     
                     //password cost & hash
@@ -229,15 +229,15 @@ public function getUserByUsername($username, $password){
     }
     public function privateAccount($id, $privatecheck){
         $conn = Db::getConnection();
-        var_dump($privatecheck);
-        if($privatecheck == "on"){
-            $statement = $conn->prepare("update Users set private=:private where id = :id ");
-            $statement->bindValue(':private', 1);
+        if($privatecheck == 0){
+            $statement = $conn->prepare("UPDATE Users SET privateAccount=0 WHERE id = :id");
+            //$statement->bindValue(':private', 0);
             $statement->bindValue(':id', $id);
             $statement->execute();
-        }else{
-            $statement = $conn->prepare("update Users set private=:private where id = :id ");
-            $statement->bindValue(':private', 0);
+        }elseif ($privatecheck == 1){
+            var_dump("we zijn hier");
+            $statement = $conn->prepare("UPDATE Users SET privateAccount=1 WHERE id = :id");
+            //$statement->bindValue(':private', 1);
             $statement->bindValue(':id', $id);
             $statement->execute();
         }
