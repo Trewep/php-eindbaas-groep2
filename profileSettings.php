@@ -24,14 +24,17 @@ $u->updateEmail($id, $editEmail);
     $u = new User;
     $u->privateAccount($id, $privatecheck);
 } */
-    
+    //if clicked on button confirmPrivate
+    //check of checked of not
+    //update db
+    if (isset($_POST["confirmPrivate"])){
 if(!empty($_POST["privatecheck"])){
     $privatecheck = 1;
     $u->privateAccount($id, $privatecheck);
 } else {
     $privatecheck = 0;
     $u->privateAccount($id, $privatecheck);
-}
+}}
 ?>
 <!DOCTYPE html>
 <html lang="en">

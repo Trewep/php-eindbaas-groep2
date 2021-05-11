@@ -17,11 +17,6 @@ include_once(__DIR__ . "/classes/Post.php");
 
 $profile = 'myProfile';
 $users = new User;
-$users-> getAllUsers();
-
-foreach ($users as $u){
-    $user = $u['privateAccount'];
-}
 
 if (!empty($_GET['id'])) {
     if ($_GET['id'] == $_SESSION['userId']) {
@@ -150,7 +145,7 @@ if (!empty($_POST['deletePostBtn'])) {
 
 
         <hr>
-        <?php if($user ==1  && $followerButton = 'unfollow'):?>
+        <?php if($user['privateAccount'] ==1  && $followerButton == 'unfollow'):?>
                 <div class="imageOverview">
             <?php foreach ($postsId as $post) : ?>
                 <?php if($post['userId'] == $_GET['id']):?>
@@ -176,7 +171,7 @@ if (!empty($_POST['deletePostBtn'])) {
         </div>
             
 
-            <?php elseif($user ==0):?>
+            <?php elseif($user['privateAccount'] ==0):?>
                 <div class="imageOverview">
             <?php foreach ($postsId as $post) : ?>
                 <?php if($post['userId'] == $_GET['id']):?>
