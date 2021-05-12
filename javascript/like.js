@@ -11,18 +11,20 @@ function setLike(e) {
     let postId = this.dataset.postid;
     let counter = e.path[0].attributes[2].nodeValue;
     let currentSpan = numberOfLikes[parseInt(counter)];
-   // console.log(counter);
+    
     let formData = new FormData();
-
-    if (e.target.src == "http://localhost/php-project/php-eindbaas-groep2/assets/icons/redIcons/type=heart,%20state=selected.svg") {
-        e.target.src = "./assets/icons/blackIcons/type=heart, state=Default.svg";
+console.log(e.target.src);
+    if (e.target.src == "http://bbchaacht.be/phpFluppe/assets/icons/redIcons/type=heart,%20state=selected.svg") {
+                        //http://bbchaacht.be/php/php-eindbaas-groep2/assets/icons/redIcons/type=heart,%20state=selected.svg
+        e.target.src = "./assets/icons/blackIcons/type=heart,%20state=Default.svg";
+       // console.log(e.target.src);
         btn_value = "unlike";
-        //numberOfLikes--;
+        
 
     } else {
-        e.target.src = "./assets/icons/redIcons/type=heart, state=selected.svg";
+        e.target.src = "./assets/icons/redIcons/type=heart,%20state=selected.svg";
         btn_value = "like";
-        //numberOfLikes++;
+        
     }
     formData.append('userId', userId);
     formData.append('postId', postId);
@@ -36,7 +38,7 @@ function setLike(e) {
         .then(response => response.json())
         .then(result => {
             let countLike = currentSpan.innerText;
-            if (result["btn_state"] == "like") {
+            if (result['btn_state'] == "like") {
                 countLike++;
             } else {
                 countLike--;

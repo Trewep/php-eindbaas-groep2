@@ -3,6 +3,8 @@
     include_once(__DIR__ . "/classes/Post.php");
     include_once(__DIR__ . "/classes/Security.php");
     include_once(__DIR__ . "/classes/User.php");
+    include_once(__DIR__ . "/classes/Tag.php");
+    include_once(__DIR__ . "/classes/Comment.php");
  //session
     session_start();
     $_SESSION["userId"];
@@ -14,7 +16,12 @@
 //show user info
 $users = new User();
 $users = $users->getAllUsers();
-
+//show tags
+$tags = new Tag();
+$tags = $tags->getTags();
+//show comments
+$comments = new Comment();
+$comments = $comments->getAllComments();
 
 ?>
 <!DOCTYPE html>
@@ -35,41 +42,62 @@ $users = $users->getAllUsers();
     <!--design pagina: https://www.figma.com/proto/jzjm99ggCTUSNv7ITLuLZl/PHP-project-DEBUFF?node-id=3%3A187&viewport=444%2C-1081%2C0.47289735078811646&scaling=scale-down-->
 </head>
 <body>
-    <?php include("./header.inc.php") ?>
+   <?php include("./header.inc.php") ?>
+    <?php include("./desktopnav.inc.php")?>
     <?php foreach ($posts as $post) : ?>
-        <?php $like = Post::isLiked($post['id'],$_SESSION["userId"]);
-            //var_dump($_SESSION["userId"]);
-        ?>
-
 <article>
-    <!-- hier moeten echte gegevns nog gelust worden door persoon die de feature om post te maken heeft-->
-    <div class="feedProfileInfo">
-        <?php foreach ($users as $user) : ?>
-            <?php if ($post['userId'] === $user['id']) : ?>
-                <?php if ($user['profileImage'] === 'defaultAvatar') : ?>
-                    <div><img class="feedProfile" src="./assets/images/default-profile-picture.jpg" alt=""></div>
-                <?php else : ?>
-                    <div><img class="feedProfile" src="./uploads/<?php echo htmlspecialchars($user['profileImage']) ?>" alt=""></div>
-                <?php endif; ?>
-                <div>
-                    <h1> <a class="feedLink" href="profile.php?id=<?php echo htmlspecialchars($post["userId"]) ?>"><?php echo htmlspecialchars($user['username']) ?> </a></h1>
-                    <p>location</p>
-                </div>
+                    <div class="articleBorder">
+                        <div class="feedProfileInfo">
+                            <!-- loopt door alle users -->
+                            <?php foreach ($users as $user) : ?>
+                                <!-- als de userId bij een post gelijk is aan een id van een users print dan profile image en gebruikersnaam -->
+                                <?php if ($post['userId'] === $user['id']) : ?>
+                                    <?php if ($user['profileImage'] === 'defaultAvatar') : ?>
+                                        <div><img class="feedProfile" src="./assets/images/default-profile-picture.jpg" alt=""></div>
+                                    <?php else : ?>
+                                        <div><img class="feedProfile" src="./uploads/<?php echo htmlspecialchars($user['profileImage']) ?>" alt=""></div>
+                                    <?php endif; ?>
+                                    <div>
+                                        <h1> <a class="feedLink" href="profile.php?id=<?php echo htmlspecialchars($post["userId"]) ?>"><?php echo htmlspecialchars($user['username']) ?> </a></h1>
+                                        <p><?php echo htmlspecialchars($post['location']) ?></p>
+                                    </div>
+                                    <p>...</p>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                        <!-- print de post description -->
+                        <div>
+                            <p><?php echo htmlspecialchars($post['description']) ?></p>
+                            
+                            <?php foreach ($tags as $tag) : ?>
+                            <?php if ($post['tagId'] === $tag['id']) : ?>
+                            <a id="postTags" href="index.php?tag=<?php echo htmlspecialchars($tag['name']) ?>"><?php echo htmlspecialchars($tag['name']) ?></a>
+                            <?php endif; ?>
+                            <?php endforeach; ?>
 
-                <p>...</p>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    </div>
-
-    <div>
-        <p>hier komt description</p>
-        <p>hier komen tags</p>
-    </div>
-
-    <img class="feedImage" src="./assets/images/<?php echo htmlspecialchars($post['image']) ?>" alt="">
-
-    <hr>
-</article>
+                        </div>
+                        <!-- print de post image met bijhorende filter -->
+                        <figure class="<?php echo htmlspecialchars($post['filter']) ?>">
+                            <img class="feedImage" src="./postImages/<?php echo htmlspecialchars($post['image']) ?>" alt="">
+                        </figure>
+                    </div>
+                    <!-- loop door alle comments en toon al de comments en de moment waarop ze gepost zijn -->
+                    <?php foreach ($comments as $comment) : ?>
+                        <?php if ($comment['postId'] === $post['id']) : ?>
+                            <!-- als de userId bij een post gelijk is aan de userIdd van een comment print dan de gebruikersnaam -->
+                            <?php foreach ($users as $user) : ?>
+                                <?php if ($user['id'] === $comment['userId']) : ?>
+                                    <div class="comment">
+                                        <p><a class="feedLink commentName" href="profile.php?id=<?php echo htmlspecialchars($comment["userId"]) ?>">@<?php echo htmlspecialchars($user['username']) ?> </a></p>
+                                        <p><?php echo htmlspecialchars($comment['comment']) ?></p>
+                                        
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    <hr>
+                </article>
 <?php endforeach; ?>
 
         <?php include('nav.inc.php') ?>

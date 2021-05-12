@@ -1,61 +1,35 @@
 <?php
 
-session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include_once(__DIR__ . "/classes/Post.php");
 include_once(__DIR__ . "/classes/Security.php");
+
+session_start();
 Security::mustBeLoggedIn();
 $_SESSION["userId"];
 
-//wanneer op "Post image" geduwd wordt
-if(isset($_POST["submit"])) {
-    //het pad om de geuploade afbeelding in op te slagen
-    $target = "assets/testImages/" . basename($_FILES["uploadFile"]["name"]);
-    //het type bestand uitlezen zodat we later non-images kunnen tegenhouden
-    $imageFileType = strtolower(pathinfo($target,PATHINFO_EXTENSION));
-    //connectie naar db
-    $conn = new PDO('mysql:host=localhost;dbname=debuff', 'root', 'root');
-    //alle data ophalen uit het ingestuurde formulier
-    $filter = $_POST['filters'];
-
-    if($imageFileType === "jpg" || $imageFileType === "png") {
-        $image = $_FILES["uploadFile"]["name"];
-        //resizeImage($image, $imageFileType , 500);
-    } else {
-        $imageError = "Please choose a valid png or jpg file";
-    }
-    
-    //-----IMAGE FILTER PRUTSWERK-----
-    // if($imageFileType === "jpg") {
-    //     $image = imagecreatefromjpeg($_FILES["uploadFile"]["name"]);
-    //     imagefilter($image, $filter);
-    //     imagejpeg($image, "image.jpg");
-    // }
-    // $image = "new" . $_FILES["uploadFile"]["name"];
-    
-    if(!empty($_POST['description'])) {
+try {
+    //wanneer op "Post image" geduwd wordt
+    if(!empty($_POST["submit"])) {
+        $filter = $_POST['filters'];
         $description = $_POST['description'];
-    } else {
-        $descriptionError = "The description cannot be empty";
-    }
-    $location = $_POST['location'];
-    $tags = $_POST['tags'];
-    $postTime = time();
+        $tag = $_POST['tag'];
+        //var_dump($_POST['tag']);
 
-    //opgehaalde data opslagen in databank
-    $statement = $conn->prepare("INSERT INTO posts (image, imageFileType, description, location, tags, postTime) VALUES (:image, :imageFileType, :description, :location, :tags, :postTime)");
-    $statement->bindValue(":image", $image);
-    $statement->bindValue(":imageFileType", $imageFileType);
-    $statement->bindValue(":description", $description);
-    $statement->bindValue(":location", $location);
-    $statement->bindValue(":tags", $tags);
-    $statement->bindValue(":postTime", $postTime);
-    $statement->execute();
-    //geuploade afbeelding in de images folder zetten
-    if(move_uploaded_file($_FILES['uploadFile']['tmp_name'], $target)) {
-        $message = "Image uploaded succesfully. The image was a " . $imageFileType;
-    } else {
-        $message = "There was a problem posting the image";
+        $location = $_POST['location'];
+        
+        $post = new Post();
+        $post->addPost($_SESSION["userId"], $filter, $description, $tag, $location);
     }
+} catch (\Throwable $th) {
+    //toont errors bij een lege description of image, of bij een fout filetype
+    $error = $th->getMessage();
 }
+
+$filters = ['#nofilter','1977','Aden','brannan','brooklyn','clarendon','earlybird','gingham','hudson','inkwell','kelvin','lark','lo-Fi','maven','mayfair','moon',
+'nashville','perpetua','reyes','rise','slumber','stinson','toaster','valencia','walden','willow','x-pro II'];
 
 ?>
 
@@ -73,38 +47,31 @@ if(isset($_POST["submit"])) {
     <!--overriding DEBUFF css-->
     <link rel="stylesheet" href="css/debuffStyle.css">
 
-    <link rel="stylesheet" href="https://cssgram-cssgram.netdna-ssl.com/cssgram.min.css">
-
     <!--design pagina: https://www.figma.com/proto/jzjm99ggCTUSNv7ITLuLZl/PHP-project-DEBUFF?node-id=3%3A154&viewport=444%2C-1081%2C0.47289735078811646&scaling=scale-down-->
 </head>
 <body>
-    <header class="test"></header>
-
-    <figure class="kelvin">
-        <img src="./assets/images/adrienguh-Afm_5kfVUxM-unsplash.jpg">
-      </figure>
+    <?php include("./header.inc.php") ?>
+    <?php include("./desktopnav.inc.php")?>
 
     <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
     <!--enctype specifieert welk content type gebruikt moet worden wanneer het formulier gesubmit moet worden-->
+        <?php if(isset($error)): ?>
+            <p class="error"><?php echo $error ?></p>
+        <?php endif; ?>
         <h1>Upload photo</h1>
         <div id="uploadPhoto">
-            <?php if(isset($imageError)): ?>
-                <p class="error"><?php echo $imageError ?></p>
-            <?php endif; ?>
-            <img id="uploadIcon" src="assets/icons/blackIcons/cloud-computing.png" alt="">
+            <img id="uploadIcon" src="assets/icons/blackIcons/type=share, state=Default.svg" alt="">
             <input id="uploadFile" type="file" name="uploadFile">
         </div>
         <div id="uploadFilter">
             <label for="filters">Choose a filter:</label>
             <select id="filters" name="filters">
-              <option value="IMG_FILTER_NEGATE">Negative</option>
-              <option value="IMG_FILTER_GRAYSCALE">Grayscale</option>
+            <?php foreach($filters as $value):?>
+              <option value="<?php echo htmlspecialchars($value)?>"><?php echo htmlspecialchars($value)?></option>
+              <?php endforeach;?>
             </select>
         </div>
         <div id="uploadDescription" class="uploadText">
-            <?php if(isset($descriptionError)): ?>
-                <p class="error"><?php echo $descriptionError ?></p>
-            <?php endif; ?>
             <label for="description">Description</label>
             <textarea id="uploadDescriptionText" name="description" rows="4" cols="50" placeholder="Add a description"></textarea>
         </div>
@@ -114,29 +81,11 @@ if(isset($_POST["submit"])) {
         </div>
         <div id="uploadTags" class="uploadText">
             <label for="tags">Tags</label>
-            <input id="uploadTagsText" type="text" name="tags" placeholder="Add some tags">
+            <input id="uploadTagsText" type="text" name="tag" placeholder="Add a tag">
         </div>
         <input id="uploadSubmit" type="submit" value="Post image" name="submit">
     </form>
-    <div id="posts">
-        <?php
-            //db connectie om alle posts op te halen (inclusief de post die jij eventueel net gemaakt hebt)
-            $conn = new PDO('mysql:host=localhost;dbname=debuff', 'root', 'root');
-            $statement = $conn->query("SELECT * FROM posts ORDER BY id DESC");
-            $statement->execute();
-            $posts = $statement->fetchAll();
-        ?>
-        <?php foreach ($posts as $post): ?>
-            <div class="post">
-                <img id="postImage" src= <?php echo "assets/testImages/" . $post['image'] ?> alt="">
-                <p id="postDescription"><?php echo htmlspecialchars($post['description']) ?></p>
-                <p id="postLocation"><?php echo htmlspecialchars($post['location']) ?></p>
-                <!--Deze tag redirect naar een overview pagina waar alleen posts staan die deze tag hebben-->
-                <a id="postTags" href="tagOverview.php?tag=<?php echo htmlspecialchars($post['tags']) ?>"><?php echo "#" . htmlspecialchars($post['tags']) ?></a>
-                <p><?php echo $post['postTime'] ?></p>
-            </div>
-        <?php endforeach; ?>
-    </div>
-    <nav class="test"></nav>
+    <?php include('./desktopfooter.inc.php') ?>
+    <?php include('./nav.inc.php') ?>
 </body>
 </html>

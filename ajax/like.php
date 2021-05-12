@@ -11,21 +11,20 @@ if(!empty($_POST)){
     $f->setPostId($_POST['postId']);
 
     if($_POST['btn_value'] === "like"){
-       // echo 'we zijn hier';
+    
         $f->addLike();
     }else{
-        //echo 'we zijn hier haha';
+   
         $f->deleteLike();
     }
 
 $response= [
        'status'=> 'success',
        'btn_state' => $_POST['btn_value'],
-        'message' => 'Like added'
+        'message' =>$_POST['btn_value']
    ];
 
-  //$response= $_POST;
+
     header('Content-Type: application/json');
     echo json_encode($response);
-
 }

@@ -10,7 +10,7 @@ class Security{
     //control user is admin
     public static function mustBeAdmin(){
         $conn = Db::getConnection();
-        $stm = $conn->prepare("select * from Users where username = :username");
+        $stm = $conn->prepare("SELECT * FROM Users WHERE username = :username");
         $stm->bindValue(':username', $_SESSION['username']);
         $stm->execute();
         $user = $stm->fetch();

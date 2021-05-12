@@ -3,39 +3,128 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
+
 include_once(__DIR__ . "/classes/Security.php");
-Security::mustBeLoggedIn();
+Security::mustBeLoggedIn(); //not logged in no entry
 
-$id =$_SESSION["userId"];
-
+$id = $_SESSION["userId"];
 
 include_once(__DIR__ . "/classes/User.php");
-include_once(__DIR__ . "/functions.php");
 
 
-$user = User::getUserById($_SESSION["userId"]);
-$u = new User;
-if(!empty($_POST ["editEmail"])){
-$editEmail = $_POST['editEmail'];
-$u->updateEmail($id, $editEmail);
+//(profile)Image upload in directory and name in db
+$target_dir = "uploads/";
+
+if (!empty($_POST["submit"])) {
+
+    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 }
-/*if(!empty($_POST ["privatecheck"])){
-   
-    $u = new User;
-    $u->privateAccount($id, $privatecheck);
-} */
-    //if clicked on button confirmPrivate
-    //check of checked of not
-    //update db
-    if (isset($_POST["confirmPrivate"])){
-if(!empty($_POST["privatecheck"])){
+
+$error = '';
+
+// Check if image file is a actual image or fake image
+if (!empty($_POST["submit"])) {
+
+    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+    if ($check !== false) {
+        $uploadOk = 1;
+    } else {
+        $error = "File is not an image.";
+        $uploadOk = 0;
+    }
+
+    // Check if file already exists
+    if (file_exists($target_file)) {
+        $uploadOk = 1;
+    }
+
+    // Check file size
+    if ($_FILES["fileToUpload"]["size"] > 500000) {
+        $error = "Sorry, your file is too large.";
+        $uploadOk = 0;
+    }
+
+    // Allow certain file formats
+    if (
+        $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" && !empty($_FILES["file"]["name"])
+    ) {
+        $error = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        $uploadOk = 0;
+    }
+
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        // if everything is ok, try to upload file
+    } else {
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+            $avatar = basename($_FILES["fileToUpload"]["name"]);
+            $user = new User();
+            $user->setAvatar($avatar);
+            $user->setUserId($_SESSION["userId"]);
+            $user->uploadAvatar();
+        }
+    }
+}
+
+
+//Profile image delete in directory and name in db
+if (!empty($_POST['delete'])) {
+
+    if (array_key_exists('delete_avatar', $_POST)) {
+        $user = new User();
+        $user = $user->setUserId($_SESSION["userId"]);
+        $user->deleteAvatar();
+    } else {
+        $error = 'sorry your profile image has not been deleted please try again';
+    }
+    if (array_key_exists('delete_avatar', $_POST)) {
+        $filename = $_POST['delete_avatar'];
+        $file_dir = $target_dir . $filename;
+        unlink($file_dir);
+    }
+}
+
+//haal de gegevens op van de user aan de hand van het sessionId
+$user = new User;
+$user = $user->setUserId($_SESSION["userId"]);
+$user = $user->getUserById();
+$u = new User;
+  if (isset($_POST["confirmPrivate"])){
+    
+    if(!empty($_POST["privatecheck"])){
     $privatecheck = 1;
     $u->privateAccount($id, $privatecheck);
-} else {
+    } else {
     $privatecheck = 0;
     $u->privateAccount($id, $privatecheck);
-}}
+    }}
+
+if (!empty($_POST['submitEmail'])) {
+    $editEmail = $_POST['editEmail'];
+    $editFirstname = $_POST['editFirstname'];
+    $editLastname = $_POST['editLastname'];
+    $editBio = $_POST['editBio'];
+    
+    $u = new User;
+    
+    if ($u->validatePasswordRequirements($_POST['editPassword'])) {
+            $editPassword = $u->bcrypt($_POST['editPassword']);
+    }
+    $u->updateEmail($id, $editEmail);
+    $u->updateFirstname($id, $editFirstname);
+    $u->updateLastname($id, $editLastname);
+    $u->updateBio($id, $editBio);
+    $u->updatePassword($id, $editPassword);
+    
+}
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +132,7 @@ if(!empty($_POST["privatecheck"])){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/svg"  href="assets/logo/logoIcon/iconDarkRed.svg">
+    <link rel="shortcut icon" type="image/svg" href="assets/logo/logoIcon/iconDarkRed.svg">
     <title>Profile Settings</title>
     <!--bootstrap css-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
@@ -60,9 +149,11 @@ if(!empty($_POST["privatecheck"])){
 
     <body>
 
-    <?php include("./header.inc.php") ?>
+        <?php include("./header.inc.php") ?>
+        <?php include("./desktopnav.inc.php")?>
 
 
+        <!-- als er eem error is bij het uploaden van de avatar toon deze -->
         <?php if (isset($error)) : ?>
             <div class='row'>
                 <div class="col-1"></div>
@@ -73,24 +164,17 @@ if(!empty($_POST["privatecheck"])){
             </div>
         <?php endif; ?>
 
-
-
         <div class="profileSettingsImage">
-
             <div class="row">
-
                 <div class="col-1"></div>
-
                 <div class="col-5 d-flex justify-content-start ">
+                    <!-- check of de profielfoto van de eigenaar van het profiel gelijk is aan de defaultavatar of niet. Als het wels is wordt deze geprint anders de foto die in de db zit -->
                     <?php if ($user['profileImage'] === 'defaultAvatar') : ?>
-                        <img src="./assets/images/default-profile-picture.jpg" alt="">
+                        <img src="./assets/images/defaultAvatar.png" alt="">
                     <?php else : ?>
                         <img src="./uploads/<?php echo htmlspecialchars($user['profileImage']) ?>" alt="">
                     <?php endif; ?>
-
                 </div>
-
-
                 <div class="col-5 d-flex justify-content-end ">
                     <form action="" method="post" enctype="multipart/form-data">
                         <label for="fileToUpload">Change profile picture</label>
@@ -98,41 +182,49 @@ if(!empty($_POST["privatecheck"])){
                         <input type="submit" value="Upload Image" name="submit">
                     </form>
                 </div>
-
                 <div class="col-1"></div>
-
-
                 <div class="row">
                     <div class="col-12  d-flex justify-content-center">
-
                         <form action="" method="post">
                             <label for="deleteAvatar"> Delete profile Picture</label>
                             <input type="hidden" name="delete_avatar" value="<?php echo htmlspecialchars($user['profileImage']) ?>">
                             <button name="delete" type="submit" value="delete">Delete</button>
                         </form>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-                <div class="profileSettingsEmail">
-
+        <div class="profileSettingsEmail">
             <div class="row">
-
                 <div class="col-1"></div>
-
                 <div class="col-5 d-flex justify-content-end ">
-                    <form action="" method="post" >
+                    <form action="" method="post">
+                        
+                        <label for="editBio">Edit bio</label>
+                        <textarea type="text" name="editBio" id="editBio" placeholder="<?php echo htmlspecialchars($user['bio']) ?>"><?php echo htmlspecialchars($user['bio']) ?></textarea>
+                        
+                        <label for="editFirstname">Change first name</label>
+                        <input type="text" name="editFirstname" id="editFirstname" value="<?php echo htmlspecialchars($user['firstname']) ?>" placeholder="<?php echo htmlspecialchars($user['firstname']) ?>">
+    
+                        <label for="editLastname">Change last name</label>
+                        <input type="text" name="editLastname" id="editLastname" value="<?php echo htmlspecialchars($user['lastname']) ?>" placeholder="<?php echo htmlspecialchars($user['lastname']) ?>">
+                        
                         <label for="editEmail">Change e-mail</label>
-                        <input type="email" name="editEmail" id="email"placeholder="<?php echo htmlspecialchars($user['email']) ?>">
-                        <input type="submit" value="Update Email" name="submitEmail">
+                        <input type="email" name="editEmail" id="email" value="<?php echo htmlspecialchars($user['email']) ?>" placeholder="<?php echo htmlspecialchars($user['email']) ?>">
+                        
+                        <label for="editPassword">Change password</label>
+                        <input type="text" name="editPassword" id="editPassword" placeholder="New password">
+                        
+                        <?php if (isset($error)) : ?>
+                            <p><?php echo $error; ?></p>
+                        <?php endif; ?>
+                        
+                        <input type="submit" value="Update settings" name="submitEmail">
+                        <a href="logout.php">Log out</a>
                     </form>
                 </div>
                 <div class="col-5 d-flex justify-content-end ">
-                <?php var_dump($user['privateAccount'])?>
+                
                 <?php if($user['privateAccount'] ==1): ?>
                     <form action="" method="post" >
                         <label for="privatecheck">Private account?</label>
@@ -148,16 +240,13 @@ if(!empty($_POST["privatecheck"])){
                     </form>
                     <?php endif ?>
                 </div>
-
                 <div class="col-1"></div>
-
-
             </div>
-
         </div>
 
-
         <?php include('./nav.inc.php') ?>
+        <?php include('./desktopfooter.inc.php') ?>
+
 
     </body>
 

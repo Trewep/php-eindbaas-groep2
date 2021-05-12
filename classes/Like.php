@@ -2,11 +2,12 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include_once(__DIR__ . "/../interfaces/iLike.php");
+//include_once(__DIR__ . "/../interfaces/iLike.php");
 include_once(__DIR__ . "/Db.php");
 
 
-class Like implements iLike{
+class Like //implements iLike
+{
 
     private $userId;
     private $postId;
@@ -57,7 +58,7 @@ class Like implements iLike{
         $userId = $this->getUserId();
         $postId = $this->getPostId();
         $conn = Db::getConnection();
-        $statement = $conn->prepare("INSERT INTO Likes (userId, postId) VALUES(:userId, :postId)");
+        $statement = $conn->prepare("insert into Likes (userId, postId) values (:userId, :postId)");
         $statement->bindValue(':userId', $userId );
         $statement->bindValue(':postId',  $postId);
         $result = $statement->execute();
@@ -70,7 +71,7 @@ class Like implements iLike{
         $postId = $this->getPostId();
 
         $conn = Db::getConnection();
-        $statement = $conn->prepare("DELETE FROM Likes WHERE userId = :userId AND postId = :postId");
+        $statement = $conn->prepare("delete from Likes where userId = :userId and postId = :postId");
         $statement->bindValue(':userId', $userId );
         $statement->bindValue(':postId',  $postId);
         $result = $statement->execute();
@@ -83,12 +84,12 @@ public function getLikesByUserId($userId){
        $postId = $this->getPostId();
         
         $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT *FROM Likes WHERE userId = :userId");
+        $statement = $conn->prepare("select * from Likes where userId = :userId");
         $statement->bindValue(':userId', $userId );
         //$statement->bindValue(':postId',  $postId);
         $statement->execute();
         $test = $statement->fetchAll();
-         var_dump($test);
+         //var_dump($test);
         return $test;
 
 }
@@ -103,4 +104,18 @@ public static  function getLikesByPostId($postId){
     //var_dump($test);
     return $test;
 }
+
+ //haal het aantal rijen op waar de userId gelijk is aan de meegegeven id
+    public  function getLikeStats()
+    {
+
+        $userId = $this->getUserId();
+
+        $conn = Db::getConnection();
+        $result = $conn->prepare("select COUNT(*) from Likes where userId = :id");
+        $result->bindValue(':id',  $userId);
+        $result->execute();
+        $commentStats = $result->fetch();
+        return  $commentStats;
+    }
 }

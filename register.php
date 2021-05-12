@@ -1,25 +1,36 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', true);
 
 session_start();
 //add user class 
 include_once(__DIR__ . "/classes/User.php");
 
 //if form is submitted
-if (!empty($_POST)) {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $password = $_POST['password'];
-    $passwordVerify = $_POST['passwordVerify'];
-    
-    User::register($username, $email, $firstName, $lastName, $password, $passwordVerify);
+try {
+    if (!empty($_POST)) {
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $firstName = $_POST['firstName'];
+        $lastName = $_POST['lastName'];
+        $password = $_POST['password'];
+        $passwordVerify = $_POST['passwordVerify'];
+        $date = date("Y/m/d");
+
+
+        User::register($username, $email, $firstName, $lastName, $password, $passwordVerify,$date);
+    }
+}
+//als iets fout loopt/exception gebeurt dan:
+catch (\Throwable $th) {
+    $error = $th->getMessage();
 }
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,24 +53,39 @@ if (!empty($_POST)) {
         <div class="login">
             <form action="" method="POST" class="loginForm">
                 <label for="username">username</label>
-                <input type="text" class="loginInput" id="username" name="username" placeholder="debuffer">
-                
+                <?php if(!empty($_POST)): ?>
+                    <input type="text" class="loginInput" id="username" name="username" placeholder="debuffer" value="<?php echo $_POST['username']; ?>">
+                <?php else: ?>
+                    <input type="text" class="loginInput" id="username" name="username" placeholder="debuffer">
+                <?php endif; ?>
+
                 <label for="email">e-mail</label>
-                <input type="email" class="loginInput" id="email" name="email" placeholder="hello@debuff.com">
-                
+                <?php if(!empty($_POST)): ?>
+                    <input type="email" class="loginInput" id="email" name="email" placeholder="hello@debuff.com" value="<?php echo $_POST['email']; ?>">
+                <?php else: ?>
+                    <input type="email" class="loginInput" id="email" name="email" placeholder="hello@debuff.com">
+                <?php endif; ?>
+
                 <label for="firstName">first name</label>
-                <input type="text" class="loginInput" id="firstName" name="firstName" placeholder="John">
-                
+                <?php if(!empty($_POST)): ?>
+                    <input type="text" class="loginInput" id="firstName" name="firstName" placeholder="John" value="<?php echo $_POST['firstName']; ?>">
+                <?php else: ?>
+                    <input type="text" class="loginInput" id="firstName" name="firstName" placeholder="John">
+                <?php endif; ?>
+
                 <label for="lastName">last name</label>
-                <input type="text" class="loginInput" id="lastName" name="lastName" placeholder="Doe">
+                <?php if(!empty($_POST)): ?>    
+                    <input type="text" class="loginInput" id="lastName" name="lastName" placeholder="Doe" value="<?php echo $_POST['lastName']; ?>">
+                <?php else: ?>
+                    <input type="text" class="loginInput" id="lastName" name="lastName" placeholder="Doe">
+                <?php endif; ?>
 
                 <label for="password">password</label>
                 <input type="password" name="password" id="password" class="loginInput" placeholder="********">
-                
+
                 <label for="passwordVerify">repeat password</label>
                 <input type="password" name="passwordVerify" id="passwordVerify" class="loginInput" placeholder="********">
-                
-                <!--nog toevoegen forgot password?-->
+
                 <label for="login"></label>
                 <input type="submit" value="Register" name="login" id="login" class="btn1">
             </form>
@@ -73,11 +99,12 @@ if (!empty($_POST)) {
                 </div>
             </div>
         <?php endif; ?>
-        
-            <div class="loginToRegister">
-                <p class="AlreadyAccount">Don't have an account yet?</p>
-                <button class="btnAlreadyAccount"> <a href="login.php">Login page</a></button>
-            </div>
+
+        <div class="loginToRegister">
+            <p class="AlreadyAccount">Don't have an account yet?</p>
+            <button class="btnAlreadyAccount"> <a href="login.php">Login page</a></button>
+        </div>
     </section>
 </body>
+
 </html>
