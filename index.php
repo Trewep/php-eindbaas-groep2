@@ -43,11 +43,13 @@ foreach ($followers as $follower) {
 
 
 //If users is following people show their posts - else show 20 last posts posted
-if (!empty($_GET)) {
+if (!empty($_GET['tag'])) {
   $posts = $posts->getPostsByTag($_GET['tag']);
-    //$posts = $posts->getPostsByLocation($_GET['location']);
     //var_dump($posts);
-} else {
+} elseif(!empty($_GET['location'])) {
+$posts = $posts->getPostsByLocation($_GET['location']);
+      //var_dump($posts);
+  }else {
     if (!empty($followers)) {
         $posts = $posts->setFollowersArray($array);
         $posts = $posts->get20lastFollowersPosts();
