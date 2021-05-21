@@ -49,6 +49,8 @@ if (!empty($_GET['tag'])) {
 } elseif(!empty($_GET['location'])) {
 $posts = $posts->getPostsByLocation($_GET['location']);
       //var_dump($posts);
+  }elseif(!empty($_GET['postid'])) {
+$posts = Post::getPostByPostId($_GET['postid']);
   }else {
     if (!empty($followers)) {
         $posts = $posts->setFollowersArray($array);
@@ -177,8 +179,14 @@ foreach ($comments as $comment) {
                             ?>
                             <?php //if ($post['tagId'] === $tag['id']) : 
                             ?>
-                            <?php if (!empty($post['tag'])) : ?>
-                                <a id="postTags" href="index.php?tag=<?php echo htmlspecialchars($post['tag']) ?>"><?php echo "#" . htmlspecialchars($post['tag']) ?></a>
+                            <?php if (!empty($post['tag1'])) : ?>
+                                <a id="postTags" href="index.php?tag=<?php echo htmlspecialchars($post['tag1']) ?>"><?php echo "#" . htmlspecialchars($post['tag1']) ?></a>
+                            <?php endif; ?>
+                            <?php if (!empty($post['tag2'])) : ?>
+                                <a id="postTags" href="index.php?tag=<?php echo htmlspecialchars($post['tag2']) ?>"><?php echo "#" . htmlspecialchars($post['tag2']) ?></a>
+                            <?php endif; ?>
+                            <?php if (!empty($post['tag3'])) : ?>
+                                <a id="postTags" href="index.php?tag=<?php echo htmlspecialchars($post['tag3']) ?>"><?php echo "#" . htmlspecialchars($post['tag3']) ?></a>
                             <?php endif; ?>
                             <?php //endif; 
                             ?>
@@ -211,24 +219,22 @@ foreach ($comments as $comment) {
 
                         </div>
                         <div class="post__comments__form">
-                            <input type="text" id="commentText" placeholder="What's on your mind">
-                            <a href="#" class="btn" id="btnAddComment" data-postid="<?php echo $post['id'] ?>">Add comment</a>
+                            <input type="text" class="commentText" placeholder="What's on your mind">
+                            <a href="#" class="btn btnAddComment" data-postid="<?php echo htmlspecialchars($post['id']) ?>">Add comment</a>
                         </div>
                     </div>
                     <hr>
+                    <div class="commentsWrapper"></div>
                     <!-- loop door alle comments en toon al de comments en de moment waarop ze gepost zijn -->
                     <?php foreach ($comments as $comment) : ?>
                         <?php if ($comment['postId'] === $post['id']) : ?>
                             <!-- als de userId bij een post gelijk is aan de userIdd van een comment print dan de gebruikersnaam -->
                             <?php foreach ($users as $user) : ?>
                                 <?php if ($user['id'] === $comment['userId']) : ?>
+                                
                                     <div class="comment">
                                         <p><a class="feedLink commentName" href="profile.php?id=<?php echo htmlspecialchars($comment["userId"]) ?>">@<?php echo htmlspecialchars($user['username']) ?> </a></p>
                                         <p><?php echo htmlspecialchars($comment['comment']) ?></p>
-                                        <!--<ul id="testcomment">
-                                            <li><?php //echo htmlspecialchars($comment['comment']) 
-                                                ?></li>
-                                        </ul>-->
                                         <p class="time"><?php echo get_timeago($comment['time']) ?></p>
                                     </div>
                                 <?php endif; ?>
@@ -241,7 +247,10 @@ foreach ($comments as $comment) {
 
         </div>
 
-        <div id="testcomment"></div>
+        <!--<div id="testcomment"></div>-->
+        <!--<p><a class="feedLink commentName" href="profile.php?id=<?php //echo htmlspecialchars($comment["userId"]) ?>">@<?php //echo htmlspecialchars($user['username']) ?> </a></p>
+            <p><?php //echo htmlspecialchars($comment['comment']) ?></p>
+            <p class="time"><?php //echo get_timeago($comment['time']) ?></p>-->
 
         <?php $counter++; ?>
     <?php endforeach; ?>

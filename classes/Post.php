@@ -10,6 +10,12 @@ class Post /*implements iPost*/
 
     private $followersArray;
     private $userId;
+    private $postId;
+    private $tag;
+    private $location;
+    private $image;
+    private $filter;
+    private $description;
 
     /**
      * Get the value of followersArray
@@ -51,6 +57,126 @@ class Post /*implements iPost*/
 
         return $this;
     }
+    
+    /**
+     * Get the value of postId
+     */ 
+    public function getPostId()
+    {
+        return $this->postId;
+    }
+
+    /**
+     * Set the value of postId
+     *
+     * @return  self
+     */ 
+    public function setPostId($postId)
+    {
+        $this->postId = $postId;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tag
+     */ 
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    /**
+     * Set the value of tag
+     *
+     * @return  self
+     */ 
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of image
+     */ 
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set the value of image
+     *
+     * @return  self
+     */ 
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of filter
+     */ 
+    public function getFilter()
+    {
+        return $this->filter;
+    }
+
+    /**
+     * Set the value of filter
+     *
+     * @return  self
+     */ 
+    public function setFilter($filter)
+    {
+        $this->filter = $filter;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of description
+     */ 
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the value of description
+     *
+     * @return  self
+     */ 
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
 
     //haal alle posts op met een bepaalde tag
     public function getPostsByTag($tag) {
@@ -59,8 +185,10 @@ class Post /*implements iPost*/
         //$statement = $conn->prepare("SELECT * FROM Posts,Tags WHERE Tags.id = Posts.tagId AND Tags.name = :tag ORDER BY id DESC LIMIT 20");
         //V2
         //$statement = $conn->prepare("SELECT * FROM Posts,Tags WHERE Posts.tagId = Tags.id AND name=:tag ORDER BY Posts.id DESC LIMIT 20");
-        $statement = $conn->prepare("SELECT * FROM Posts WHERE tag = :tag ORDER BY Posts.id DESC LIMIT 20");
-        $statement->bindValue(":tag", $tag);
+        $statement = $conn->prepare("SELECT * FROM Posts WHERE inappropriate != 1 AND (tag1 = :tag1 OR tag2 = :tag2 OR tag3 = :tag3) ORDER BY Posts.id DESC LIMIT 20");
+        $statement->bindValue(":tag1", $tag);
+        $statement->bindValue(":tag2", $tag);
+        $statement->bindValue(":tag3", $tag);
         $statement->execute();
         $posts = $statement->fetchAll();
         //var_dump($posts);
@@ -70,7 +198,7 @@ class Post /*implements iPost*/
     //haal alle posts op met een bepaalde locatie
     public function getPostsByLocation($location) {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT * FROM Posts WHERE location = :location ORDER BY Posts.id DESC LIMIT 20");
+        $statement = $conn->prepare("SELECT * FROM Posts WHERE inappropriate != 1 AND location = :location ORDER BY Posts.id DESC LIMIT 20");
         $statement->bindValue(":location", $location);
         $statement->execute();
         $posts = $statement->fetchAll();
@@ -81,7 +209,7 @@ class Post /*implements iPost*/
     public function get20LastPosts()
     {
         $conn = Db::getConnection();
-        $result = $conn->query("SELECT * FROM Posts ORDER BY id DESC LIMIT 20");
+        $result = $conn->query("SELECT * FROM Posts WHERE inappropriate != 1 ORDER BY id DESC LIMIT 20");
         return $result->fetchAll();
     }
 
@@ -95,9 +223,9 @@ class Post /*implements iPost*/
         $ids = join(', ', $followersArray);
         $conn = Db::getConnection();
         // get all posts from followers in $ids array in descending order and limited by 20 most recent
-        // $ids is safe becquse the values come from database/ no input from front-end
+        // $ids is safe because the values come from database/ no input from front-end
         // deze manier navragen joris https://stackoverflow.com/questions/920353/can-i-bind-an-array-to-an-in-condition
-        $result = $conn->prepare("SELECT * FROM Posts WHERE userId IN ($ids) ORDER BY id DESC LIMIT 20 ");
+        $result = $conn->prepare("SELECT * FROM Posts WHERE inappropriate != 1 AND userId IN ($ids) ORDER BY id DESC LIMIT 20 ");
         //$result->bindValue(':ids',  $ids );
         $result->execute();
         // save posts 
@@ -119,7 +247,7 @@ class Post /*implements iPost*/
     public function getInappropriatePosts(){
         $conn = Db::getConnection();
         // get all inappropriatePosts
-        $result = $conn->prepare("SELECT * FROM Posts WHERE inappropriate = 1");
+        $result = $conn->prepare("SELECT * FROM Posts WHERE inappropriate = 1 ORDER BY id DESC");
         $result->execute();
         // save posts 
         $inappropriatePosts = $result->fetchAll();
@@ -142,8 +270,11 @@ class Post /*implements iPost*/
     }
     
     //verwijder een post uit de db
-    public function deletePost($image,$id)
+    public function deletePost()
     {
+        
+        $id = $this->getPostId();
+        $image = $this->getImage();
 
         $conn = Db::getConnection();
         $statement = $conn->prepare("delete from Posts where image = :image and userId =:id");
@@ -154,8 +285,12 @@ class Post /*implements iPost*/
     }
     
         //verwijder filter voor een bepaalde image bij een bepaalde user
-    public function removeFilter($image, $id)
+    public function removeFilter()
     {
+        
+        $id = $this->getPostId();
+        $image = $this->getImage();
+        
         $conn = Db::getConnection();
         $statement = $conn->prepare("UPDATE Posts SET filter = '#nofilter' where image = :image AND userId = :userId ");
         $statement->bindValue(':image', $image);
@@ -163,19 +298,7 @@ class Post /*implements iPost*/
         $statement->execute();
     }
     
-    /*public function compressImage($source, $destination, $quality){
-        $info = getimagesize($source);
-
-        if ($info['mime'] == 'image/jpeg') {
-            $image = imagecreatefromjpeg($source);
-        } elseif ($info['mime'] == 'image/png') {
-            $image = imagecreatefrompng($source);
-        }
-        
-        imagejpeg($image, $destination, $quality);
-    }*/
-    
-    public function addPost($userId, $filter, $description, $tag, $location){
+    public function addPost(){
         //het pad om de geuploade afbeelding in op te slagen
         $target = "postImages/" . basename($_FILES["uploadFile"]["name"]);
         //het type bestand uitlezen zodat we later non-images kunnen tegenhouden
@@ -183,12 +306,21 @@ class Post /*implements iPost*/
         //connectie naar db
         $conn = Db::getConnection();
         //alle data ophalen uit het ingestuurde formulier
+        
+        //$location = $_POST['location'];
+        //$tag = strtolower($_POST['tag']);
+        $time = time();
+        $userId = $this->getUserId();
+        $filter = $this->getFilter();
+        $description = $this->getDescription();
+        $tag = $this->getTag();
+        $location = $this->getLocation();
     
         if(!empty($imageFileType)){
-            if($imageFileType === "jpg" || $imageFileType === "png") {
+            if($imageFileType === "jpg" || $imageFileType === "jpeg" || $imageFileType === "png") {
                 $image = $_FILES["uploadFile"]["name"];
             } else {
-                throw new Exception("Please choose a valid png or jpg file");
+                throw new Exception("Please choose a valid png, jpg or jpeg file");
             }
         } else {
             throw new Exception("The image cannot be empty");
@@ -197,33 +329,31 @@ class Post /*implements iPost*/
         if(empty($description)) {
             throw new Exception("The description cannot be empty");
         }
-    
-        //$location = $_POST['location'];
-        //$tag = strtolower($_POST['tag']);
-        $time = time();
         
-        /*$info = getimagesize($image);
-
-        if ($info['mime'] == 'image/jpeg') {
-            $image = imagecreatefromjpeg($image);
-        } elseif ($info['mime'] == 'image/png') {
-            $image = imagecreatefrompng($image);
-        }
-        
-        imagejpeg($image, $target, 10);*/
-        
-        //compressImage($image, $target, 10);
-    
         //opgehaalde data opslagen in databank
-        $statement = $conn->prepare("INSERT INTO Posts (userId, tag, image, description, location, filter, time) VALUES (:userId, :tag, :image, :description, :location, :filter, :time)");
-        $statement->bindValue(":userId", $userId);
-        $statement->bindValue(":tag", $tag);
-        $statement->bindValue(":image", $image);
-        $statement->bindValue(":description", $description);
-        $statement->bindValue(":location", $location);
-        $statement->bindValue(":filter", $filter);
-        $statement->bindValue(":time", $time);
-        $statement->execute();
+        if(count($tag) === 0) {
+            $statement = $conn->prepare("INSERT INTO Posts (userId, image, description, location, filter, time) VALUES (:userId, :image, :description, :location, :filter, :time)");
+        }
+        elseif(count($tag) === 1) {
+            $statement = $conn->prepare("INSERT INTO Posts (userId, tag1, image, description, location, filter, time) VALUES (:userId, :tag1, :image, :description, :location, :filter, :time)");
+            $statement->bindValue(":tag1", $tag[0]);
+        } elseif(count($tag) === 2) {
+            $statement = $conn->prepare("INSERT INTO Posts (userId, tag1, tag2, image, description, location, filter, time) VALUES (:userId, :tag1, :tag2, :image, :description, :location, :filter, :time)");
+            $statement->bindValue(":tag1", $tag[0]);
+            $statement->bindValue(":tag2", $tag[1]);
+        } elseif(count($tag) >= 3) {
+            $statement = $conn->prepare("INSERT INTO Posts (userId, tag1, tag2, tag3, image, description, location, filter, time) VALUES (:userId, :tag1, :tag2, :tag3, :image, :description, :location, :filter, :time)");
+            $statement->bindValue(":tag1", $tag[0]);
+            $statement->bindValue(":tag2", $tag[1]);
+            $statement->bindValue(":tag3", $tag[2]);
+        }
+            $statement->bindValue(":userId", $userId);
+            $statement->bindValue(":image", $image);
+            $statement->bindValue(":description", $description);
+            $statement->bindValue(":location", $location);
+            $statement->bindValue(":filter", $filter);
+            $statement->bindValue(":time", $time);
+            $statement->execute();
         
         //geuploade afbeelding in de images folder zetten
         if(move_uploaded_file($_FILES['uploadFile']['tmp_name'], $target)) {
@@ -232,7 +362,44 @@ class Post /*implements iPost*/
             $message = "There was a problem posting the image";
         }
         
+        if ($imageFileType === "jpg" || $imageFileType === "jpeg") {
+            $image = imagecreatefromjpeg($target);
+        } else {
+            $image = imagecreatefrompng($target);
+        }
+        
+        imagejpeg($image, $target, 60);
+        
         //de gebruiker terug naar de feed sturen
         header("location: index.php");
+    }
+    
+    public function restoreInappropriate($id) {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("UPDATE Posts SET inappropriate = :value where id = :id ");
+        $statement->bindValue(':value', 0);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+    }
+    
+    public function deleteInappropriate($id) {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("DELETE FROM Posts WHERE id = :id");
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        
+        /*$target_dir = "postImages/";
+        $filename = $post['image'];
+        $file_dir = $target_dir . $filename;
+        unlink($file_dir);*/
+    }
+    //haal een bepaalde post op
+    public static function getPostByPostId($id) {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM Posts WHERE id = :id");
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $id = $statement->fetchAll();
+        return $id;
     }
 }

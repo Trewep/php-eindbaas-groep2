@@ -83,7 +83,9 @@ if (!empty($_POST)) {
 if (!empty($_POST['deletePostBtn'])) {
 
     if (array_key_exists('deletePost', $_POST)) {
-        $posts->deletePost($_POST['deletePost'],$_GET['id']);
+        $posts->SetImage($_POST['deletePost']);
+        $posts->setPostId($_GET['id']);
+        $posts->deletePost();
         header("location: ./profile.php?id=" . $_GET['id']);
     }
 
@@ -99,7 +101,9 @@ if (!empty($_POST['deletePostBtn'])) {
 if (!empty($_POST['deleteFilterBtn'])) {
 
     if (array_key_exists('deleteFilter', $_POST)) {
-        $posts->removeFilter($_POST['deleteFilter'], $_GET['id']);
+        $posts->SetImage($_POST['deletePost']);
+        $posts->setPostId($_POST['deleteFilter']);
+        $posts->removeFilter();
         //header("location: ./profile.php?id=" . $_GET['id']);
     }
 }
@@ -187,9 +191,11 @@ if (!empty($_POST['deleteFilterBtn'])) {
                 <?php foreach ($postsId as $post) : ?>
                     <?php if ($post['userId'] == $_GET['id']) : ?>
                         <div class="col-sm-6 col-md-4 col-lg-3 item">
+                                <a id="postimg" href="index.php?postid=<?php echo htmlspecialchars($post["id"])?>">
                                 <figure class="<?php echo htmlspecialchars($post['filter']) ?> ">
                                     <img class="test2" src="./postImages/<?php echo htmlspecialchars($post['image']) ?>" alt="">
                                 </figure>
+                                </a>
                             <!-- als het bezochte profiel het eigen profiel is toon dan de delete foto en remove filter button - als het een ander profiel is niet -->
                             <?php if ($profile === 'myProfile') : ?>
                                 <form action="" method="POST">
@@ -217,9 +223,11 @@ if (!empty($_POST['deleteFilterBtn'])) {
                 <?php foreach ($postsId as $post) : ?>
                     <?php if ($post['userId'] == $_GET['id']) : ?>
                         <div class="col-sm-6 col-md-4 col-lg-3 item">
+                                <a id="postimg" href="index.php?postid=<?php echo htmlspecialchars($post["id"])?>">
                                 <figure class="<?php echo htmlspecialchars($post['filter']) ?> ">
                                     <img class="test2" src="./postImages/<?php echo htmlspecialchars($post['image']) ?>" alt="">
                                 </figure>
+                                </a>
                             <!-- als het bezochte profiel het eigen profiel is toon dan de delete foto en remove filter button - als het een ander profiel is niet -->
                             <?php if ($profile === 'myProfile') : ?>
                                 <form action="" method="POST">
