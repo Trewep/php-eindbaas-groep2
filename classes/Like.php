@@ -69,7 +69,6 @@ class Like //implements iLike
     public function deleteLike(){
         $userId = $this->getUserId();
         $postId = $this->getPostId();
-
         $conn = Db::getConnection();
         $statement = $conn->prepare("delete from Likes where userId = :userId and postId = :postId");
         $statement->bindValue(':userId', $userId );
@@ -78,23 +77,7 @@ class Like //implements iLike
         return $result;
     }
     
-    
-public function getLikesByUserId($userId){
-        $userId = $this->getUserId();
-       $postId = $this->getPostId();
-        
-        $conn = Db::getConnection();
-        $statement = $conn->prepare("select * from Likes where userId = :userId");
-        $statement->bindValue(':userId', $userId );
-        //$statement->bindValue(':postId',  $postId);
-        $statement->execute();
-        $test = $statement->fetchAll();
-         //var_dump($test);
-        return $test;
-
-}
 public static  function getLikesByPostId($postId){
-    //$postId = $this->getPostId();
     $conn = Db::getConnection();
     $statement = $conn->prepare("SELECT COUNT(id) FROM Likes WHERE postId = :postId");
     $statement->bindValue(':postId',  $postId);
@@ -108,9 +91,7 @@ public static  function getLikesByPostId($postId){
  //haal het aantal rijen op waar de userId gelijk is aan de meegegeven id
     public  function getLikeStats()
     {
-
         $userId = $this->getUserId();
-
         $conn = Db::getConnection();
         $result = $conn->prepare("select COUNT(*) from Likes where userId = :id");
         $result->bindValue(':id',  $userId);

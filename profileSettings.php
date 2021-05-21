@@ -93,14 +93,17 @@ $user = new User;
 $user = $user->setUserId($_SESSION["userId"]);
 $user = $user->getUserById();
 $u = new User;
-  if (isset($_POST["confirmPrivate"])){
+$u = $u->setUserId($_SESSION["userId"]);
+if (isset($_POST["confirmPrivate"])){
     
     if(!empty($_POST["privatecheck"])){
     $privatecheck = 1;
-    $u->privateAccount($id, $privatecheck);
+    $u->setPrivatecheck($privatecheck);
+    $u->privateAccount();
     } else {
     $privatecheck = 0;
-    $u->privateAccount($id, $privatecheck);
+    $u->setPrivatecheck($privatecheck);
+    $u->privateAccount();
     }}
 
 if (!empty($_POST['submitEmail'])) {
@@ -110,15 +113,21 @@ if (!empty($_POST['submitEmail'])) {
     $editBio = $_POST['editBio'];
     
     $u = new User;
+    $u = $u->setUserId($_SESSION["userId"]);
     
-    if ($u->validatePasswordRequirements($_POST['editPassword'])) {
-            $editPassword = $u->bcrypt($_POST['editPassword']);
+    
+    if(!empty($_POST['editPassword'])) {
+        if ($u->validatePasswordRequirements($_POST['editPassword'])) {
+                $editPassword = $u->bcrypt($_POST['editPassword']);
+        }
+        $u->updatePassword($id, $editPassword);
+        
     }
-    $u->updateEmail($id, $editEmail);
+    $u->setEditEmail($editEmail);
+    $u->updateEmail();
     $u->updateFirstname($id, $editFirstname);
     $u->updateLastname($id, $editLastname);
     $u->updateBio($id, $editBio);
-    $u->updatePassword($id, $editPassword);
     
 }
 
@@ -151,6 +160,8 @@ if (!empty($_POST['submitEmail'])) {
 
         <?php include("./header.inc.php") ?>
         <?php include("./desktopnav.inc.php")?>
+        
+        <?php echo $user['bio']; ?>
 
 
         <!-- als er eem error is bij het uploaden van de avatar toon deze -->
@@ -210,7 +221,7 @@ if (!empty($_POST['submitEmail'])) {
                         <input type="text" name="editLastname" id="editLastname" value="<?php echo htmlspecialchars($user['lastname']) ?>" placeholder="<?php echo htmlspecialchars($user['lastname']) ?>">
                         
                         <label for="editEmail">Change e-mail</label>
-                        <input type="email" name="editEmail" id="email" value="<?php echo htmlspecialchars($user['email']) ?>" placeholder="<?php echo htmlspecialchars($user['email']) ?>">
+                        <input type="email" name="editEmail" id="email" value="<?php echo htmlspecialchars($user['email']) ?>" value="<?php echo htmlspecialchars($user['email']) ?>">
                         
                         <label for="editPassword">Change password</label>
                         <input type="text" name="editPassword" id="editPassword" placeholder="New password">

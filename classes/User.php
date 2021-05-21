@@ -9,6 +9,8 @@ class User /*implements iUser*/
 {
      private $userId;
     private $avatar;
+    private $editEmail;
+    private $privatecheck;
     
      /**
      * Get the value of avatar
@@ -51,6 +53,46 @@ class User /*implements iUser*/
         return $this;
     }
     
+        /**
+     * Get the value of privatecheck
+     */
+    public function getPrivatecheck()
+    {
+        return $this->privatecheck;
+    }
+
+    /**
+     * Set the value of privatecheck
+     *
+     * @return  self
+     */
+    public function setPrivatecheck($privatecheck)
+    {
+        $this->privatecheck = $privatecheck;
+
+        return $this;
+    }
+
+        /**
+     * Get the value of editEmail
+     */
+    public function getEditEmail()
+    {
+        return $this->editEmail;
+    }
+
+    /**
+     * Set the value of editEmail
+     *
+     * @return  self
+     */
+    public function setEditEmail($editEmail)
+    {
+        $this->editEmail = $editEmail;
+
+        return $this;
+    }
+    
      //haal de gegevens op van alle users
     public function getAllUsers()
     {
@@ -79,14 +121,15 @@ class User /*implements iUser*/
 
             //check of 
             if (count($result) === 0) {
-
+                
+                /*
                 //password should be complex
                 $includesNumber = preg_match("#[0-9]+#", $password);
                 $includesLetter = preg_match("#[a-zA-Z]+#", $password);
-
+                
                 if (!$includesNumber || !$includesLetter || strlen($password) < 8) {
                     throw new Exception("Password should be at least 8 characters in length and should include at least one upper case letter and one number.");
-                } else {
+                } else {*/
 
                     //check if passowrd verify is the same as password
                     if ($passwordVerify === $password) {
@@ -115,7 +158,7 @@ class User /*implements iUser*/
                     } else {
                         throw new Exception("error: passwords not the same");
                     }
-                }
+                /*}*/
             } else {
                 throw new Exception("error: username already exists");
             }
@@ -126,7 +169,7 @@ class User /*implements iUser*/
 
   
 
-    public function getUserByUsername($username, $password)
+    public static function getUserByUsername($username, $password)
     {
         $conn = Db::getConnection();
         $stm = $conn->prepare("SELECT * FROM Users WHERE username = :username");
@@ -215,8 +258,9 @@ class User /*implements iUser*/
         $statement->execute();
     }
     
-        public function updateEmail($id, $editEmail)
-    {
+        public function updateEmail()
+    {   $id = $this->getUserId();
+        $editEmail = $this->getEditEmail();
         $conn = Db::getConnection();
         $statement = $conn->prepare("update Users set email=:email where id = :id ");
         $statement->bindValue(':email', $editEmail);
@@ -281,7 +325,8 @@ class User /*implements iUser*/
         $hashedPassword = password_hash($pw, PASSWORD_DEFAULT, $option);
         return $hashedPassword;
     }
-
+    
+    
     public function validatePasswordRequirements($pw)
     {
         $includesNumber = preg_match("#[0-9]+#", $pw);
@@ -292,24 +337,33 @@ class User /*implements iUser*/
             return true;
         }
     }
+    
 
     //this will be check of your account is private
-    public function privateAccount($id, $privatecheck){
+    public function privateAccount(){
+        $id = $this->getUserId();
+        $privatecheck = $this->getPrivatecheck();
         $conn = Db::getConnection();
         if($privatecheck == 0){
             $statement = $conn->prepare("UPDATE Users SET privateAccount=0 WHERE id = :id");
-            //$statement->bindValue(':private', 0);
             $statement->bindValue(':id', $id);
             $statement->execute();
 
         }elseif ($privatecheck == 1){
-            //var_dump("we zijn hier");
             $statement = $conn->prepare("UPDATE Users SET privateAccount=1 WHERE id = :id");
-            //$statement->bindValue(':private', 1);
             $statement->bindValue(':id', $id);
             $statement->execute();
            
         }
+    }
+    
+    public function loadUsersByQuery($query){
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM Users WHERE username LIKE :query");
+        $statement->bindValue(":query", '%' . $query . '%');
+        $statement->execute();
+        $foundUsers = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $foundUsers;
     }
 
 }
