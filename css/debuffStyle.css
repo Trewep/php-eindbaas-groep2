@@ -1,5 +1,6 @@
 /*work*
 /*colors*/
+
 :root {
     --bs-blue: #0d6efd;
     --bs-indigo: #6610f2;
@@ -30,148 +31,166 @@
 @font-face {
     font-family: HeadingFont;
     src: url(../assets/fonts/LiberGrotesqueFamily-Bold.ttf);
-  }
+}
 
-  h1{
-      font-family: HeadingFont;
-  }
-  
+h1 {
+    font-family: HeadingFont;
+}
 
-*{
+* {
     box-sizing: border-box;
 }
 
-html,body {
-    margin:0;
-    padding:0;
-    overflow-x:hidden;
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
-
-.container{
+.container {
     padding: 0;
 }
 
-
-.header{
-    color:  white;
-    background-color: #1D1D1D ;
+.header {
+    color: white;
+    background-color: #1D1D1D;
     padding: 0.5em;
 }
 
-.header img{
-    width: 45%;
+.header img {
+    width: 2em;
 }
 
-.header .logo{
-    width: 65%;
-    margin-right: 50%;
-    margin-left: 50%;
+.header .logo {
+    width: 10em;
+    margin-right: auto;
+    margin-left: auto;
 }
 
-.profileOptions{
+.profileOptions {
     margin-top: 2em;
-
 }
 
-.profileOptions div{
+.profileOptions div {
     padding: 0;
 }
 
-.profileOptions img{
+.profileOptions img {
     width: 40%;
-    
 }
 
-.profileOptions h1{
+.profileOptions h1 {
     padding-top: 0.7em;
     padding-left: 0.5em;
     font-size: 1.5em;
-    
 }
 
-.profileButtons{
+.profileButtons {
     margin-top: 2em;
 }
 
-.ProfileButton img{
-    width: 14%;
+.ProfileButton{
+    align-items: center;
 }
 
-.ProfileButton a{
+.ProfileButton img {
+    width: 2em;
+}
+
+.ProfileButton a {
     padding-left: 1em;
     text-decoration: none;
     color: var(--bs-gray-dark);
 }
 
-.imageOverview{
-    display: flex;
-    align-items: flex-start;
+
+.profileStats{
+    text-align: center;
+    font-weight: bolder;
+}
+
+.profileStats span{
+color: crimson;
+}
+
+.ProfileImages{
+    margin-bottom: 2em;
 
 }
 
+.btnDelete {
+    width: 100%;
+    margin: 0 0.4em 0 0.4em;
+}
 
+.testje {
+    width: 20em;
+    height: 12em;
+    overflow: hidden;
+}
 
+.item{
+    margin-bottom: 2em;
+}
 
-.imageOverview img{
-    padding: 0.4em;
+.test2{
     width: 100%;
 }
 
 
 
-.btnDelete {
-    width: 95%;
-    margin:0 0.4em 0 0.4em;
+
+
+body{
+    margin-bottom: 100px;
 }
 
-
+/*nav*/
 
 .nav {
-background-color: #ececec;
-margin-top: 1em ;
-bottom: 0;
-position:fixed;
-width:100%;
-margin-left:0;
-margin-right:0;
-
+    background-color: #ececec;
+    margin-top: 200px;
+    padding-top: 1em;
+    bottom: 0;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    position:fixed;
 }
 
-.nav a{
-  text-decoration: none;
-  color: black;
+.nav a {
+    text-decoration: none;
+    color: black;
 }
 
-.noti{
+.noti {
     margin-left: -1.2em;
 }
 
-.profileSettingsImage{
+.profileSettingsImage {
     margin-top: 1em;
     margin-bottom: 1em;
-
-}
-.profileSettingsImage img{
-width: 50%;
-
 }
 
-.error{
-    background-color:  rgba(0, 0, 0, 0.1);
+.profileSettingsImage img {
+    width: 50%;
+}
+
+.error {
+    background-color: rgba(0, 0, 0, 0.1);
     color: var(--bs-primary);
     padding: 0.2em;
     margin: 0.5em;
-    
 }
 
-
 /*Login Screen*/
-.loginPage{
+
+.loginPage {
     background-color: var(--bs-dark);
     color: var(--bs-white);
 }
-.loginLogo{
+
+.loginLogo {
     width: 107px;
     height: 23px;
     margin-top: 63px;
@@ -179,23 +198,28 @@ width: 50%;
     margin-bottom: 69px;
     margin-left: 27px;
 }
-.loginScreen{
-margin-left: 27px;
-margin-right: 28px;
-width: auto;
+
+.loginScreen {
+    margin-left: 27px;
+    margin-right: 28px;
+    width: auto;
 }
-.loginHeading{
+
+.loginHeading {
     margin-bottom: 30px;
 }
-.loginForm{
+
+.loginForm {
     width: 100%;
 }
-.loginInput{
+
+.loginInput {
     width: 100%;
     margin-top: 10px;
     margin-bottom: 20px;
 }
-.btn1{
+
+.btn1 {
     background-color: var(--bs-primary);
     color: var(--bs-white);
     padding-top: 0.5em;
@@ -203,57 +227,302 @@ width: auto;
     padding-left: 1.5em;
     padding-right: 1.5em;
 }
-.errorLogin{
+
+.errorLogin {
     margin-top: 47px;
     margin-bottom: 73px;
     background-color: var(--bs-warning);
     padding: 5%;
 }
-.errorMessageLogin::before{
-
+.btnAlreadyAccount a{
+    text-decoration:none;
+    color:black;
 }
-
 
 /* index*/
 
-article{
+article {
     width: 22em;
     margin-left: auto;
     margin-right: auto;
     margin-top: 1em;
     padding: 1em;
+    border:0.5px solid black ;
+    border-radius: 5px;
 }
 
-.feedProfile{
+.feedProfile {
+    width: 4.5em;
+}
+
+.feedProfileName{
+    margin: 0;
+    font-size: 30px;
+}
+
+.feedLink {
+    text-decoration: none;
+    color: black;
+    font-size: 0.6em;
+}
+
+.feedImage {
     width: 3em;
 }
 
-.feedLink{
+.feedProfileInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2em;
+    margin: 0 0 10px 0;
+}
+
+.postDescTags{
+    margin: 0 0 10px 0;
+}
+
+.postDescription{
+    margin: 0;
+}
+
+.postNameLocation{
+    margin: -11px 0 0 0;
+}
+
+.postLocation{
     text-decoration: none;
-    color: black;
+    color: #b60819;
 }
 
-.feedImage{
-    width: 20em;
+.postTags{
+    text-decoration: none;
+    color: #b60819;
 }
 
-.feedProfileInfo{
+.feedInteractions {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     gap: 2em;
 }
 
-.feedInteractions{
-    display: flex;
-    flex-direction: row;
-    gap: 2em;
+.comment{
+    border-bottom: 0.2px solid gray;
 }
 
+.time{
+    font-weight: bolder;
+}
 
+.commentName{
+    color: crimson;
+}
+nav{
+   display: none;
+}
+footer{
+    display: none;
+}
 
+    .feedImage{
+        width:20em;
+    }
+    
+/* upload */
 
+#uploadTitle{
+    margin: 0 0 30px 0;
+}
 
+.uploadField{
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
 
+.uploadImage{
+    display: flex;
+}
 
+.uploadLabel{
+    font-weight: bold;
+}
 
+#filterOfTheWeek{
+    font-style: italic;
+}
 
+.cardView{
+    width: 22em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    padding: 1em;
+    border:0.5px solid black ;
+    border-radius: 5px;
+}
+
+.cardView ul{
+    list-style-type: none;
+}
+
+/* Profile settings */
+
+.profileSettingsImage{
+    
+}
+
+.profileSettingsEmail{
+    
+}
+
+.profileSettingsPrivate{
+    
+}
+
+.profileSettingsLabel{
+    font-weight: bold;
+}
+
+.settingsField{
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+.settingsFieldAlt{
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#spaceFix{
+    margin-right: 10px;
+}
+
+#profileLogout{
+    margin-top: 10px;
+}
+
+.profileImage{
+    margin-bottom: 10px;
+}
+
+#profileUpload{
+    margin-top: 5px;
+}
+
+#settingsFieldDelete{
+    margin: 10px 0 0 0;
+}
+
+#deleteProfilePicture{
+    /*background-color: var(--bs-primary);
+    color: var(--bs-white);*/
+    text-decoration: none;
+    background-color: #b60817;
+    border: 1px solid #1d1d1d;
+    color: #FFF;
+    border-radius: 3px;
+}
+
+/* Inappropriate */
+
+.inappropriateDelete{
+    text-decoration: none;
+    background-color: #b60817;
+    border: 1px solid #1d1d1d;
+    color: #FFF;
+    border-radius: 3px;
+}
+
+/* Search */
+
+#searchForm{
+    display: flex;
+    align-items: center;
+    margin: 0 0 20px 31px;
+}
+
+.searchFormImage{
+    padding: 10px 0;
+}
+
+/* Requests */
+
+#workInProgress{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media(min-width:580px){
+    /*body{
+        margin-bottom: 0px;
+    }*/
+
+    .test2{
+        width: 20em;
+        height: 15em;
+    }
+
+    .btn-danger{
+        width: 20em;
+    height: 5em;
+    }
+
+    .btnDelete {
+     height: 2.5em;
+     width: 95%;
+    }
+    .loginForm {
+    width: 50%;
+}
+}
+
+@media(min-width:760px){
+
+    .header{
+        display: none;
+    }
+
+    .nav{
+        display: none;
+    }
+
+    nav{
+        background-color: #1D1D1D;
+        padding: 1em;
+        display: block;
+    }
+
+    nav a{
+        color: white;
+        text-decoration: none;
+        margin-left: 1em;
+       
+    }
+
+    .navLogo{
+        width: 10em;
+    }
+
+    footer{
+        display: block;
+        background-color:#1D1D1D ;
+        color: white;
+        padding: 1em;
+        margin-top: 1em;
+        position:fixed;
+        bottom:0;
+        width:100%;
+    }
+    
+    .feedImage{
+        width:20em;
+    }
+    .loginForm {
+    width: 25%;
+}
+}

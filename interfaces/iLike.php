@@ -2,8 +2,7 @@
 
 interface iLike
 {
-    public function getAllLikes();
-    public function getLikeById();
+    public static  function getLikesByPostId($postId);
     public function addLike();
     public function deleteLike();
 }

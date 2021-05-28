@@ -3,7 +3,6 @@
 interface iUser
 {
     public function getAllUsers();
-    public static function getUserById(int $id);
-    public function addUser();
-    public function deleteUser();
+    public  function getUserById();
+    static function register($username, $email, $firstName, $lastName, $password, $passwordVerify, $date);
 }

@@ -1,6 +1,8 @@
 <?php 
 session_start();
 include_once(__DIR__ . "/classes/User.php");
+include_once(__DIR__ . "/classes/Security.php");
+Security::isLoggedIn();
 
 if(!empty($_POST ["username"])&&!empty($_POST ["password"])){
     //formulier verzonden
